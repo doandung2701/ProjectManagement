@@ -35,4 +35,29 @@ public class UserServiceImpl implements UserService{
 		userRepository.save(user);
 	}
 
+	@Override
+	public long getIdByUsername(String username) {
+		// TODO Auto-generated method stub
+		return userRepository.getIdByUsername(username);
+	}
+
+	@Override
+	public void save(User user) {
+		// TODO Auto-generated method stub
+		userRepository.save(user);
+		
+	}
+
+	@Override
+	public boolean existsByUsername(String username) {
+		// TODO Auto-generated method stub
+		return userRepository.existsByUsername(username);
+	}
+
+	@Override
+	public boolean existsByEmail(String email) {
+		// TODO Auto-generated method stub
+		return userRepository.existsByEmail(email);
+	}
+
 }

@@ -1,9 +1,26 @@
-spring:
- application:
-     name: pm-gateway
 server:
-  port: 9000
+  port: 8000
+
 zuul:
-  ribbon:
-    eager-load:
-      enabled: true
+  prefix: /api
+  routes:
+    auth:
+      path: /authentication/**
+      serviceId: AUTH_SERVICE
+      strip-prefix: false
+    project:
+      path: /project/**
+      serviceId: PROJECT_SERVICE
+      strip-prefix: false
+    task:
+      path: /task/**
+      serviceId: TASK_SERVICE
+      strip-prefix: false
+  ignored-services: '*'
+endpoints:
+  trace:
+    sensitive: false
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/

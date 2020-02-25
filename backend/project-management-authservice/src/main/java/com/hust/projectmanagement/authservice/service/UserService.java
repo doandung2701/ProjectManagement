@@ -9,4 +9,8 @@ public interface UserService {
 	List<UserResource> getAllUser();
 	User getUser(long id);
 	void create(User user);
+	long getIdByUsername(String id);
+	void save(User user);
+	boolean existsByUsername(String username);
+	boolean existsByEmail(String email);
 }

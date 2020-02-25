@@ -1,25 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import React, { Fragment } from 'react';
+import { Switch, Route, useHistory } from 'react-router-dom';
+import LoginPage from './page/loginPage/loginPage';
+import SignupPage from './page/signupPage/signupPage';
+import HomePage from './page/homePage/homePage';
+import NotFound404Page from './page/notFound404Page/NotFound404Page';
+function App(props) {
+  // let history = useHistory();
+  // const isLoginPage = history.location.pathname.endsWith("/auth/login") || history.location.pathname.endsWith("/auth/signup") 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <Switch>
+        <Route path="/" exact component={HomePage}></Route>
+        <Route path="/home" exact component={HomePage}></Route>
+        <Route path="/auth/login" exact component={LoginPage}></Route>
+        <Route path="/auth/signup" exact component={SignupPage}></Route>
+        <Route component={NotFound404Page}></Route>
+      </Switch>
+    </Fragment>
+
   );
 }
 
