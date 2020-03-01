@@ -30,7 +30,7 @@ import com.hust.projectmanagement.authservice.service.RoleService;
 import com.hust.projectmanagement.authservice.service.UserService;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("authentication")
 public class AuthController {
 	@Autowired
 	private UserService userService;
@@ -45,8 +45,7 @@ public class AuthController {
 	@PostMapping("login")
 	public ResponseEntity<?> login(@RequestBody @Valid LoginModel loginModel){
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginModel.getUsername(), loginModel.getPassword()));
-
+					new UsernamePasswordAuthenticationToken(loginModel.getUsername(), loginModel.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		String jwt = jwtProvider.generateJwtToken(authentication);
@@ -82,7 +81,7 @@ public class AuthController {
 		}
 
 		user.setRoles(roles);
-		userService.save(user);
+		userService.create(user);
 		return new ResponseEntity<>(true, HttpStatus.OK);
 	}
 }

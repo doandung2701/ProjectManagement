@@ -48,7 +48,7 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		long pid = projectId.longValue();
 		boolean ifIsInvited = inviteRepository.existsById(uid);
-		List<Long> invitedPid = inviteRepository.findByUid(uid);
+		List<Long> invitedPid = inviteRepository.findByUserid(uid);
 		boolean isChecked = false;
 		for (Long id : invitedPid) {
 			if (id == pid) {
@@ -72,14 +72,14 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public long createProject(NewProjectDto projectDto, long admin) {
+	public long createProject(NewProjectDto projectDto) {
 		Project project = new Project();
 		project.setName(projectDto.getName());
 		project.setDescription(projectDto.getDescription());
-		project.setAdmin(admin);
-		Optional<User> user = userRepository.findById(admin);
+		Optional<User> user = userRepository.findById(projectDto.getAdmin());
 		if (!user.isPresent())
 			return -1;
+		project.setAdmin(projectDto.getAdmin());
 		// TODO Auto-generated method stub
 		List<User> userList = new ArrayList<User>();
 		userList.add(user.get());

@@ -10,14 +10,14 @@ import com.hust.projectmanagement.projectservice.domain.Invite;
 
 public interface InviteRepository extends JpaRepository<Invite, Long> {
 
-	 Boolean existsByUid(long uid);
+	 Boolean existsByUserId(long userId);
 	  
-	  @Query("SELECT i.projectId FROM Invite i WHERE i.userId=:uid")
-	  long getPidByUid(@Param("uid") long uid);
+	  @Query("SELECT i.projectId FROM Invite i WHERE i.userId=:userId")
+	  long getProjectIdByUserId(@Param("userId") long userId);
 	  
-	  @Query("SELECT i.projectId FROM Invite i WHERE i.userId=:uid")
-	  List<Long> findByUid(long uid);
+	  @Query("SELECT i.projectId FROM Invite i WHERE i.userId=:userId")
+	  List<Long> findByUserid(long userId);
 
-	  List<Invite> findByPid(long pid);
+	  List<Invite> findByProjectId(long projectId);
 
 }

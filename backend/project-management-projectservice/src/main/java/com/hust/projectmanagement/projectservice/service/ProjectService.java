@@ -5,7 +5,7 @@ import com.hust.projectmanagement.projectservice.resources.ProjectListResource;
 
 public interface ProjectService {
 	boolean addUser(long uid, String code);
-	long createProject(NewProjectDto projectDto, long admin);
+	long createProject(NewProjectDto projectDto);
 	void inviteUsers(long[] users, String code, long pid);
 	ProjectListResource getAll();
 	ProjectListResource getAllByAdmin(long id);

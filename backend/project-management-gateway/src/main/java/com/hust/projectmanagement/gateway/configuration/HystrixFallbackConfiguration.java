@@ -21,7 +21,7 @@ public class HystrixFallbackConfiguration {
         // property and not the route
         @Override
         public String getRoute() {
-            return "projectmanagement";
+            return "authentication";
         }
 
         @Override

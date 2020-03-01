@@ -52,7 +52,7 @@ public class User{
 
     @ManyToMany(mappedBy = "users")
     @JsonManagedReference
-    private List<Project> program = new ArrayList<>();
+    private List<Project> project = new ArrayList<>();
 
     public User() {}
 
@@ -103,12 +103,14 @@ public class User{
         this.password = password;
     }
 
-	public List<Project> getProgram() {
-		return program;
+	public List<Project> getProject() {
+		return project;
 	}
 
-	public void setProgram(List<Project> program) {
-		this.program = program;
+	public void setProject(List<Project> project) {
+		this.project = project;
 	}
+
+
     
 }

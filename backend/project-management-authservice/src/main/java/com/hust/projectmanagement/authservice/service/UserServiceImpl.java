@@ -11,11 +11,15 @@ import com.hust.projectmanagement.authservice.domain.User;
 import com.hust.projectmanagement.authservice.repository.UserRepository;
 import com.hust.projectmanagement.authservice.resource.UserResource;
 
-@Service
+import io.eventuate.tram.events.publisher.DomainEventPublisher;
+import io.eventuate.tram.events.publisher.ResultWithEvents;
+
 @Transactional
 public class UserServiceImpl implements UserService{
 	@Autowired
 	UserRepository userRepository;
+	@Autowired  
+	private DomainEventPublisher domainEventPublisher;
 
 	@Override
 	public List<UserResource> getAllUser() {
@@ -32,9 +36,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void create(User user) {
 		// TODO Auto-generated method stub
-		userRepository.save(user);
+		User createdUser=userRepository.save(user);
+	    ResultWithEvents<User> userWithEvents = User.createUser(createdUser);
+		domainEventPublisher.publish(common.domain.User.class, createdUser.getId(), userWithEvents.events);
 	}
-
+	
 	@Override
 	public long getIdByUsername(String username) {
 		// TODO Auto-generated method stub
@@ -45,6 +51,7 @@ public class UserServiceImpl implements UserService{
 	public void save(User user) {
 		// TODO Auto-generated method stub
 		userRepository.save(user);
+		
 		
 	}
 

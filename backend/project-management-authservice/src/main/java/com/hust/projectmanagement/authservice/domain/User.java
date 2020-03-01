@@ -19,6 +19,10 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.NaturalId;
 
+import common.event.UserCreatedEvent;
+import io.eventuate.tram.events.publisher.ResultWithEvents;
+import static java.util.Collections.singletonList;
+
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
@@ -113,4 +117,17 @@ public class User{
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+	public static ResultWithEvents<User> createUser(User user) {
+		// TODO Auto-generated method stub
+		common.domain.User commonUser=new common.domain.User();
+		commonUser.setEmail(user.getEmail());
+		commonUser.setId(user.getId());
+		commonUser.setName(user.getName());
+		commonUser.setPassword(user.getPassword());
+		commonUser.setUsername(user.getUsername());
+	    UserCreatedEvent userCreatedEvent = new UserCreatedEvent();
+	    userCreatedEvent.setUser(commonUser);
+	    return new ResultWithEvents<>(user, singletonList(userCreatedEvent));
+	}
 }
