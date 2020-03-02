@@ -13,7 +13,7 @@ import com.hust.projectmanagement.authservice.resource.UserResource;
 
 import io.eventuate.tram.events.publisher.DomainEventPublisher;
 import io.eventuate.tram.events.publisher.ResultWithEvents;
-
+@Service
 @Transactional
 public class UserServiceImpl implements UserService{
 	@Autowired

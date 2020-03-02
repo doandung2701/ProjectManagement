@@ -29,7 +29,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 })
 public class User{
 	  @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotBlank

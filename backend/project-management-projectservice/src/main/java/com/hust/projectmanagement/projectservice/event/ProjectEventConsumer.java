@@ -30,6 +30,7 @@ public class ProjectEventConsumer {
 			Optional<User> possibleUser=userRepository.findById(userid);
 			if(!possibleUser.isPresent()) {
 				User user=new User();
+				user.setId(userid);
 				user.setEmail(userCreatedEvent.getUser().getEmail());
 				user.setName(userCreatedEvent.getUser().getName());
 				user.setPassword(userCreatedEvent.getUser().getPassword());
