@@ -25,7 +25,7 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter{
 		.and()
 		.exceptionHandling().authenticationEntryPoint((request,response,e)->response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
 		.and()
-		.addFilterAfter(new JwtTokenAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(new JwtTokenAuthenticationFilter(jwtConfig), UsernamePasswordAuthenticationFilter.class)
 		.authorizeRequests()
 		   .antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll()  
 		   .antMatchers("/project/**").hasRole("USER")

@@ -30,7 +30,7 @@ public class ProjectManagementProjectserviceApplication {
 	  public ProjectEventConsumer userEventConsumer() {
 	    return new ProjectEventConsumer();
 	  }
-	 @Bean("prọectDomainEventDispatcher")
+	 @Bean
 	  public DomainEventDispatcher userDomainEventDispatcher(ProjectEventConsumer projectEventConsumer, DomainEventDispatcherFactory domainEventDispatcherFactory) {
 	    return domainEventDispatcherFactory.make("projectServiceEvents", projectEventConsumer.domainEventHandlers());
 	  }

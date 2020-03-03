@@ -1,5 +1,6 @@
 package com.hust.projectmanagement.projectservice.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -24,7 +25,7 @@ public class Project {
 	private long admin;
 	@ManyToMany
 	@JsonManagedReference
-	private List<User> users;
+	private List<User> users=new ArrayList<>();;
 
 	public long getId() {
 		return id;

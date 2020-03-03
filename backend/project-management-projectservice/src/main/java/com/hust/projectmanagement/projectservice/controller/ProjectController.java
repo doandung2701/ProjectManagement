@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hust.projectmanagement.projectservice.dto.CodeDTO;
+import com.hust.projectmanagement.projectservice.dto.InviteUserDto;
 import com.hust.projectmanagement.projectservice.dto.NewProjectDto;
 import com.hust.projectmanagement.projectservice.resources.ProjectListResource;
 import com.hust.projectmanagement.projectservice.service.ProjectService;
@@ -25,7 +26,7 @@ public class ProjectController {
 	public ResponseEntity<Boolean> createProject(
 			@RequestBody NewProjectDto newProject) {
 		long result = projectService.createProject(newProject);
-		if (result <= 0)
+		if (result < 0)
 			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
@@ -35,9 +36,14 @@ public class ProjectController {
 		ProjectListResource dto = projectService.getAllByAdmin(id);
 		return new ResponseEntity<ProjectListResource>(dto, HttpStatus.OK);
 	}
-
+	@PostMapping("/joinProjectByCode")
 	public ResponseEntity<Boolean> enterProject(@RequestBody CodeDTO code) {
 		projectService.addUser(code.getUid(), code.getCode());
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+	}
+	@PostMapping("/inviteUserToProject/{projectId}")
+	public ResponseEntity<Boolean> inviteUserToProject(@PathVariable(name = "projectId",required = true) Long projectId,@RequestBody InviteUserDto inviteUserDto){
+		 projectService.inviteUserToProjectByEmail(projectId,inviteUserDto);
+		 return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 }

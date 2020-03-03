@@ -19,5 +19,7 @@ public interface InviteRepository extends JpaRepository<Invite, Long> {
 	  List<Long> findByUserid(long userId);
 
 	  List<Invite> findByProjectId(long projectId);
+	  
+	  Boolean existsByUserIdAndProjectId(long userId,long projectId);
 
 }

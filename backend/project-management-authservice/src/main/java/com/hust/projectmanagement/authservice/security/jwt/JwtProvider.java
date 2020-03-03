@@ -1,6 +1,9 @@
 package com.hust.projectmanagement.authservice.security.jwt;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +31,12 @@ public class JwtProvider {
 
 	public String generateJwtToken(Authentication authentication) {
 		UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
-		return Jwts.builder().setSubject((userPrinciple.getUsername())).setIssuedAt(new Date())
-				.setExpiration(new Date((new Date()).getTime() + jwtExpiration * 1000))
-				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+		Map<String, Object> clams=new HashMap<String, Object>();
+		clams.put("sub", userPrinciple.getUsername());
+		clams.put("iat", new Date());
+		clams.put("exp", new Date((new Date()).getTime() + jwtExpiration * 1000));
+		clams.put("authorities", userPrinciple.getAuthorities().stream().map(mapper->new String(mapper.getAuthority())).collect(Collectors.toList()));
+		return Jwts.builder().setClaims(clams).signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
 	}
 
 	public boolean validateJwtToken(String authToken) {
