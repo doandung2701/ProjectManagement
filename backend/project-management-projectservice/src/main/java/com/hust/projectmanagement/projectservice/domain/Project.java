@@ -13,6 +13,12 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import common.domain.User;
+import common.event.ProjectCreatedEvent;
+import common.event.ProjectUpdatedEvent;
+import io.eventuate.tram.events.publisher.ResultWithEvents;
+import static java.util.Collections.singletonList;
+
 @Entity
 @Table(name = "projects")
 public class Project {
@@ -25,7 +31,7 @@ public class Project {
 	private long admin;
 	@ManyToMany
 	@JsonManagedReference
-	private List<User> users=new ArrayList<>();;
+	private List<com.hust.projectmanagement.projectservice.domain.User> users=new ArrayList<>();;
 
 	public long getId() {
 		return id;
@@ -59,12 +65,54 @@ public class Project {
 		this.admin = admin;
 	}
 
-	public List<User> getUsers() {
+	public List<com.hust.projectmanagement.projectservice.domain.User> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<User> users) {
+	public void setUsers(List<com.hust.projectmanagement.projectservice.domain.User> users) {
 		this.users = users;
+	}
+
+	public static ResultWithEvents<Project> createProject(Project savedProject) {
+		// TODO Auto-generated method stub
+		common.domain.Project commonProject=new common.domain.Project();
+		commonProject.setAdmin(savedProject.getAdmin());
+		commonProject.setDescription(savedProject.getDescription());
+		commonProject.setId(savedProject.getId());
+		commonProject.setName(savedProject.getName());
+		for (com.hust.projectmanagement.projectservice.domain.User user : savedProject.getUsers()) {
+			common.domain.User commonUser=new User();
+			commonUser.setEmail(user.getEmail());
+			commonUser.setId(user.getId());
+			commonUser.setName(user.getName());
+			commonUser.setPassword(user.getPassword());
+			commonUser.setUsername(user.getUsername());
+			commonProject.getUsers().add(commonUser);
+		}
+		ProjectCreatedEvent projectCreatedEvent=new ProjectCreatedEvent();
+		projectCreatedEvent.setProject(commonProject);
+		return new ResultWithEvents<Project>(savedProject, singletonList(projectCreatedEvent));
+	}
+
+	public static ResultWithEvents<Project> updateProject(Project project) {
+		// TODO Auto-generated method stub
+		common.domain.Project commonProject=new common.domain.Project();
+		commonProject.setAdmin(project.getAdmin());
+		commonProject.setDescription(project.getDescription());
+		commonProject.setId(project.getId());
+		commonProject.setName(project.getName());
+		for (com.hust.projectmanagement.projectservice.domain.User user : project.getUsers()) {
+			common.domain.User commonUser=new User();
+			commonUser.setEmail(user.getEmail());
+			commonUser.setId(user.getId());
+			commonUser.setName(user.getName());
+			commonUser.setPassword(user.getPassword());
+			commonUser.setUsername(user.getUsername());
+			commonProject.getUsers().add(commonUser);
+		}
+		ProjectUpdatedEvent projectUpdatedEvent=new ProjectUpdatedEvent();
+		projectUpdatedEvent.setProject(commonProject);
+		return new ResultWithEvents<Project>(project, singletonList(projectUpdatedEvent));
 	}
 	
 

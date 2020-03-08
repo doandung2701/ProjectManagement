@@ -24,6 +24,8 @@ import com.hust.projectmanagement.authservice.domain.RoleName;
 import com.hust.projectmanagement.authservice.domain.User;
 import com.hust.projectmanagement.authservice.model.LoginModel;
 import com.hust.projectmanagement.authservice.model.SignupModel;
+import com.hust.projectmanagement.authservice.response.APIResponse;
+import com.hust.projectmanagement.authservice.response.APIStatus;
 import com.hust.projectmanagement.authservice.response.JwtResponse;
 import com.hust.projectmanagement.authservice.security.jwt.JwtProvider;
 import com.hust.projectmanagement.authservice.service.RoleService;
@@ -43,7 +45,7 @@ public class AuthController {
 	@Autowired
 	JwtProvider jwtProvider;
 	@PostMapping("login")
-	public ResponseEntity<?> login(@RequestBody @Valid LoginModel loginModel){
+	public ResponseEntity<APIResponse> login(@RequestBody @Valid LoginModel loginModel){
 		Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginModel.getUsername(), loginModel.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -52,16 +54,16 @@ public class AuthController {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		long id = userService.getIdByUsername(userDetails.getUsername());
 		JwtResponse jwtRes = new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities(), id);
-		return ResponseEntity.ok(jwtRes);
+		return new ResponseEntity(new APIResponse(APIStatus.OK, jwtRes),HttpStatus.OK);
 	}
 	@PostMapping("signup")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupModel signUpRequest){
+	public ResponseEntity<APIResponse> registerUser(@Valid @RequestBody SignupModel signUpRequest){
 		if (userService.existsByUsername(signUpRequest.getUsername())) {
-			return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(new APIResponse(APIStatus.ERR_BAD_REQUEST, "Username đã tồn tại"),HttpStatus.BAD_REQUEST);
 		}
 
 		if (userService.existsByEmail(signUpRequest.getEmail())) {
-			return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(new APIResponse(APIStatus.ERR_BAD_REQUEST, "Email đã được đăng kí"),HttpStatus.BAD_REQUEST);
 		}
 
 		User user = new User(signUpRequest.getName(), signUpRequest.getUsername(), signUpRequest.getEmail(),
@@ -82,6 +84,6 @@ public class AuthController {
 
 		user.setRoles(roles);
 		userService.create(user);
-		return new ResponseEntity<>(true, HttpStatus.OK);
+		return new ResponseEntity(new APIResponse(APIStatus.OK, true),HttpStatus.OK);
 	}
 }

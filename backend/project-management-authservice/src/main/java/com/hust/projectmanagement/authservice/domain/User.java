@@ -1,5 +1,7 @@
 package com.hust.projectmanagement.authservice.domain;
 
+import static java.util.Collections.singletonList;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,12 +18,9 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
 import org.hibernate.annotations.NaturalId;
-
 import common.event.UserCreatedEvent;
 import io.eventuate.tram.events.publisher.ResultWithEvents;
-import static java.util.Collections.singletonList;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {

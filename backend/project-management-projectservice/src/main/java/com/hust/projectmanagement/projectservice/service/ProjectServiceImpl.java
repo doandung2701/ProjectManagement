@@ -25,6 +25,11 @@ import com.hust.projectmanagement.projectservice.resources.ProjectListResource;
 import com.hust.projectmanagement.projectservice.resources.ProjectResource;
 import com.hust.projectmanagement.projectservice.utils.GenCodeUtils;
 
+import common.domain.ProjectUser;
+import common.event.ProjectCreatedEvent;
+import io.eventuate.tram.events.publisher.DomainEventPublisher;
+import io.eventuate.tram.events.publisher.ResultWithEvents;
+
 @Service
 @Transactional
 public class ProjectServiceImpl implements ProjectService {
@@ -36,7 +41,8 @@ public class ProjectServiceImpl implements ProjectService {
 	PasscodeRepository passcodeRepository;
 	@Autowired
 	UserRepository userRepository;
-
+	@Autowired
+	DomainEventPublisher domainEventPublisher;
 	@Override
 	public boolean addUser(long uid, String code) {
 		boolean isInvited = false;
@@ -57,6 +63,8 @@ public class ProjectServiceImpl implements ProjectService {
 			users.add(user.get());
 			project.setUsers(users);
 			projectRepository.save(project);
+			ResultWithEvents<Project> projectWithEvents=Project.updateProject(project);
+			domainEventPublisher.publish(common.domain.Project.class, project.getId(),projectWithEvents.events );
 		} else {
 			isInvited = false;
 		}
@@ -81,6 +89,8 @@ public class ProjectServiceImpl implements ProjectService {
 		String code = generatePasscodeForProject(savedProject.getId());
 		long[] users = projectDto.getUsers();
 		inviteUsers(users, code, savedProject.getId());
+		ResultWithEvents<Project> projectWithEvents=Project.createProject(savedProject);
+		domainEventPublisher.publish(common.domain.Project.class, savedProject.getId(),projectWithEvents.events );
 		return 0;
 	}
 

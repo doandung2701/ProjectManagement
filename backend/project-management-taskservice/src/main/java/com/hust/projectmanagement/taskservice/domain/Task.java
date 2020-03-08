@@ -25,9 +25,7 @@ public class Task {
 	private long id;
 	
 	private long createdBy;
-	
-	private long assignTo;
-	
+		
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime createdTime;
 	
@@ -183,15 +181,5 @@ public class Task {
 
 	public void setChecklists(Set<CheckList> checklists) {
 		this.checklists = checklists;
-	}
-
-	public long getAssignTo() {
-		return assignTo;
-	}
-
-	public void setAssignTo(long assignTo) {
-		this.assignTo = assignTo;
-	}
-	
-	
+	}	
 }

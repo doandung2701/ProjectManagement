@@ -1,0 +1,15 @@
+.login-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.full-width{
+    width: 100%;
+}
+.example-margin {
+    margin: 0 10px;
+  }
+.alert{
+    color: red;
+}

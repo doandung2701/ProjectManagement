@@ -1,0 +1,46 @@
+<div class="login-wrapper">
+    <mat-card class="box">
+      <mat-card-header>
+        <mat-card-title>Register</mat-card-title>
+      </mat-card-header>
+  
+      <form class="form" [formGroup]="singupForm" (ngSubmit)="handlerSignup()">
+  
+        <mat-card-content>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Name" formControlName="name" type="text">
+            <mat-error *ngIf="signupFormControl.name.touched&&signupFormControl.name.errors?.required">Name is required</mat-error>
+            <mat-error *ngIf="signupFormControl.name.touched&&signupFormControl.name.errors?.minlength">Min length of name is 3</mat-error>
+            <mat-error *ngIf="signupFormControl.name.touched&&signupFormControl.name.errors?.maxlength">Max length of name is 50</mat-error>
+
+          </mat-form-field>
+          <mat-form-field class="full-width" >
+            <input matInput placeholder="Username" formControlName="username" type="text">
+            <mat-error *ngIf="signupFormControl.username.touched&&signupFormControl.username.errors?.required">Username is required</mat-error>
+            <mat-error *ngIf="signupFormControl.username.touched&&signupFormControl.username.errors?.minlength">Min length of username is 3</mat-error>
+            <mat-error *ngIf="signupFormControl.username.touched&&signupFormControl.username.errors?.maxlength">Max length of username is 50</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Email" formControlName="email" type="text">
+            <mat-error *ngIf="signupFormControl.email.touched&&signupFormControl.email.errors?.required">Email is required</mat-error>
+            <mat-error *ngIf="signupFormControl.email.touched&&signupFormControl.email.errors?.email">Need enter correct email format</mat-error>
+            <mat-error *ngIf="signupFormControl.email.touched&&signupFormControl.email.errors?.maxlength">Max length of email is 60</mat-error>
+
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Password" type="password" formControlName="password">
+            <mat-error *ngIf="signupFormControl.password.touched&&signupFormControl.password.errors?.required">password is required</mat-error>
+            <mat-error *ngIf="signupFormControl.password.touched&&signupFormControl.password.errors?.minlength">Min length of password is 6</mat-error>
+            <mat-error *ngIf="signupFormControl.password.touched&&signupFormControl.password.errors?.maxlength">Max length of password is 40</mat-error>
+
+          </mat-form-field>
+        </mat-card-content>
+  
+        <button [disabled]="!singupForm.valid||loading" mat-stroked-button class="btn-block full-width">Register</button>
+        <div *ngIf="error" style="color: red;">{{error}}</div>
+      </form>
+    </mat-card>
+  </div>
+  
