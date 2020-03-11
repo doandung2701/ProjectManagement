@@ -1,0 +1,40 @@
+<mat-vertical-stepper [linear]="isLinear" #stepper>
+    <mat-step label="Create Project" [stepControl]="createFormGroup">
+        <form [formGroup]="createFormGroup">
+            <ng-template matStepLabel>Fill out your name</ng-template>
+            <mat-form-field>
+                <input matInput placeholder="Project Name" formControlName="name">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Project Description" formControlName="description">
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step label="Invite User">
+        <ng-template matStepLabel>Add People to project</ng-template>
+        <!-- <app-search-bar (onSelectedOption)="onSelectedOption($event)"></app-search-bar> -->
+        <mat-chip-list #selectedUserList>
+            <mat-chip *ngFor="let user of users" [selectable]="selectable" [removable]="removable"
+                (removed)="remove(user)">
+                {{user.email}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+        </mat-chip-list>
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+        </div>
+    </mat-step>
+    <mat-step label="Confirm">
+        <ng-template matStepLabel>Done</ng-template>
+        Last step!.Please check all information about project carefully
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="stepper.reset()">Reset</button>
+            <button mat-button>Confirm</button>
+        </div>
+    </mat-step>
+</mat-vertical-stepper>

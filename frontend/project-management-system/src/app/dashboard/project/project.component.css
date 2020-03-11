@@ -1,0 +1,13 @@
+.breadcrumb-item{
+    color: black;
+}
+.breadcrumb-item a{
+    color: black;
+    text-decoration: unset;
+}
+.breadcrumb-item.active{
+    color: blue;
+}
+.breadcrumb-item.active a{
+    color: blue;
+}

@@ -1,0 +1,24 @@
+#passcode {
+  font-size: 25px;
+  width: 100%;
+  margin: 0;
+  height: 80px;
+}
+
+button {
+  font-size: 25px;
+  height: 80px;
+}
+.form-container{
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100% - 128px);
+}
+.form-container .card{
+  width: 500px;
+}
+.form-container .card button{
+  width: 100%;
+}

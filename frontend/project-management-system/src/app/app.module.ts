@@ -19,12 +19,14 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoaderService } from './loader.service';
 import { LoaderInterceptor } from './loader.interceptor';
 import { LoaderComponent } from './loader.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ProjectService } from './services/project.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoaderComponent
-
+    LoaderComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +47,7 @@ import { LoaderComponent } from './loader.component';
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true
-  }, LoaderService, AuthenticationService],
+  }, LoaderService, AuthenticationService,ProjectService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

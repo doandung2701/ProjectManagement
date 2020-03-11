@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TaskComponent } from './task/task.component';
-import { ProjectComponent } from './project/project.component';
 import { DashboardComponent } from './dashboard.component';
 import { SummaryComponent } from './summary/summary.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
     {
@@ -12,7 +12,7 @@ const routes: Routes = [
         children:[
             {
                 path:'project',
-                component:ProjectComponent
+                loadChildren:()=>import('./project/project.module').then(m=>m.ProjectModule)
             },
             {
                 path:'task',
@@ -26,6 +26,10 @@ const routes: Routes = [
                 path:'',
                 redirectTo:'summary',
                 pathMatch:'full'
+            },
+            {
+                path:'**',
+                component:PageNotFoundComponent
             }
         ]
     }

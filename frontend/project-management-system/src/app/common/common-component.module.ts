@@ -23,11 +23,17 @@ import {
    MatMenuModule,
    MatTabsModule,
    MatProgressSpinner,
-   MatProgressBarModule
+   MatProgressBarModule,
+   MatDialogModule,
+   MatStepperModule,
+   MatAutocompleteModule,
+   MatSnackBarModule
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MainNavComponent } from './main-nav/main-nav.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { NotificationService } from './service/notification.sevice';
 
 @NgModule({
    imports: [
@@ -54,7 +60,12 @@ import { MainNavComponent } from './main-nav/main-nav.component';
       ReactiveFormsModule,
       MatMenuModule,
       RouterModule,MatTabsModule,
-      MatProgressBarModule
+      MatProgressBarModule,
+      MatMenuModule,
+      MatDialogModule,
+      MatStepperModule,
+      MatAutocompleteModule,
+      MatSnackBarModule
    ],
    exports: [
      
@@ -81,12 +92,20 @@ import { MainNavComponent } from './main-nav/main-nav.component';
       MatMenuModule,
       MainNavComponent,
       MatTabsModule,
-      MatProgressBarModule
+      MatProgressBarModule,
+      MatMenuModule,
+      MatStepperModule,
+      MatAutocompleteModule,
+      MatDialogModule,
+      PageNotFoundComponent,
+      MatSnackBarModule
+      
    ],
    providers: [
       MatDatepickerModule,
+      NotificationService
    ],
-   declarations: [MainNavComponent ]
+   declarations: [MainNavComponent,PageNotFoundComponent ]
 })
 
 export class CommonComponentModule { }

@@ -46,4 +46,9 @@ public class ProjectController {
 		 projectService.inviteUserToProjectByEmail(projectId,inviteUserDto);
 		 return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
+	@GetMapping("/getProjectUserJoined/{userId}")
+	public ResponseEntity<ProjectListResource> getAllProjectUserJoined(@PathVariable("userId") Long id) {
+		ProjectListResource dto = projectService.getAllProjectUserJoined(id);
+		return new ResponseEntity<ProjectListResource>(dto, HttpStatus.OK);
+	}
 }

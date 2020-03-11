@@ -17,6 +17,7 @@ import com.hust.projectmanagement.projectservice.domain.User;
 import com.hust.projectmanagement.projectservice.dto.InviteUserDto;
 import com.hust.projectmanagement.projectservice.dto.NewProjectDto;
 import com.hust.projectmanagement.projectservice.exception.ProjectNotFoundException;
+import com.hust.projectmanagement.projectservice.exception.UserNotFoundException;
 import com.hust.projectmanagement.projectservice.repository.InviteRepository;
 import com.hust.projectmanagement.projectservice.repository.PasscodeRepository;
 import com.hust.projectmanagement.projectservice.repository.ProjectRepository;
@@ -25,8 +26,6 @@ import com.hust.projectmanagement.projectservice.resources.ProjectListResource;
 import com.hust.projectmanagement.projectservice.resources.ProjectResource;
 import com.hust.projectmanagement.projectservice.utils.GenCodeUtils;
 
-import common.domain.ProjectUser;
-import common.event.ProjectCreatedEvent;
 import io.eventuate.tram.events.publisher.DomainEventPublisher;
 import io.eventuate.tram.events.publisher.ResultWithEvents;
 
@@ -153,6 +152,20 @@ public class ProjectServiceImpl implements ProjectService {
 			}
 				
 		}
+	}
+
+	@Override
+	public ProjectListResource getAllProjectUserJoined(Long id) {
+		// TODO Auto-generated method stub
+		Optional<User> user=this.userRepository.findById(id);
+		if(!user.isPresent()) {
+			throw new UserNotFoundException("User not found with id "+id);
+		}
+		ProjectListResource projectListResource=new ProjectListResource();
+		List<Project> projectUserJoined=user.get().getProject();
+		projectListResource.setprojectList((List<ProjectResource>) projectUserJoined.stream()
+				.map(p -> new ProjectResource(p)).collect(Collectors.toList()));
+		return projectListResource;
 	}
 
 }

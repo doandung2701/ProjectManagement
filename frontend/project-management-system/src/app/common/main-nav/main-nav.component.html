@@ -4,9 +4,9 @@
       [mode]="side">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item [routerLink]="['summary']" routerLinkActive="mat-raised-button mat-button-base">Dashboard</a>
-      <a mat-list-item [routerLink]="['task']" routerLinkActive="mat-raised-button mat-button-base">Task</a>
-      <a mat-list-item [routerLink]="['project']" routerLinkActive="mat-raised-button mat-button-base">Project</a>
+      <a (click)="drawer.close()" mat-list-item [routerLink]="['summary']" routerLinkActive="mat-raised-button mat-button-base">Dashboard</a>
+      <a (click)="drawer.close()" mat-list-item [routerLink]="['task']" routerLinkActive="mat-raised-button mat-button-base">Task</a>
+      <a (click)="drawer.close()" mat-list-item [routerLink]="['project']" routerLinkActive="mat-raised-button mat-button-base">Project</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

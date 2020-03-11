@@ -8,10 +8,11 @@ import { CommonComponentModule } from '../common/common-component.module';
 import { HeaderComponent } from './header/header.component';
 import { RouterModule } from '@angular/router';
 import { AuthenticationComponent } from './authentication.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 @NgModule({
-  declarations: [LoginComponent, SignupComponent, HeaderComponent,AuthenticationComponent],
+  declarations: [LoginComponent, SignupComponent, HeaderComponent,AuthenticationComponent,PageNotFoundComponent],
   imports: [
     CommonModule,
     AuthenticationRoutingModule,

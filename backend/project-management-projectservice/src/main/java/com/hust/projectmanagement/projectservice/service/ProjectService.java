@@ -11,4 +11,5 @@ public interface ProjectService {
 	ProjectListResource getAll();
 	ProjectListResource getAllByAdmin(long id);
 	void inviteUserToProjectByEmail(Long projectId, InviteUserDto inviteUserDto);
+	ProjectListResource getAllProjectUserJoined(Long id);
 }

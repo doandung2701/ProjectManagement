@@ -1,0 +1,14 @@
+<div class="form-container">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Join Project</h5>
+      <div class="card-content">
+        <mat-form-field id="passcode">
+          <input [(ngModel)]="passcode" matInput type="text" name="passcode" id="code"
+            placeholder="Enter Passcode you recieved">
+        </mat-form-field>
+      </div>
+      <button (click)="send()" mat-raised-button color="primary" >Enter</button>
+    </div>
+  </div>
+</div>
