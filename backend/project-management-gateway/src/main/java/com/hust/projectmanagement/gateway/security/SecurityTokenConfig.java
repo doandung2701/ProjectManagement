@@ -30,6 +30,7 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter{
 		   .antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll()  
 		   .antMatchers("/project/**").hasRole("USER")
 		   .antMatchers("/task/**").hasRole("USER")
+		   .antMatchers("/user/**").hasRole("USER")
 		   .anyRequest().authenticated(); 
 	}
 	@Bean

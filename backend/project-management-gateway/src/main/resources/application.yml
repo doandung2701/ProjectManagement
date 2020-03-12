@@ -14,6 +14,10 @@ zuul:
       path: /task/**
       serviceId: TASK_SERVICE
       strip-prefix: false
+    user:
+      path: /user/**
+      service-id: USER_SERVICE
+      strip-prefix: false  
   ignored-services: '*'
 endpoints:
   trace:
