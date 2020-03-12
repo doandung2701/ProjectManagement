@@ -1,23 +1,49 @@
-<mat-vertical-stepper [linear]="isLinear" #stepper>
+<mat-vertical-stepper [linear]="isLinear" #stepper (selectionChange)="stepChange($event)">
     <mat-step label="Create Project" [stepControl]="createFormGroup">
         <form [formGroup]="createFormGroup">
             <ng-template matStepLabel>Fill out your name</ng-template>
-            <mat-form-field>
-                <input matInput placeholder="Project Name" formControlName="name">
+            <mat-form-field class="full-width">
+                <input [(ngModel)]="newProject.name" matInput placeholder="Project Name" formControlName="name">
+                <mat-error
+                    *ngIf="createProjectFormControl.name.touched&&createProjectFormControl.name.errors?.required">
+                    Project name is required</mat-error>
+
             </mat-form-field>
-            <mat-form-field>
-                <input matInput placeholder="Project Description" formControlName="description">
+            <mat-form-field class="full-width">
+                <input [(ngModel)]="newProject.description" matInput placeholder="Project Description"
+                    formControlName="description">
+                <mat-error
+                    *ngIf="createProjectFormControl.description.touched&&createProjectFormControl.description.errors?.required">
+                    Project name is required</mat-error>
+
             </mat-form-field>
             <div>
-                <button mat-button matStepperNext>Next</button>
+                <button mat-stroked-button color="primary" *ngIf="newProject.name && newProject.description" mat-button
+                    matStepperNext>Next</button>
             </div>
         </form>
     </mat-step>
     <mat-step label="Invite User">
         <ng-template matStepLabel>Add People to project</ng-template>
         <!-- <app-search-bar (onSelectedOption)="onSelectedOption($event)"></app-search-bar> -->
+        <form [formGroup]="seachUserForm">
+            <mat-form-field class="full-width">
+                <input formControlName="userEmail" matInput placeholder="Search">
+            </mat-form-field>
+        </form>
+
+        <mat-selection-list #userListSearched>
+            <mat-list-option *ngFor="let user of sourceUser">
+                {{user.email}}
+            </mat-list-option>
+        </mat-selection-list>
+        <button mat-button mat-icon-button matSuffix (click)="addPeople()"
+            *ngIf="userListSearched.selectedOptions.selected?.length>0">
+            Add
+        </button>
+
         <mat-chip-list #selectedUserList>
-            <mat-chip *ngFor="let user of users" [selectable]="selectable" [removable]="removable"
+            <mat-chip *ngFor="let user of selectedUser" [selectable]="selectable" [removable]="removable"
                 (removed)="remove(user)">
                 {{user.email}}
                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
@@ -25,7 +51,7 @@
         </mat-chip-list>
         <div>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+            <button *ngIf="selectedUser?.length>0" mat-button matStepperNext>Next</button>
         </div>
     </mat-step>
     <mat-step label="Confirm">

@@ -13,16 +13,19 @@ export class ProjectService {
     constructor(private http:HttpClient){}
     joinProjectByCode(code:string){
         const dto=new CodeDTO(code,JSON.parse(localStorage.getItem('currentUser'))["uid"]);
-        this.http.post<any>(this.url+"/joinProjectByCode",dto);
+        this.http.post<any>(this.url+"/project/joinProjectByCode",dto);
     }
     inviteUserToProject(projectId:number,emails:string[]){
         const dto=new InviteUserDTO(emails);
-        this.http.post<any>(this.url+`/inviteUserToProject/${projectId}`,dto);
+        this.http.post<any>(this.url+`/project/inviteUserToProject/${projectId}`,dto);
     }
     getAllProjectUserJoin(){
-        this.http.get<ProjectList>(this.url+'/getProjectUserJoined/'+JSON.parse(localStorage.getItem('currentUser'))["uid"]);
+        this.http.get<ProjectList>(this.url+'/project/getProjectUserJoined/'+JSON.parse(localStorage.getItem('currentUser'))["uid"]);
     }
     getProjectByAdmin(){
-        this.http.get<ProjectList>(this.url+'/getProjectByAdmin/'+JSON.parse(localStorage.getItem('currentUser'))["uid"]);
+        this.http.get<ProjectList>(this.url+'/project/getProjectByAdmin/'+JSON.parse(localStorage.getItem('currentUser'))["uid"]);
+    }
+    createProject(){
+        
     }
 }

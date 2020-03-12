@@ -21,6 +21,8 @@ import { LoaderInterceptor } from './loader.interceptor';
 import { LoaderComponent } from './loader.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ProjectService } from './services/project.service';
+import { UserService } from './services/user.service';
+import { GlobalService } from './services/global.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,7 @@ import { ProjectService } from './services/project.service';
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true
-  }, LoaderService, AuthenticationService,ProjectService],
+  }, LoaderService, AuthenticationService,ProjectService,UserService,GlobalService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

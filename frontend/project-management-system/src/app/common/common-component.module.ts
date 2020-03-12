@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { FullCalendarModule } from '@fullcalendar/angular'; // for FullCalendar!
+
 import {
    MatButtonModule,
    MatToolbarModule,
@@ -65,7 +67,8 @@ import { NotificationService } from './service/notification.sevice';
       MatDialogModule,
       MatStepperModule,
       MatAutocompleteModule,
-      MatSnackBarModule
+      MatSnackBarModule,
+      FullCalendarModule
    ],
    exports: [
      
@@ -98,7 +101,8 @@ import { NotificationService } from './service/notification.sevice';
       MatAutocompleteModule,
       MatDialogModule,
       PageNotFoundComponent,
-      MatSnackBarModule
+      MatSnackBarModule,
+      FullCalendarModule
       
    ],
    providers: [
