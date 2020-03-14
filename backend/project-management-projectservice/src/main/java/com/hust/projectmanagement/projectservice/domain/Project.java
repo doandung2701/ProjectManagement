@@ -19,9 +19,11 @@ import common.event.ProjectUpdatedEvent;
 import io.eventuate.tram.events.publisher.ResultWithEvents;
 import static java.util.Collections.singletonList;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "projects")
-public class Project {
+public class Project implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

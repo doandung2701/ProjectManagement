@@ -1,0 +1,9 @@
+common\event\ProjectCreatedEvent.class
+common\domain\Project.class
+common\event\ProjectUpdatedEvent.class
+common\event\ProjectEvent.class
+common\event\UserEvent.class
+common\event\UserAddedToProjectEvent.class
+common\domain\ProjectUser.class
+common\domain\User.class
+common\event\UserCreatedEvent.class

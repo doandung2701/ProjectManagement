@@ -10,15 +10,18 @@ import com.hust.projectmanagement.projectservice.event.ProjectEventConsumer;
 
 import io.eventuate.tram.consumer.common.TramNoopDuplicateMessageDetectorConfiguration;
 import io.eventuate.tram.consumer.kafka.EventuateTramKafkaMessageConsumerConfiguration;
+import io.eventuate.tram.events.publisher.TramEventsPublisherConfiguration;
 import io.eventuate.tram.events.subscriber.DomainEventDispatcher;
 import io.eventuate.tram.events.subscriber.DomainEventDispatcherFactory;
 import io.eventuate.tram.events.subscriber.TramEventSubscriberConfiguration;
+import io.eventuate.tram.jdbckafka.TramJdbcKafkaConfiguration;
 
 @SpringBootApplication
 @EnableEurekaClient
 @Import({
 	EventuateTramKafkaMessageConsumerConfiguration.class,
     TramNoopDuplicateMessageDetectorConfiguration.class,
+    TramJdbcKafkaConfiguration.class, TramEventsPublisherConfiguration.class,
     TramEventSubscriberConfiguration.class
 })
 public class ProjectManagementProjectserviceApplication {

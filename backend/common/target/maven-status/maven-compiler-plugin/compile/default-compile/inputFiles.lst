@@ -1,0 +1,9 @@
+E:\DATN\backend\common\src\main\java\common\domain\Project.java
+E:\DATN\backend\common\src\main\java\common\domain\User.java
+E:\DATN\backend\common\src\main\java\common\event\UserAddedToProjectEvent.java
+E:\DATN\backend\common\src\main\java\common\domain\ProjectUser.java
+E:\DATN\backend\common\src\main\java\common\event\UserCreatedEvent.java
+E:\DATN\backend\common\src\main\java\common\event\ProjectCreatedEvent.java
+E:\DATN\backend\common\src\main\java\common\event\ProjectUpdatedEvent.java
+E:\DATN\backend\common\src\main\java\common\event\ProjectEvent.java
+E:\DATN\backend\common\src\main\java\common\event\UserEvent.java
