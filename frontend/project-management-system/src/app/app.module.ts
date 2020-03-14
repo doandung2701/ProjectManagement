@@ -23,6 +23,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { ProjectService } from './services/project.service';
 import { UserService } from './services/user.service';
 import { GlobalService } from './services/global.service';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,8 @@ import { GlobalService } from './services/global.service';
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true
+  },{
+    provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true
   }, LoaderService, AuthenticationService,ProjectService,UserService,GlobalService],
   bootstrap: [AppComponent]
 })

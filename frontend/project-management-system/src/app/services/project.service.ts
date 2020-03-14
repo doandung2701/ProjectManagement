@@ -2,30 +2,36 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CodeDTO } from '../model/codeDto.model';
 import { HttpClient } from '@angular/common/http';
-import { ProjectRoutingModule } from '../dashboard/project/project-routing.module';
 import { InviteUserDTO } from '../model/InviteUserDto.model';
 import { ProjectList } from '../model/projectList.model';
+import { NewProjectDto } from '../model/newProjectDTO.model';
+import { Observable } from 'rxjs';
+import { APIPaginationResponse } from '../model/APIPaginationResponse.model';
+import { Project } from '../model/project.model';
 @Injectable({
     providedIn:'root'
 })
 export class ProjectService {
-    url=environment.apiUrl;
+    // url=environment.apiUrl;
+    url="http://localhost:8090";
     constructor(private http:HttpClient){}
     joinProjectByCode(code:string){
         const dto=new CodeDTO(code,JSON.parse(localStorage.getItem('currentUser'))["uid"]);
-        this.http.post<any>(this.url+"/project/joinProjectByCode",dto);
+        return this.http.post<any>(this.url+"/project/joinProjectByCode",dto);
     }
     inviteUserToProject(projectId:number,emails:string[]){
         const dto=new InviteUserDTO(emails);
-        this.http.post<any>(this.url+`/project/inviteUserToProject/${projectId}`,dto);
+        return this.http.post<any>(this.url+`/project/inviteUserToProject/${projectId}`,dto);
     }
-    getAllProjectUserJoin(){
-        this.http.get<ProjectList>(this.url+'/project/getProjectUserJoined/'+JSON.parse(localStorage.getItem('currentUser'))["uid"]);
+    getAllProjectUserJoin(pageNumber:number,pageSize:number,filterText:string):Observable<APIPaginationResponse<Project>>{
+        return this.http.get<APIPaginationResponse<Project>>(this.url+'/project/getProjectUserJoined/'+JSON.parse(localStorage.getItem('currentUser'))["uid"]+`?page=${pageNumber}&&size=${pageSize}&&filter=${filterText}`);
     }
+  
     getProjectByAdmin(){
-        this.http.get<ProjectList>(this.url+'/project/getProjectByAdmin/'+JSON.parse(localStorage.getItem('currentUser'))["uid"]);
+        return this.http.get<ProjectList>(this.url+'/project/getProjectByAdmin/'+JSON.parse(localStorage.getItem('currentUser'))["uid"]);
     }
-    createProject(){
-        
+    createProject(project:NewProjectDto){
+        return this.http.post(this.url+'/project/createProject',project);
+
     }
 }

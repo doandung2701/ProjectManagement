@@ -29,7 +29,10 @@ import {
    MatDialogModule,
    MatStepperModule,
    MatAutocompleteModule,
-   MatSnackBarModule
+   MatSnackBarModule,
+   MatSortModule,
+   MatProgressSpinnerModule,
+   MatCheckboxModule,
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -68,7 +71,10 @@ import { NotificationService } from './service/notification.sevice';
       MatStepperModule,
       MatAutocompleteModule,
       MatSnackBarModule,
-      FullCalendarModule
+      FullCalendarModule,
+      MatSortModule,
+      MatProgressSpinnerModule,
+      MatCheckboxModule 
    ],
    exports: [
      
@@ -102,7 +108,10 @@ import { NotificationService } from './service/notification.sevice';
       MatDialogModule,
       PageNotFoundComponent,
       MatSnackBarModule,
-      FullCalendarModule
+      FullCalendarModule,
+      MatSortModule,
+      MatProgressSpinnerModule,
+      MatCheckboxModule
       
    ],
    providers: [

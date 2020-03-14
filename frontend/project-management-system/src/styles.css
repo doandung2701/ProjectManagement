@@ -1,6 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @import '~@fullcalendar/core/main.css';
 @import '~@fullcalendar/daygrid/main.css';
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.spinner-container{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    opacity: 0.5;
+    z-index: 2;
+}
