@@ -1,15 +1,13 @@
 package com.hust.projectmanagement.taskservice.dto;
 
-import com.hust.projectmanagement.taskservice.domain.Task;
-
 public class UpdateTaskDto {
-	private Task task;
+	private TaskDto task;
 	private long[] users;
 	private long projectId;
-	public Task getTask() {
+	public TaskDto getTask() {
 		return task;
 	}
-	public void setTask(Task task) {
+	public void setTask(TaskDto task) {
 		this.task = task;
 	}
 	public long[] getUsers() {

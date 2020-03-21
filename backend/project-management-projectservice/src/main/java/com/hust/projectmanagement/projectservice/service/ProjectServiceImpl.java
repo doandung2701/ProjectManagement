@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import com.hust.projectmanagement.projectservice.repository.ProjectRepository;
 import com.hust.projectmanagement.projectservice.repository.UserRepository;
 import com.hust.projectmanagement.projectservice.resources.ProjectListResource;
 import com.hust.projectmanagement.projectservice.resources.ProjectResource;
+import com.hust.projectmanagement.projectservice.response.UserResponse;
 import com.hust.projectmanagement.projectservice.utils.GenCodeUtils;
 
 import io.eventuate.tram.events.publisher.DomainEventPublisher;
@@ -112,14 +115,17 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public void inviteUsers(long[] users, String code, long pid) {
 		// TODO Auto-generated method stub
+		Executor executor = Executors.newSingleThreadExecutor();
+
 		for (long uid : users) {
 			String email = userRepository.findById(uid).get().getEmail();
-			mailService.sendPasscode(email, code, projectRepository.findById(pid).get());
 			Invite invites = new Invite();
 			invites.setProjectId(pid);
 			invites.setUserId(uid);
 			inviteRepository.save(invites);
-			// TODO:send message borker for mailService
+			executor.execute(() -> {
+				mailService.sendPasscode(email, code, projectRepository.findById(pid).get());
+			});
 		}
 	}
 
@@ -196,6 +202,19 @@ public class ProjectServiceImpl implements ProjectService {
 //				.map(p -> new ProjectResource(p)).collect(Collectors.toList()));
         return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), result.size());
 
+	}
+
+	@Override
+	@Transactional
+	public List<UserResponse> getUserJoinProject(Long projectId) {
+		// TODO Auto-generated method stub
+		List<UserResponse> result=new ArrayList<UserResponse>();
+		Optional<Project> project=this.projectRepository.findById(projectId);
+		if(!project.isPresent()) {
+			return result;
+		}
+		result=project.get().getUsers().stream().map(u->UserResponse.createFromUser(u)).collect(Collectors.toList());
+		return result;
 	}
 
 }

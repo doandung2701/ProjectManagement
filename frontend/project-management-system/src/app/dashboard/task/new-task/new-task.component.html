@@ -1,43 +1,74 @@
-<p-toast [modal]="true"></p-toast>
 <div id="page">
   <!-- 1 -->
   <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="stepChange($event)">
-    <br><mat-divider></mat-divider>
+    <br>
+    <mat-divider></mat-divider>
+
     <mat-step>
       <ng-template matStepLabel>Create New Task</ng-template>
-      <div>
-        <button *ngIf="taskModel.name && taskModel.description" class="nxt-btn" mat-stroked-button color="primary" matStepperNext>Next</button>
+      <form [formGroup]="createForm">
+        <mat-form-field appearance="outline" id="tname">
+          <input minlength="3" formControlName="name" [(ngModel)]="createTaskRequest.name" matInput type="text"
+            name="name" id="name" placeholder="Task name">
+            <mat-error
+                    *ngIf="createTaskFormControl.name.touched&&createTaskFormControl.name.errors?.required">
+                    Task name is required</mat-error>
+                    <mat-error
+                    *ngIf="createTaskFormControl.name.touched&&createTaskFormControl.name.errors?.minlength">
+                    Minimum task name length is 3</mat-error>
+                    <mat-error
+                    *ngIf="createTaskFormControl.name.touched&&createTaskFormControl.name.errors?.maxlength">
+                    Maximum task name length is 20</mat-error>
+        </mat-form-field><br>
+        <mat-form-field style="width: 30%;" appearance="outline" id="tdesc">
+          <textarea formControlName="description" [(ngModel)]="createTaskRequest.description" matInput
+            placeholder="Description"></textarea>
+            <mat-error
+                    *ngIf="createTaskFormControl.description.touched&&createTaskFormControl.description.errors?.required">
+                    Task description is required</mat-error>
+                    <mat-error
+                    *ngIf="createTaskFormControl.description.touched&&createTaskFormControl.description.errors?.minlength">
+                    Minimum task description length is 3</mat-error>
+                    <mat-error
+                    *ngIf="createTaskFormControl.description.touched&&createTaskFormControl.description.errors?.maxlength">
+                    Maximum task description length is 300</mat-error>
+        </mat-form-field>
+      </form>
+        <div>
+          <button mat-stroked-button color="primary" *ngIf="!createTaskFormControl.name.errors && !createTaskFormControl.description.errors" mat-button
+              matStepperNext>Next</button>
       </div>
-      <div class="forms f1">
-      <mat-form-field appearance="outline" id="tname">
-        <input [(ngModel)]="taskModel.name" matInput type="text" name="name" id="name" placeholder="Task name">
-      </mat-form-field><br>
-      <div>
-      <p-editor [(ngModel)]="taskModel.description" [style]="{'height':'320px'}"></p-editor>
-      </div>
-    </div>
-
-    </mat-step>
-    <!-- 2 -->
-    <mat-step>
+ 
+      </mat-step>
+      <!-- 2 -->
+      <mat-step>
           <ng-template matStepLabel>Schedule Task</ng-template>
-          <div class="forms f2">
-            <div>
-              <button *ngIf="taskModel.startTime && taskModel.deadline" class="nxt-btn" mat-stroked-button matStepperNext>Next</button>
-            </div>
             <span class="label-span">Task Start Date and Time</span>
             <mat-form-field class="date-time" appearance="outline">
               <mat-label>Task Start Date and Time</mat-label>
-              <input matInput [(ngModel)]="taskModel.startTime" matInput type="datetime-local" name="startTime" id="start">
-            </mat-form-field><br>
+              <input matInput [(ngModel)]="startTime" matInput type="datetime-local" name="startTime" id="start">
+            </mat-form-field>
+            <mat-form-field style="top: -10px;margin-left: 62px;">
+              <mat-label>Select priority</mat-label>
+              <mat-select [(value)]="createTaskRequest.priority">
+                <mat-option value="0">None</mat-option>
+                <mat-option value="1">Low</mat-option>
+                <mat-option value="2">Normal</mat-option>
+                <mat-option value="3">High</mat-option>
+                <mat-option value="4">Urgent</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <br>
             <span class="label-span">Task End Date and Time</span>
             <mat-form-field class="date-time" appearance="outline">
                 <mat-label>Task End Date and Time</mat-label>
-              <input matInput [(ngModel)]="taskModel.deadline" matInput type="datetime-local" name="deadline" id="deadline">
+              <input  matInput [(ngModel)]="deadLine" matInput type="datetime-local" name="deadline" id="deadline">
             </mat-form-field><br>
+            
             <hr>
-            <!--  -->
-            <!--  -->
+            <div>
+              <button mat-stroked-button color="primary" *ngIf="dateTimeValid()" mat-button
+                  matStepperNext>Next</button>
           </div>
       </mat-step>
       <!-- 3 -->
@@ -48,16 +79,16 @@
             <button *ngIf="assignedUser !== []" mat-stroked-button matStepperNext class="nxt-btn" >Done</button>
           </div>
           <div class="forms f3">
-            <p-pickList  [source]= "sourceUser" [target]="assignedUser" sourceHeader="All Users" targetHeader="Users Invited" [responsive]="true" filterBy="name"
-            dragdrop="true" sourceFilterPlaceholder="Search by name" targetFilterPlaceholder="Search by name" [sourceStyle]="{'height':'60vh'}" [targetStyle]="{'height':'60vh'}">
+            <p-pickList  [source]= "sourceUser" [target]="assignedUser" sourceHeader="All Users" targetHeader="Users Invited" [responsive]="true" filterBy="username"
+            dragdrop="true" sourceFilterPlaceholder="Search by username" targetFilterPlaceholder="Search by username" [sourceStyle]="{'height':'60vh'}" [targetStyle]="{'height':'60vh'}">
             <ng-template let-u pTemplate="item">
               <div class="ui-helper-clearfix " style="display: flex;flex-wrap: nowrap;">
                 <div style="position: relative;display:flex;align-items:center;margin:2px 2px 2px 2px">
                 <mat-icon style="font-size: 35px;">person</mat-icon></div>
                 <ul>
-                  <li matToolTip="User ID">{{u.id}}</li>
-                  <li matToolTip="User Name">{{u.name}}</li>
-                  <li matToolTip="User Email">{{u.email}}</li>
+                  <li matToolTip="Name">{{u.name}}</li>
+                  <li matToolTip="Username">{{u.username}}</li>
+                  <li matToolTip="Email">{{u.email}}</li>
                   <hr>
                 </ul>
               </div>
@@ -67,6 +98,7 @@
         </form>
       </mat-step>
       <!-- 4 -->
+      <!--
       <mat-step>
         <ng-template matStepLabel>Review and Publish</ng-template>
         <div class="forms f3">
@@ -82,6 +114,7 @@
           </mat-card-content>
         </mat-card>
         </div>
-      </mat-step>
+      </mat-step> -->
+
   </mat-horizontal-stepper>
 </div>

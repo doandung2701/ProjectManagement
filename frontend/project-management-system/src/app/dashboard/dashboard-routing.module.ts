@@ -16,7 +16,7 @@ const routes: Routes = [
             },
             {
                 path:'task',
-                component:TaskComponent
+                loadChildren:()=>import('./task/task.module').then(m=>m.TaskModule)
             },
             {
                 path:'summary',

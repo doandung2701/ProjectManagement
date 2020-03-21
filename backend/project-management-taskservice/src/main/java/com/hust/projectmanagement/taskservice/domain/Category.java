@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.hust.projectmanagement.taskservice.response.CategoryResponse;
+
 @Entity
 @Table(name = "category")
 public class Category {
@@ -46,6 +48,14 @@ public class Category {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public static CategoryResponse createCategoryResponse(Category category) {
+		// TODO Auto-generated method stub
+		CategoryResponse response=new CategoryResponse();
+		response.setDescription(category.getDescription());
+		response.setId(category.getId());
+		response.setName(category.getName());
+		return response;
 	}
 	
 }

@@ -1,11 +1,14 @@
 package com.hust.projectmanagement.projectservice.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 import com.hust.projectmanagement.projectservice.dto.InviteUserDto;
 import com.hust.projectmanagement.projectservice.dto.NewProjectDto;
 import com.hust.projectmanagement.projectservice.resources.ProjectListResource;
 import com.hust.projectmanagement.projectservice.resources.ProjectResource;
+import com.hust.projectmanagement.projectservice.response.UserResponse;
 
 public interface ProjectService {
 	boolean addUser(long uid, String code);
@@ -15,4 +18,5 @@ public interface ProjectService {
 	ProjectListResource getAllByAdmin(long id);
 	void inviteUserToProjectByEmail(Long projectId, InviteUserDto inviteUserDto);
 	Page<ProjectResource> getAllProjectUserJoined(Long id,int page,int size,String filterText);
+	List<UserResponse> getUserJoinProject(Long projectId);
 }

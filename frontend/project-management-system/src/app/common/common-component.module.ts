@@ -39,6 +39,8 @@ import { RouterModule } from '@angular/router';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { NotificationService } from './service/notification.sevice';
+import {PickListModule} from 'primeng/picklist';
+
 
 @NgModule({
    imports: [
@@ -71,10 +73,11 @@ import { NotificationService } from './service/notification.sevice';
       MatStepperModule,
       MatAutocompleteModule,
       MatSnackBarModule,
-      FullCalendarModule,
       MatSortModule,
       MatProgressSpinnerModule,
-      MatCheckboxModule 
+      MatCheckboxModule ,
+      FullCalendarModule,
+      PickListModule
    ],
    exports: [
      
@@ -111,7 +114,8 @@ import { NotificationService } from './service/notification.sevice';
       FullCalendarModule,
       MatSortModule,
       MatProgressSpinnerModule,
-      MatCheckboxModule
+      MatCheckboxModule,
+      PickListModule
       
    ],
    providers: [

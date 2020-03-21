@@ -8,13 +8,16 @@ import { NewProjectDto } from '../model/newProjectDTO.model';
 import { Observable } from 'rxjs';
 import { APIPaginationResponse } from '../model/APIPaginationResponse.model';
 import { Project } from '../model/project.model';
+import { UserDto } from '../model/userDto.model';
+import { GlobalService } from './global.service';
+import { UserResponse } from '../model/response/userResponse.model';
 @Injectable({
     providedIn:'root'
 })
 export class ProjectService {
     // url=environment.apiUrl;
     url="http://localhost:8090";
-    constructor(private http:HttpClient){}
+    constructor(private http:HttpClient,private globalServcie:GlobalService){}
     joinProjectByCode(code:string){
         const dto=new CodeDTO(code,JSON.parse(localStorage.getItem('currentUser'))["uid"]);
         return this.http.post<any>(this.url+"/project/joinProjectByCode",dto);
@@ -33,5 +36,9 @@ export class ProjectService {
     createProject(project:NewProjectDto){
         return this.http.post(this.url+'/project/createProject',project);
 
+    }
+    getUserJoinedProject(){
+            return this.http.get<UserResponse[]>(this.url+`/project/${this.globalServcie.getCurrentprojectId()}/getUser`);
+            
     }
 }

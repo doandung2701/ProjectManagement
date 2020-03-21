@@ -19,7 +19,7 @@ export class TaskCalendarComponent implements OnInit {
   constructor(private service: TaskService, private global: GlobalService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    // this.service.getAllTaskCalendar().subscribe(data => this.events = data.events);
+     this.service.getAllTaskCalendar().subscribe(data => this.events = data.events);
 
     this.options = {
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],

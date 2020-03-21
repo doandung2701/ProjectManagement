@@ -8,7 +8,7 @@ import { CommonComponentModule } from '../common/common-component.module';
 import { SummaryComponent } from './summary/summary.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 @NgModule({
-  declarations: [ TaskComponent, HeaderComponent,DashboardComponent, SummaryComponent,PageNotFoundComponent],
+  declarations: [ HeaderComponent,DashboardComponent, SummaryComponent,PageNotFoundComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,

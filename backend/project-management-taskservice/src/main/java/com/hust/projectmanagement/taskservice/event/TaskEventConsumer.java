@@ -2,17 +2,17 @@ package com.hust.projectmanagement.taskservice.event;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.hust.projectmanagement.taskservice.domain.ProjectUser;
-import com.hust.projectmanagement.taskservice.domain.ProjectUserPK;
-import com.hust.projectmanagement.taskservice.repository.ProjectUserRepository;
+import com.hust.projectmanagement.taskservice.domain.User;
+import com.hust.projectmanagement.taskservice.repository.ProjectRepository;
+import com.hust.projectmanagement.taskservice.repository.UserRepository;
 
 import common.domain.Project;
-import common.domain.User;
 import common.event.ProjectCreatedEvent;
 import common.event.ProjectUpdatedEvent;
 import io.eventuate.tram.events.subscriber.DomainEventEnvelope;
@@ -22,7 +22,9 @@ import io.eventuate.tram.events.subscriber.DomainEventHandlersBuilder;
 public class TaskEventConsumer {
 	private Logger logger = LoggerFactory.getLogger(TaskEventConsumer.class);
 	@Autowired
-	private ProjectUserRepository projectUserRepository;
+	private ProjectRepository projectRepository;
+	@Autowired
+	private UserRepository userRepository;
 
 	public DomainEventHandlers domainEventHandlers() {
 		return DomainEventHandlersBuilder.forAggregateType("common.domain.Project")
@@ -34,12 +36,19 @@ public class TaskEventConsumer {
 		logger.debug("Handler project created event");
 		Long projectId = Long.parseLong(domainEventEnvelope.getAggregateId());
 		ProjectCreatedEvent projectCreatedEvent = domainEventEnvelope.getEvent();
-		boolean isExisted=projectUserRepository.existsById(new ProjectUserPK(projectId, projectCreatedEvent.getProject().getAdmin()));
+		boolean isExisted=this.projectRepository.existsById(projectCreatedEvent.getProject().getId());
 		if(!isExisted) {
-			ProjectUser projectUser=new ProjectUser();
-			projectUser.setProjectId(projectId);
-			projectUser.setUserId(projectCreatedEvent.getProject().getAdmin());
-			projectUserRepository.save(projectUser);
+			com.hust.projectmanagement.taskservice.domain.Project project=new com.hust.projectmanagement.taskservice.domain.Project();
+			project.setId(projectCreatedEvent.getProject().getId());
+			project.setAdmin(projectCreatedEvent.getProject().getAdmin());
+			project.setDescription(projectCreatedEvent.getProject().getDescription());
+			project.setName(projectCreatedEvent.getProject().getName());
+			List<User> users=new ArrayList<>();
+			for (common.domain.User user : projectCreatedEvent.getProject().getUsers()) {
+				users.add(new User(user.getName(), user.getUsername(), user.getEmail(), user.getPassword()));
+			}
+			project.setUsers(users);
+			this.projectRepository.save(project);
 		}
 	}
 	public void handleProjectUpdatedEventHanlder(DomainEventEnvelope<ProjectUpdatedEvent> domainEventEnvelope) {
@@ -47,17 +56,22 @@ public class TaskEventConsumer {
 		Long projectId=Long.parseLong(domainEventEnvelope.getAggregateId());
 		ProjectUpdatedEvent projectUpdatedEvent=domainEventEnvelope.getEvent();
 		Project project=projectUpdatedEvent.getProject();
-		Long admin=project.getAdmin();
-		//boolean isExisted=projectUserRepository.existsById(new ProjectUserPK(projectId, admin));
-		ProjectUserPK id=new ProjectUserPK();
-		id.setProjectId(projectId);
-		projectUserRepository.deleteById(id);
-		List<User> userInProject=project.getUsers();
-		List<ProjectUser> projectUsers=new ArrayList<ProjectUser>();
-		for (User user : userInProject) {
-			projectUsers.add(new ProjectUser(projectId,user.getId()));
+		Optional<com.hust.projectmanagement.taskservice.domain.Project> projectInDB=this.projectRepository.findById(projectId);
+		if(projectInDB.isPresent()) {
+			com.hust.projectmanagement.taskservice.domain.Project updatedProject=projectInDB.get();
+			updatedProject.setId(project.getId());
+			updatedProject.setAdmin(project.getAdmin());
+			updatedProject.setDescription(project.getDescription());
+			updatedProject.setName(project.getName());
+			List<User> users=new ArrayList<>();
+			for (common.domain.User user : project.getUsers()) {
+				users.add(new User(user.getName(), user.getUsername(), user.getEmail(), user.getPassword()));
+			}
+			updatedProject.setUsers(users);
+			this.projectRepository.save(updatedProject);
 		}
-		projectUserRepository.saveAll(projectUsers);
+		
+		
 	}
 	
 }
