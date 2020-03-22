@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
+import com.hust.projectmanagement.taskservice.domain.Category;
 import com.hust.projectmanagement.taskservice.domain.Priority;
 import com.hust.projectmanagement.taskservice.domain.Status;
 
@@ -21,7 +21,7 @@ public class TaskResponse implements Serializable{
 	private LocalDateTime startTime;
 	private Status status;
 	private Priority priority;
-	private CategoryResponse category;
+	private Category category;
 	private List<CheckListResponse> checklists;
 	private List<UserResponse> users=new ArrayList<>();
 	public Long getId() {
@@ -90,10 +90,11 @@ public class TaskResponse implements Serializable{
 	public void setPriority(Priority priority) {
 		this.priority = priority;
 	}
-	public CategoryResponse getCategory() {
+
+	public Category getCategory() {
 		return category;
 	}
-	public void setCategory(CategoryResponse category) {
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 	public List<CheckListResponse> getChecklists() {

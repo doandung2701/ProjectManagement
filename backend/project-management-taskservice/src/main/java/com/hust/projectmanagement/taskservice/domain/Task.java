@@ -62,7 +62,8 @@ public class Task {
 	@Column(length = 60)
 	private Priority priority;
 
-	@ManyToOne
+	@Enumerated(EnumType.STRING)
+	@Column(length = 60)
 	private Category category;
 
 	@OneToMany
@@ -190,7 +191,7 @@ public class Task {
 	public static TaskResponse createTaskResponseFromTask(Task newTask) {
 		// TODO Auto-generated method stub
 		TaskResponse taskResponse=new TaskResponse();
-		taskResponse.setCategory(Category.createCategoryResponse(newTask.getCategory()));
+		taskResponse.setCategory(taskResponse.getCategory());
 		taskResponse.setChecklists(newTask.getChecklists().stream()
 				.map(cl->CheckList.createCheckListResponse(cl)).collect(Collectors.toList()));
 		taskResponse.setCreatedBy(newTask.getCreatedBy());

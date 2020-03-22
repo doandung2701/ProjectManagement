@@ -21,7 +21,7 @@ import io.eventuate.tram.jdbckafka.TramJdbcKafkaConfiguration;
 @Import({
 	EventuateTramKafkaMessageConsumerConfiguration.class,
     TramNoopDuplicateMessageDetectorConfiguration.class,
-    TramJdbcKafkaConfiguration.class, TramEventsPublisherConfiguration.class,
+    TramJdbcKafkaConfiguration.class,
     TramEventSubscriberConfiguration.class
 })
 public class ProjectManagementUserserviceApplication {

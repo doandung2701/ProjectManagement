@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from "@angular/flex-layout";
-import { FullCalendarModule } from '@fullcalendar/angular'; // for FullCalendar!
-
+import { FullCalendarModule } from 'primeng/fullcalendar'; // for FullCalendar!
 import {
    MatButtonModule,
    MatToolbarModule,
@@ -40,6 +39,8 @@ import { MainNavComponent } from './main-nav/main-nav.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { NotificationService } from './service/notification.sevice';
 import {PickListModule} from 'primeng/picklist';
+import {  KeysPipe } from './custompipe/Keys.pipe';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 
 @NgModule({
@@ -115,14 +116,16 @@ import {PickListModule} from 'primeng/picklist';
       MatSortModule,
       MatProgressSpinnerModule,
       MatCheckboxModule,
-      PickListModule
+      PickListModule,
+      KeysPipe
       
    ],
    providers: [
       MatDatepickerModule,
       NotificationService
    ],
-   declarations: [MainNavComponent,PageNotFoundComponent ]
+   declarations: [MainNavComponent,PageNotFoundComponent,KeysPipe,ConfirmationDialogComponent ],
+   entryComponents:[ConfirmationDialogComponent]
 })
 
 export class CommonComponentModule { }

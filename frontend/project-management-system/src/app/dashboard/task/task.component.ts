@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalService } from 'src/app/services/global.service';
+import { Router } from '@angular/router';
+import { NotificationService } from 'src/app/common/service/notification.sevice';
+import { MessageType } from 'src/app/model/typeMessage';
 
 @Component({
   selector: 'app-task',
@@ -7,9 +11,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TaskComponent implements OnInit {
 
-  constructor() { }
+  constructor(private globalService:GlobalService,private router:Router,private notificationService:NotificationService) { }
 
   ngOnInit() {
+    if(!this.globalService.getCurrentprojectId()){
+      this.notificationService.showNotification(MessageType.ERROR,"You need select project before go to task dashboard");
+      this.router.navigate(['/dashboard/project/joinedProject']);
+    }
   }
 
 }

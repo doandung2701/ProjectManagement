@@ -1,6 +1,7 @@
-export class Category{
-     public id?:number;
-	 public name?:string;
-     public description?:string;
-     
+export enum Category{
+	NONE='NONE',
+	BUG='BUG',
+	FEATURE='FEATURE',
+	DESIGN='DESIGN',
+	DEPLOYMENT='DEPLOYMENT'
 }

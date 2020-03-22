@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { UserDto } from 'src/app/model/userDto.model';
 import { Task } from 'src/app/model/task.model';
@@ -12,15 +12,20 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Priority } from 'src/app/model/priority.enum';
 import { UserResponse } from 'src/app/model/response/userResponse.model';
 import { ProjectService } from 'src/app/services/project.service';
+import { Category } from 'src/app/model/category.model';
+import { MatDialog } from '@angular/material';
+import { ConfirmationDialogComponent } from 'src/app/common/confirmation-dialog/confirmation-dialog.component';
+import { MessageType } from 'src/app/model/typeMessage';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-task',
   templateUrl: './new-task.component.html',
   styleUrls: ['./new-task.component.css'],
-  providers:[DatePipe]
+  providers:[DatePipe],
 })
 export class TaskCreatorComponent implements OnInit {
-
+  @ViewChild("stepper",{static:true}) stepperController;
   showReview = false;
    sourceUser: UserResponse[];
    assignedUser: UserResponse[];
@@ -34,13 +39,20 @@ export class TaskCreatorComponent implements OnInit {
   isLinear = true;
   createTaskRequest:CreateTaskRequest;
   createForm:FormGroup;
+  categories=Category;
+  categoriesOptions=[];
+  priorities=Priority;
+  prioritesOptions=[];
   constructor(private msg: NotificationService, private service: TaskService, private userService: UserService,
               private datePipe: DatePipe, private global: GlobalService,private fb:FormBuilder,
-              private projectService:ProjectService) {
+              private projectService:ProjectService,
+              private notificationService:NotificationService,
+              private router:Router,
+              public dialog: MatDialog) {
   }
   dateTimeValid(){
-    if(this.createTaskRequest.startTime&&this.createTaskRequest.deadline){
-      if(this.createTaskRequest.deadline>=this.createTaskRequest.startTime){
+    if(this.createTaskRequest.startTimeView&&this.createTaskRequest.deadlineView){
+      if(this.createTaskRequest.deadlineView>=this.createTaskRequest.startTimeView){
         return true;
       }
     }
@@ -49,22 +61,22 @@ export class TaskCreatorComponent implements OnInit {
   public set startTime(v: string) {
     let actualParsedDate = v ? new Date(v) : new Date();
     let normalizedParsedDate = new Date(actualParsedDate.getTime() + (actualParsedDate.getTimezoneOffset() * 60000));
-    this.createTaskRequest.startTime = normalizedParsedDate;
+    this.createTaskRequest.startTimeView = normalizedParsedDate;
   }
 
 
   public get startTime(): string {
-    return this.parseDateToStringWithFormat(this.createTaskRequest.startTime);
+    return this.parseDateToStringWithFormat(this.createTaskRequest.startTimeView);
   }
   public set deadLine(v: string) {
     let actualParsedDate = v ? new Date(v) : new Date();
     let normalizedParsedDate = new Date(actualParsedDate.getTime() + (actualParsedDate.getTimezoneOffset() * 60000));
-    this.createTaskRequest.deadline = normalizedParsedDate;
+    this.createTaskRequest.deadlineView = normalizedParsedDate;
   }
 
 
   public get deadLine(): string {
-    return this.parseDateToStringWithFormat(this.createTaskRequest.deadline);
+    return this.parseDateToStringWithFormat(this.createTaskRequest.deadlineView);
   }
   private parseDateToStringWithFormat(date: Date): string {
     let result: string;
@@ -82,9 +94,13 @@ export class TaskCreatorComponent implements OnInit {
   }
   ngOnInit() {
     this.createTaskRequest=new CreateTaskRequest();
-    this.createTaskRequest.startTime=new Date();
-    this.createTaskRequest.deadline=new Date();
+    this.createTaskRequest.startTimeView=new Date();
+    this.createTaskRequest.deadlineView=new Date();
     this.createTaskRequest.priority=Priority.NONE;
+    this.createTaskRequest.category=Category.NONE;
+    this.categoriesOptions=Object.keys(this.categories);
+    this.prioritesOptions=Object.keys(this.priorities);
+    this.assignedUser=[];
    this.projectService.getUserJoinedProject().subscribe(response=>{
     this.sourceUser=response;
    });
@@ -101,8 +117,45 @@ export class TaskCreatorComponent implements OnInit {
   get createTaskFormControl() {
     return this.createForm.controls;
   }
-  prepareForReview() {
-    // this.newTaskModel.user = [];
+  createTask(){
+    this.openConfirmationDialog();
+  }
+  openConfirmationDialog(){
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: "Do you confirm the creatation of this data?"
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.prepareData();
+        this.create();
+      }else{
+        this.stepperController.reset();
+      }
+    });
+  }
+  create(){
+    this.service.createTask(this.createTaskRequest).subscribe(response=>{
+     if(response&&response['status']==200){
+       this.notificationService.showNotification(MessageType.SUCCESS,"Create task success!!");
+       this.router.navigate(['/dashboard/task/myTask']);
+     }else{
+      this.notificationService.showNotification(MessageType.ERROR,response['message']);
+      this.stepperController.reset();
+     }
+    });
+  }
+  prepareData() {
+    this.createTaskRequest.createdBy=JSON.parse(localStorage.getItem('currentUser'))["uid"];
+    this.createTaskRequest.description=this.createTaskFormControl.description.value;
+    this.createTaskRequest.name=this.createTaskFormControl.name.value;
+    this.createTaskRequest.projectId=this.global.getCurrentprojectId();
+    this.createTaskRequest.users=this.assignedUser.map(x=>x.id);
+    this.createTaskRequest.startTime=this.datePipe.transform(this.createTaskRequest.startTimeView,'yyyy-MM-dd HH:mm');
+    this.createTaskRequest.deadline=this.datePipe.transform(this.createTaskRequest.deadlineView,'yyyy-MM-dd HH:mm');
+    this.createTaskRequest.checklists=[];
+    console.debug(this.createTaskRequest);
+       // this.newTaskModel.user = [];
     // this.assignedUser.forEach(t => { this.newTaskModel.user.push(t.id); });
     // this.taskModel.createdBy = this.global.getUid();  // The same user
     // this.taskModel.program = this.global.getCurrentProgramId();  // The program of this dashboard

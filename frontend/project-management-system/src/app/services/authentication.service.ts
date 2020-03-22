@@ -12,6 +12,7 @@ import { APIResponse } from '../model/APIResponse';
     providedIn:'root'
 })
 export class AuthenticationService {
+    private url="http://localhost:8010";
     private currentUserSubject:BehaviorSubject<User>;
     public currentUser:Observable<User>;
     constructor(private http:HttpClient){
@@ -23,7 +24,7 @@ export class AuthenticationService {
         return this.currentUserSubject.value;
     }
     login(username:string,password:string){
-        return this.http.post<any>(`${environment.apiUrl}/authentication/login`,{username,password})
+        return this.http.post<any>(`${this.url}/authentication/login`,{username,password})
         .pipe(map(apiResponse=>{
             localStorage.setItem('currentUser',JSON.stringify(apiResponse.data));
             this.currentUserSubject.next(apiResponse.data);
@@ -35,6 +36,6 @@ export class AuthenticationService {
         this.currentUserSubject.next(null);
     }
     signup(signupModel:SignupModel):Observable<APIResponse>{
-        return this.http.post<APIResponse>(`${environment.apiUrl}/authentication/signup`,signupModel);
+        return this.http.post<APIResponse>(`${this.url}/authentication/signup`,signupModel);
     }
 }

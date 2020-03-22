@@ -51,11 +51,7 @@
             <mat-form-field style="top: -10px;margin-left: 62px;">
               <mat-label>Select priority</mat-label>
               <mat-select [(value)]="createTaskRequest.priority">
-                <mat-option value="0">None</mat-option>
-                <mat-option value="1">Low</mat-option>
-                <mat-option value="2">Normal</mat-option>
-                <mat-option value="3">High</mat-option>
-                <mat-option value="4">Urgent</mat-option>
+                <mat-option *ngFor="let key of prioritesOptions" [value]="key" >{{priorities[key]}}</mat-option>
               </mat-select>
             </mat-form-field>
             <br>
@@ -63,7 +59,15 @@
             <mat-form-field class="date-time" appearance="outline">
                 <mat-label>Task End Date and Time</mat-label>
               <input  matInput [(ngModel)]="deadLine" matInput type="datetime-local" name="deadline" id="deadline">
-            </mat-form-field><br>
+            </mat-form-field>
+            <mat-form-field style="top: -10px;margin-left: 62px;">
+              <mat-label>Select category</mat-label>
+              <mat-select [(value)]="createTaskRequest.category">
+                <mat-option *ngFor="let key of categoriesOptions" [value]="key">{{categories[key]}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            
+            <br>
             
             <hr>
             <div>
@@ -76,7 +80,7 @@
         <form>
           <ng-template matStepLabel>Assign Task</ng-template>
           <div>
-            <button *ngIf="assignedUser !== []" mat-stroked-button matStepperNext class="nxt-btn" >Done</button>
+            <button (click)="createTask()" *ngIf="assignedUser !== []" mat-stroked-button matStepperNext class="nxt-btn" >Done</button>
           </div>
           <div class="forms f3">
             <p-pickList  [source]= "sourceUser" [target]="assignedUser" sourceHeader="All Users" targetHeader="Users Invited" [responsive]="true" filterBy="username"

@@ -21,10 +21,10 @@ export class TaskService {
     getTaskOfUser(pageNumber:number,pageSize:number,filter:string):Observable<APIPaginationResponse<Task>>{
        return this.http.get<APIPaginationResponse<Task>>(this.url+'/task/getUserTasks/'+JSON.parse(localStorage.getItem('currentUser'))["uid"]+`?page=${pageNumber}&&size=${pageSize}&&filter=${filter}`);
     }
-    createTask(creatTaskRequest:CreateTaskRequest):Observable<TaskResponse>{
+    createTask(creatTaskRequest:CreateTaskRequest){
         return this.http.post(this.url+'/task/createTask',creatTaskRequest);
     }
     getAllTaskCalendar(){
-        return this.http.get<TaskCalendarList>(this.url+`/task/getTaskCalendar/${this.globalService.getCurrentprojectId}/${JSON.parse(localStorage.getItem('currentUser'))["uid"]}`)
+        return this.http.get<TaskCalendarList>(this.url+`/task/getTaskCalendar/${this.globalService.getCurrentprojectId()}/${JSON.parse(localStorage.getItem('currentUser'))["uid"]}`)
     }
 }

@@ -7,6 +7,8 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hust.projectmanagement.taskservice.domain.Category;
 import com.hust.projectmanagement.taskservice.domain.Priority;
 import com.hust.projectmanagement.taskservice.domain.Status;
 
@@ -14,6 +16,7 @@ public class CreateTaskRequest implements Serializable{
 	@NotNull(message = "User created can not be null")
 	private Long createdBy;
 	@NotNull(message = "Deadline can not be null")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime deadline;
 	@NotNull(message = "Description can not be null")
 	@NotBlank(message = "Description can not be blank")
@@ -23,10 +26,11 @@ public class CreateTaskRequest implements Serializable{
 	private String name;
 	@NotNull(message = "Project can not be null")
 	private Long projectId;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime startTime;
 	private Status status;
 	private Priority priority;
-	private Long categoryId;
+	private Category category;
 	private List<CheckListRequest> checklists;
 	private Long[] users;
 	public Long getCreatedBy() {
@@ -77,11 +81,12 @@ public class CreateTaskRequest implements Serializable{
 	public void setPriority(Priority priority) {
 		this.priority = priority;
 	}
-	public Long getCategoryId() {
-		return categoryId;
+	
+	public Category getCategory() {
+		return category;
 	}
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 	public List<CheckListRequest> getChecklists() {
 		return checklists;

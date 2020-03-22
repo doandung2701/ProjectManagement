@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.hust.projectmanagement.taskservice.domain.User;
 import com.hust.projectmanagement.taskservice.repository.ProjectRepository;
-import com.hust.projectmanagement.taskservice.repository.UserRepository;
 
 import common.domain.Project;
 import common.event.ProjectCreatedEvent;
@@ -23,13 +22,12 @@ public class TaskEventConsumer {
 	private Logger logger = LoggerFactory.getLogger(TaskEventConsumer.class);
 	@Autowired
 	private ProjectRepository projectRepository;
-	@Autowired
-	private UserRepository userRepository;
-
 	public DomainEventHandlers domainEventHandlers() {
-		return DomainEventHandlersBuilder.forAggregateType("common.domain.Project")
+		return DomainEventHandlersBuilder
+				.forAggregateType("common.domain.Project")
 				.onEvent(ProjectCreatedEvent.class, this::handleProjectCreatedEventHandler)
-				.onEvent(ProjectUpdatedEvent.class, this::handleProjectUpdatedEventHanlder).build();
+				.onEvent(ProjectUpdatedEvent.class, this::handleProjectUpdatedEventHanlder)
+				.build();
 	}
 
 	public void handleProjectCreatedEventHandler(DomainEventEnvelope<ProjectCreatedEvent> domainEventEnvelope) {

@@ -115,17 +115,13 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public void inviteUsers(long[] users, String code, long pid) {
 		// TODO Auto-generated method stub
-		Executor executor = Executors.newSingleThreadExecutor();
-
 		for (long uid : users) {
 			String email = userRepository.findById(uid).get().getEmail();
 			Invite invites = new Invite();
 			invites.setProjectId(pid);
 			invites.setUserId(uid);
 			inviteRepository.save(invites);
-			executor.execute(() -> {
-				mailService.sendPasscode(email, code, projectRepository.findById(pid).get());
-			});
+			mailService.sendPasscode(email, code, projectRepository.findById(pid).get());
 		}
 	}
 

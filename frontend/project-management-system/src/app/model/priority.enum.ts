@@ -1,7 +1,7 @@
 export enum Priority{
-    NONE,
-	LOW,
-	NORMAL,
-	HIGH,
-	URGENT
+    NONE='NONE',
+	LOW='LOW',
+	NORMAL='NORMAL',
+	HIGH='HIGH',
+	URGENT='URGENT'
 }

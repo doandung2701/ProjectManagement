@@ -19,14 +19,7 @@ import org.hibernate.annotations.NaturalId;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {
-            "username"
-        }),
-        @UniqueConstraint(columnNames = {
-            "email"
-        })
-})
+@Table(name = "users")
 public class User{
 	  @Id
     private long id;
@@ -39,7 +32,6 @@ public class User{
     @Size(min=3, max = 50)
     private String username;
 
-    @NaturalId
     @NotBlank
     @Size(max = 50)
     @Email

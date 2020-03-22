@@ -15,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.hust.projectmanagement.taskservice.domain.Category;
 import com.hust.projectmanagement.taskservice.domain.CheckList;
 import com.hust.projectmanagement.taskservice.domain.Priority;
 import com.hust.projectmanagement.taskservice.domain.Project;
@@ -24,7 +23,6 @@ import com.hust.projectmanagement.taskservice.domain.Task;
 import com.hust.projectmanagement.taskservice.domain.User;
 import com.hust.projectmanagement.taskservice.dto.UpdateTaskDto;
 import com.hust.projectmanagement.taskservice.exception.ResourceFoundException;
-import com.hust.projectmanagement.taskservice.repository.CategoryRepository;
 import com.hust.projectmanagement.taskservice.repository.ProjectRepository;
 import com.hust.projectmanagement.taskservice.repository.TaskRepository;
 import com.hust.projectmanagement.taskservice.repository.UserRepository;
@@ -40,8 +38,6 @@ public class TaskServiceImpl implements TaskService {
 	private ProjectRepository projectRepository;
 	@Autowired
 	private UserRepository userRepository;
-	@Autowired
-	private CategoryRepository categoryRepository;
 
 	@Override
 	public TaskResponse createTask(CreateTaskRequest newTaskDto) {
@@ -53,10 +49,6 @@ public class TaskServiceImpl implements TaskService {
 		Optional<Project> project = this.projectRepository.findById(newTaskDto.getProjectId());
 		if (!project.isPresent()) {
 			throw new ResourceFoundException("Project not found ");
-		}
-		Optional<Category> category = this.categoryRepository.findById(newTaskDto.getCategoryId());
-		if (!category.isPresent()) {
-			throw new ResourceFoundException("Category not found ");
 		}
 
 		Task newTask = new Task();
@@ -79,7 +71,7 @@ public class TaskServiceImpl implements TaskService {
 			newTaskDto.setPriority(Priority.NONE);
 		}
 		newTask.setPriority(newTaskDto.getPriority());
-		newTask.setCategory(category.get());
+		newTask.setCategory(newTaskDto.getCategory());
 		newTask.setChecklists(new HashSet<>(newTaskDto.getChecklists().stream()
 				.map(cr -> CheckList.createCheckListFromRequest(cr)).collect(Collectors.toList())));
 

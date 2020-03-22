@@ -33,8 +33,9 @@ private static final Logger logger = LoggerFactory.getLogger(RestControllerAdvic
 	
 	@ResponseStatus(value=HttpStatus.NOT_FOUND, reason="IOException occured")
 	@ExceptionHandler(IOException.class)
-	public void handleIOException(){
+	public void handleIOException(Exception e){
 		logger.error("IOException handler executed");
+		e.printStackTrace();
 		//returning 404 error code
 	}
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

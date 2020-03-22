@@ -14,7 +14,8 @@ import { FormsModule } from '@angular/forms';
          TaskCreatorComponent,
          TaskListComponent,
         PageNotFoundComponent,
-        TaskComponent
+        TaskComponent,
+        TaskCalendarComponent
     ],
     imports: [ CommonModule,CommonComponentModule,
         TaskRoutingModule,

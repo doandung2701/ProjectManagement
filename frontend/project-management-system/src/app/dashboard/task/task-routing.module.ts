@@ -6,6 +6,7 @@ import { TaskCreatorComponent } from './new-task/new-task.component';
 import { TaskListComponent } from './my-tasks/task-list.component';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { TaskCalendarComponent } from './task-calendar/task-calendar.component';
 
 const routes: Routes = [
     { path: '', component: TaskComponent,
@@ -19,8 +20,8 @@ children:[
         component:TaskListComponent
     },
     {
-        path:'calendar',
-        component:FullCalendarComponent
+        path:'myCalendar',
+        component:TaskCalendarComponent
     },
     {
         path:'',

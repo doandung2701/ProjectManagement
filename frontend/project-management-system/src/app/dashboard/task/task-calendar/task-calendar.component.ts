@@ -20,15 +20,14 @@ export class TaskCalendarComponent implements OnInit {
 
   ngOnInit() {
      this.service.getAllTaskCalendar().subscribe(data => this.events = data.events);
-
     this.options = {
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       defaultDate: Date.now(),
       header: {
-          left: 'prev,next,month,agendaWeek,agendaDay',
-          center: 'title',
-          right: 'month,agendaWeek,agendaDay'
-      },
+        left: 'prev,next',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
+    },
       editable: true,
       dateClick: (e) => { console.log(e); }
     };

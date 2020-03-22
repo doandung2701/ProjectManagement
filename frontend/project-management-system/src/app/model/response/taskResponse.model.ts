@@ -1,9 +1,9 @@
 import { Status } from '../status.enum';
 import { ProjectRespone } from './projectResponse.model';
 import { Priority } from '../priority.enum';
-import { CategoryResponse } from './categoryResponse.model';
 import { CheckListResponse } from './checkListResponse.model';
 import { UserResponse } from './userResponse.model';
+import { Category } from '../category.model';
 
 export class TaskResponse{
     public  id?:number;
@@ -17,7 +17,7 @@ export class TaskResponse{
 	public  startTime?:Date;
 	public  status?:Status;
 	public  priority?:Priority;
-	public  category?:CategoryResponse;
+	public  category?:Category;
 	public checklists?:CheckListResponse[];
 	public users?:UserResponse[];
 }
