@@ -16,17 +16,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hust.projectmanagement.taskservice.domain.CheckList;
+import com.hust.projectmanagement.taskservice.domain.Comment;
 import com.hust.projectmanagement.taskservice.domain.Priority;
 import com.hust.projectmanagement.taskservice.domain.Project;
 import com.hust.projectmanagement.taskservice.domain.Status;
 import com.hust.projectmanagement.taskservice.domain.Task;
 import com.hust.projectmanagement.taskservice.domain.User;
-import com.hust.projectmanagement.taskservice.dto.UpdateTaskDto;
 import com.hust.projectmanagement.taskservice.exception.ResourceFoundException;
+import com.hust.projectmanagement.taskservice.repository.CommentRepository;
 import com.hust.projectmanagement.taskservice.repository.ProjectRepository;
 import com.hust.projectmanagement.taskservice.repository.TaskRepository;
 import com.hust.projectmanagement.taskservice.repository.UserRepository;
+import com.hust.projectmanagement.taskservice.request.CommentRequest;
 import com.hust.projectmanagement.taskservice.request.CreateTaskRequest;
+import com.hust.projectmanagement.taskservice.request.UpdateCommonTaskRequest;
 import com.hust.projectmanagement.taskservice.response.TaskResponse;
 
 @Service
@@ -38,7 +41,8 @@ public class TaskServiceImpl implements TaskService {
 	private ProjectRepository projectRepository;
 	@Autowired
 	private UserRepository userRepository;
-
+	@Autowired
+	private CommentRepository commentRepository;
 	@Override
 	public TaskResponse createTask(CreateTaskRequest newTaskDto) {
 		// TODO Auto-generated method stub
@@ -92,33 +96,32 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public Task updateTask(UpdateTaskDto updateTaskDto) {
+	public Task updateTask(UpdateCommonTaskRequest updateTaskDto) {
 		// TODO Auto-generated method stub
-//		TaskDto task=updateTaskDto.getTask();
-//		Optional<Task> exsitedTask=this.taskRepository.findById(task.getId());
-//		Optional<Project> project=this.projectRepository.findById(task.getProject().getId());
-//		if(!exsitedTask.isPresent()) {
-//			return null;
-//		}
-//		if(!project.isPresent()) {
-//			return null;
-//		}
-//		Task updateTask=exsitedTask.get();
-//		updateTask.setCategory(task.getCategory());
-//		updateTask.setChecklists(new HashSet<>(task.getChecklists()));
-//		updateTask.setCreatedBy(task.getCreatedBy());
-//		updateTask.setCreatedTime(task.getCreatedTime());
-//		updateTask.setDeadline(task.getDeadline());
-//		updateTask.setDescription(task.getDescription());
-//		updateTask.setModifiedTime(LocalDateTime.now());
-//		updateTask.setName(task.getName());
-//		updateTask.setPriority(task.getPriority());
-//		updateTask.setProject(project.get());
-//		updateTask.setStartTime(task.getStartTime());
-//		updateTask.setStatus(task.getStatus());
-//		updateTask.setUsers(task.getUsers());
-//		updateTask=this.taskRepository.save(updateTask);
-		return null;
+		Optional<Task> task=this.taskRepository.findById(updateTaskDto.getTaskId());
+		if(!task.isPresent()) {
+			return null;
+		}
+		Task updateTask=task.get();
+		updateTask.setName(updateTaskDto.getTaskName());
+		updateTask.setDescription(updateTaskDto.getTaskDescription());
+		updateTask.setDeadline(updateTaskDto.getDeadline());
+		updateTask.setStartTime(updateTaskDto.getStartTime());
+		updateTask.setStatus(updateTaskDto.getStatus());
+		updateTask.setPriority(updateTaskDto.getPriority());
+		updateTask.setCategory(updateTaskDto.getCategory());
+		if(updateTaskDto.getUsers()!=null) {
+			List<User> users=new ArrayList<>();
+			for (Long userId : updateTaskDto.getUsers()) {
+				Optional<User> findUser=this.userRepository.findById(userId);
+				if(findUser.isPresent()) {
+					users.add(findUser.get());
+				}
+			}
+			updateTask.setUsers(users);
+		}
+		
+		return this.taskRepository.save(updateTask);
 	}
 
 	@Override
@@ -179,6 +182,24 @@ public class TaskServiceImpl implements TaskService {
 			return task.get();
 		}
 		return null;
+	}
+
+	@Override
+	public List<Comment> getCommentByTaskId(Long taskId) {
+		// TODO Auto-generated method stub
+		return this.commentRepository.findByTaskId(taskId);
+	}
+
+	@Override
+	public Comment createComment(Long taskId, CommentRequest request) {
+		// TODO Auto-generated method stub
+		Comment comment=new Comment();
+		comment.setContent(request.getContent());
+		comment.setTaskId(taskId);
+		comment.setUserId(request.getUserId());
+		comment.setUsername(request.getUsername());
+		comment=this.commentRepository.save(comment);
+		return comment;
 	}
 
 }

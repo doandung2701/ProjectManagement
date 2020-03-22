@@ -8,6 +8,8 @@ import { TaskListComponent } from './my-tasks/task-list.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { TaskComponent } from './task.component';
 import { FormsModule } from '@angular/forms';
+import { TaskDetailComponent } from './task-detail/task-detail.component';
+import { CommentboxComponent } from './comment-box/commentbox.component';
 @NgModule({
     declarations: [
         // TaskCalendarComponent,
@@ -15,7 +17,9 @@ import { FormsModule } from '@angular/forms';
          TaskListComponent,
         PageNotFoundComponent,
         TaskComponent,
-        TaskCalendarComponent
+        TaskCalendarComponent,
+        TaskDetailComponent,
+        CommentboxComponent
     ],
     imports: [ CommonModule,CommonComponentModule,
         TaskRoutingModule,

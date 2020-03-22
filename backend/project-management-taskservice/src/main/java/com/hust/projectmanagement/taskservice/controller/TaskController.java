@@ -19,12 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hust.projectmanagement.taskservice.domain.Comment;
 import com.hust.projectmanagement.taskservice.domain.Task;
 import com.hust.projectmanagement.taskservice.dto.APIResponse;
 import com.hust.projectmanagement.taskservice.dto.APIStatus;
 import com.hust.projectmanagement.taskservice.dto.UpdateTaskDto;
 import com.hust.projectmanagement.taskservice.exception.ResourceFoundException;
+import com.hust.projectmanagement.taskservice.request.CommentRequest;
 import com.hust.projectmanagement.taskservice.request.CreateTaskRequest;
+import com.hust.projectmanagement.taskservice.request.UpdateCommonTaskRequest;
 import com.hust.projectmanagement.taskservice.response.APIPaginationResponse;
 import com.hust.projectmanagement.taskservice.response.CalendarListResource;
 import com.hust.projectmanagement.taskservice.response.CalendarResource;
@@ -61,10 +64,13 @@ public class TaskController {
 		return new ResponseEntity(response, HttpStatus.OK);
 	}
 	@PutMapping("updateTask")
-	public ResponseEntity<APIResponse>updateTask(@RequestBody @Valid UpdateTaskDto task){
+	public ResponseEntity<APIResponse>updateTask(@RequestBody @Valid UpdateCommonTaskRequest task){
 		Task isCreated=this.taskService.updateTask(task);
-		
-			return new ResponseEntity(new APIResponse(APIStatus.OK, isCreated),HttpStatus.NO_CONTENT);
+		if(isCreated!=null)
+			return new ResponseEntity(new APIResponse(APIStatus.OK, Task.createTaskResponseFromTask(isCreated)),HttpStatus.OK);
+		else {
+			throw new ResourceFoundException("Task not found");
+		}
 		
 	}
 	@DeleteMapping("deleteTask/{taskId}")
@@ -93,4 +99,19 @@ public class TaskController {
 	    
 	    return new ResponseEntity<CalendarListResource>(clr, HttpStatus.OK);
 	  }
+	@GetMapping("/getComment/{taskId}")
+	public ResponseEntity<?> getComment(@PathVariable(name ="taskId",required = true) Long taskId){
+		List<Comment> commentList=new ArrayList();
+		try {
+			commentList=this.taskService.getCommentByTaskId(taskId);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return  new ResponseEntity(commentList, HttpStatus.OK);
+	}
+	@PostMapping("/addComment/{taskId}")
+	public ResponseEntity<?> addComment(@PathVariable(name ="taskId",required = true) Long taskId,@RequestBody @Valid CommentRequest request){
+		Comment comment=this.taskService.createComment(taskId,request);
+		return new ResponseEntity(comment, HttpStatus.OK);
+	}
 }

@@ -1,20 +1,15 @@
-package com.hust.projectmanagement.taskservice.domain;
+package com.hust.projectmanagement.taskservice.request;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.io.Serializable;
 
-@Entity
-@Table(name = "comment")
-public class Comment {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+import javax.validation.constraints.NotBlank;
+
+public class CommentRequest implements Serializable{
 	private Long id;
 	private Long userId;
 	private String username;
 	private Long taskId;
+	@NotBlank
 	private String content;
 	public Long getId() {
 		return id;
@@ -28,6 +23,12 @@ public class Comment {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	public Long getTaskId() {
 		return taskId;
 	}
@@ -39,12 +40,6 @@ public class Comment {
 	}
 	public void setContent(String content) {
 		this.content = content;
-	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
 	}
 	
 }

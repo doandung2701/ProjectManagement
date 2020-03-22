@@ -1,0 +1,18 @@
+.full-width {
+    width: 50%;
+}
+.haft-width {
+    padding-right: 10px;
+}
+.spin-container{
+    top: 0;
+    left: 0;
+}
+@media (min-width: 576px){
+    .col-sm-12{
+        padding-left: 22px !important;
+    }
+    .col-md-12{
+        padding-left: 22px !important;
+    }
+}

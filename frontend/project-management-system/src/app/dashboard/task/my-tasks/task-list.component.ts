@@ -65,9 +65,7 @@ export class TaskListComponent implements OnInit, AfterViewInit {
     this.contextMenu.openMenu();
   }
   goToDetail(item:TaskResponse){
-    console.log(item);
-    // this.globalService.setCurrentprojectId(item.id);
-    // this.router.navigate(['/dashboard/task']);
+     this.router.navigate([`/dashboard/task/detail/${item.id}`]);
     //open modal
   }
 }

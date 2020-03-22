@@ -1,34 +1,89 @@
-<form>
-    <div class="form-group row">
-      <label for="f1" class="col-sm-2 col-form-label">Task Name</label>
-      <div class="col-sm-10">
-        <input type="text" readonly class="form-control-plaintext" class="f1" value="{{task.name}}">
+<mat-card class="box">
+  <mat-card-header>
+    <mat-card-title>Task detail</mat-card-title>
+    <mat-card-subtitle>Project {{taskDetail?.project?.name}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="spinner-container spin-container" *ngIf="isUpdateCommon">
+      <mat-spinner></mat-spinner>
+    </div>
+    <mat-form-field class="full-width">
+      <mat-label>Task name</mat-label>
+      <input [ngModel]="taskDetail?.name" (ngModelChange)="taskDetail&&taskDetail.name = $event" matInput
+        placeholder="Task name" type="text">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Task description</mat-label>
+      <input [ngModel]="taskDetail?.description" (ngModelChange)="taskDetail&&taskDetail.description = $event" matInput
+        placeholder="Task description" type="text">
+    </mat-form-field>
+    <mat-form-field class="haft-width">
+      <mat-label>Task created time</mat-label>
+      <input readonly matInput [matDatepicker]="picker3" [value]="taskDetail?.createdTime">
+      
+    </mat-form-field>
+    <mat-form-field class="haft-width">
+      <mat-label>Task start time</mat-label>
+      <input matInput [matDatepicker]="picker5" [value]="taskDetail?.startTime">
+      <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+      <mat-datepicker #picker5></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="haft-width">
+      <mat-label>Task deadline time</mat-label>
+      <input matInput [matDatepicker]="picker4" [value]="taskDetail?.deadline">
+      <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+      <mat-datepicker #picker4></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="haft-width">
+      <mat-label>Priority</mat-label>
+      <mat-select [value]="taskDetail?.priority" (selectionChange)="taskDetail&&taskDetail.priority = $event.value">
+        <mat-option *ngFor="let key of prioritesOptions" [value]="key">{{priorities[key]}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="haft-width">
+      <mat-label>Category</mat-label>
+      <mat-select [value]="taskDetail?.category" (selectionChange)="taskDetail&&taskDetail.category = $event.value">
+        <mat-option *ngFor="let key of categoriesOptions" [value]="key">{{categories[key]}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="haft-width">
+      <mat-label>Status</mat-label>
+      <mat-select [value]="taskDetail?.status" (selectionChange)="taskDetail&&taskDetail.status=$event.value">
+        <mat-option *ngFor="let key of statusesOptions" [value]="key">{{statuses[key]}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br/>
+    <mat-label>Users</mat-label>
+    <mat-selection-list #userListSearched>
+      <mat-list-option [selected]="isUserIntask(user)" *ngFor="let user of sourceUser" [value]="user">
+          {{user.email}}
+      </mat-list-option>
+  </mat-selection-list>
+    <!-- <mat-chip-list #userIntask>
+      <mat-chip *ngFor="let user of taskDetail?.users;let index=index;let odd=odd; let even=even;"
+        [color]="odd?'primary':'accent'" (removed)="remove(user)">
+        {{user.email}}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list> -->
+    <button style="display: block;margin-right: 0;margin-left: auto;" (click)="updateCommon()"
+      mat-button>update</button>
+    <label>Comments</label>
+    <div class="comments-container">
+      <div class="comments" *ngIf="listComment!==undefined">
+        <h6 *ngIf="listComment?.length<1">No Comments found</h6>
+        <ul style="list-style: none;padding-left: 0;" *ngIf="listComment?.length>0">
+          <li *ngFor="let post of listComment; let i = index;" style="margin-bottom: 10px;">
+            <div class="row">
+              <div class="col-1 col-sm-12 col-md-12" style="padding-right: 0;">
+                <mat-chip>{{post.username}}</mat-chip>
+              </div>
+              <div class="col-11 col-sm-12 col-md-12" style="padding-left: 0;font-size: 15px;">{{post.content}}</div>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
-
-    <div class="form-group row">
-      <label for="f1" class="col-sm-2 col-form-label">Start Time</label>
-      <div class="col-sm-10">
-        <input type="text" readonly class="form-control-plaintext" class="f1" value="{{task.startTime}}">
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <label for="f1" class="col-sm-2 col-form-label">Deadline</label>
-      <div class="col-sm-10">
-        <input type="text" readonly class="form-control-plaintext" class="f1" value="{{task.deadline}}">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="f1" class="col-sm-2 col-form-label">Project </label>
-      <div class="col-sm-10">
-        <input type="text" readonly class="form-control-plaintext" class="f1" value="{{task.project.name}}">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="f1" class="col-sm-2 col-form-label">Created at</label>
-      <div class="col-sm-10">
-        <input type="text" readonly class="form-control-plaintext" class="f1" value="{{task.createdTime}}">
-      </div>
-    </div>
-  </form>
+    <app-commentbox (usercomment)="hanlderUserComment($event)"></app-commentbox>
+  </mat-card-content>
+</mat-card>

@@ -4,9 +4,9 @@ import { CommonModule } from '@angular/common';
 import { TaskComponent } from './task.component';
 import { TaskCreatorComponent } from './new-task/new-task.component';
 import { TaskListComponent } from './my-tasks/task-list.component';
-import { FullCalendarComponent } from '@fullcalendar/angular';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { TaskCalendarComponent } from './task-calendar/task-calendar.component';
+import { TaskDetailComponent } from './task-detail/task-detail.component';
 
 const routes: Routes = [
     { path: '', component: TaskComponent,
@@ -22,6 +22,10 @@ children:[
     {
         path:'myCalendar',
         component:TaskCalendarComponent
+    },
+    {
+        path:'detail/:taskId',
+        component:TaskDetailComponent
     },
     {
         path:'',
