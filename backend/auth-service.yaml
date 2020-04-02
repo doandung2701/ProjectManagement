@@ -1,0 +1,99 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  ports:
+    - port: 8010
+      protocol: TCP
+      targetPort: 8010
+  selector:
+    app: auth-service
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+  labels:
+    app: auth-service
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: auth-service
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      containers:
+        - image: gcr.io/spartan-thunder-272123/auth-service:v5
+          imagePullPolicy: Always
+          name: auth-service
+          ports:
+            - containerPort: 8010
+          env:
+            - name: _JAVA_OPTIONS
+              value: -Dsun.net.inetaddr.ttl=30 -Deureka.instance.preferIpAddress=false -Deureka.client.serviceUrl.defaultZone=http://registry-service-service:8761/eureka/ -Deureka.instance.preferIpAddress=true
+            - name: EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS
+              value: kafka-service:9092
+            - name: EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING
+              value: zoo1:2181
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://pms-mysql/authdb
+            - name: SPRING_DATASOURCE_USERNAME
+              value: root
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-pass
+                  key: password
+            - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+              value: com.mysql.jdbc.Driver  
+        #   env:                  # Environment variables supplied to the Pod
+        # - name: SPRING_DATASOURCE_USERNAME # Name of the environment variable
+        #   valueFrom:          # Get the value of environment variable from kubernetes secrets
+        #     secretKeyRef:
+        #       name: mysql-user-pass
+        #       key: username
+        # - name: SPRING_DATASOURCE_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql-user-pass
+        #       key: password
+        # - name: SPRING_DATASOURCE_URL
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql-db-url
+        #       key: url
+          # env:
+          #   - name: MYSQL_DB_USER
+          #     value: root
+          #   - name: MYSQL_DB_PASSWORD
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: mysql-pass
+          #         key: password
+          #   - name: MYSQL_DB_HOST
+          #     value: auth-mysql
+          #   - name: MYSQL_DB_PORT
+          #     value: "3306"
+          #   - name: EUREKA_SV_HOST
+          #     value: registry-service-service
+          #   - name: KAFKA_HOST
+          #     value: kaf1
+          #   - name: KAFKA_PORT
+          #     value: "9092"
+          #   - name: ZOO_HOST
+          #     value: zoo1
+          #   - name: ZOO_PORT
+          #     value: "2181"
+          #   - name: SPRING_APPLICATION_NAME
+          #     value: AUTH_SERVICE
+          #   # - name: _JAVA_OPTIONS
+          #   #   value: -Deureka.instance.preferIpAddress=false -Deureka.client.serviceUrl.defaultZone=http://registry-service-service:8761/eureka/ -Dspring.config.location=application.properties

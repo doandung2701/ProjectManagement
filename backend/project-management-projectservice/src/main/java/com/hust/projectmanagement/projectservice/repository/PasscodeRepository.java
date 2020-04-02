@@ -8,5 +8,5 @@ import com.hust.projectmanagement.projectservice.domain.Passcode;
 
 public interface PasscodeRepository extends JpaRepository<Passcode, Long> {
 	  @Query("SELECT p.projectId FROM Passcode p WHERE p.code=:code")
-	  long getPidByCode(@Param("code") String code);
+	  Long getPidByCode(@Param("code") String code);
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -111,8 +112,9 @@ public class ProjectServiceImpl implements ProjectService {
 		passcodeRepository.save(passcode);
 		return code;
 	}
-
+	
 	@Override
+	@Async
 	public void inviteUsers(long[] users, String code, long pid) {
 		// TODO Auto-generated method stub
 		for (long uid : users) {

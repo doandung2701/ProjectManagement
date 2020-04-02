@@ -1,0 +1,45 @@
+<div class="container">
+    <h4>Task by status</h4>
+    <div class="row mt-3">
+
+        <div class="col" *ngFor="let arrayOfStatus of arrayStatus">
+            <div class="card-box">
+                <h4 class="header-title mt-0 mb-4">
+                    {{arrayOfStatus.property}}
+                </h4>
+                <div class="widget-box-2">
+                    <div class="widget-detail-2 text-right">
+                        <h2 class="font-weight-normal mb-1">{{arrayOfStatus.value}} </h2>
+                    </div>
+                    <div class="progress progress-bar-alt-success progress-sm">
+                        <div class="progress-bar bg-success" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                            [ngStyle]="{'width': arrayOfStatus.value/totalStatus*100+'%'}">
+                            <span class="sr-only">{{arrayOfStatus.value/totalStatus*100}}% Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h4>Task by cagegory</h4>
+    <div class="row mt-3">
+        <div class="col" *ngFor="let arrayofCategory of arrayCategory">
+            <div class="card-box">
+                <h4 class="header-title mt-0 mb-4">
+                    {{arrayofCategory.property}}
+                </h4>
+                <div class="widget-box-2">
+                    <div class="widget-detail-2 text-right">
+                        <h2 class="font-weight-normal mb-1"> {{arrayofCategory.value}} </h2>
+                    </div>
+                    <div class="progress progress-bar-alt-success progress-sm">
+                        <div class="progress-bar bg-success" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                            [ngStyle]="{'width': arrayofCategory.value/totalCategory*100+'%'}">
+                            <span class="sr-only">{{arrayofCategory.value/totalCategory*100}}% Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

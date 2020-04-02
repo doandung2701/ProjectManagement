@@ -1,0 +1,22 @@
+---  
+apiVersion: v1 
+kind: ReplicationController 
+metadata:  
+  labels:  
+    app: kafkaApp 
+  name: kafka-repcon 
+spec:  
+  replicas: 1
+  selector:  
+    app: kafkaApp 
+  template:  
+    metadata:  
+      labels:  
+        app: kafkaApp 
+    spec:  
+      containers:
+      - name: zk1
+        image: "wurstmeister/kafka"
+        command: ["zookeeper-server-start.sh","/config/zookeeper.properties"]
+        ports:
+          - containerPort: 2181

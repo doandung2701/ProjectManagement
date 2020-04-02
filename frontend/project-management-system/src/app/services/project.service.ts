@@ -16,7 +16,8 @@ import { UserResponse } from '../model/response/userResponse.model';
 })
 export class ProjectService {
     // url=environment.apiUrl;
-    url="http://localhost:8090";
+    private url=environment.apiUrl;
+    // private url="http://localhost:8090";
     constructor(private http:HttpClient,private globalServcie:GlobalService){}
     joinProjectByCode(code:string){
         const dto=new CodeDTO(code,JSON.parse(localStorage.getItem('currentUser'))["uid"]);

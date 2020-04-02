@@ -12,7 +12,8 @@ import { APIResponse } from '../model/APIResponse';
     providedIn:'root'
 })
 export class AuthenticationService {
-    private url="http://localhost:8010";
+    private url=environment.apiUrl;
+    // url="http://localhost:8010";
     private currentUserSubject:BehaviorSubject<User>;
     public currentUser:Observable<User>;
     constructor(private http:HttpClient){

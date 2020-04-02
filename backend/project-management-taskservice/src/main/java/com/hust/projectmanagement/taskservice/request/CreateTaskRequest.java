@@ -15,6 +15,15 @@ import com.hust.projectmanagement.taskservice.domain.Status;
 public class CreateTaskRequest implements Serializable{
 	@NotNull(message = "User created can not be null")
 	private Long createdBy;
+	@NotNull(message = "CreatedTime can not be null")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	private LocalDateTime createdTime;
+	public LocalDateTime getCreatedTime() {
+		return createdTime;
+	}
+	public void setCreatedTime(LocalDateTime createdTime) {
+		this.createdTime = createdTime;
+	}
 	@NotNull(message = "Deadline can not be null")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime deadline;

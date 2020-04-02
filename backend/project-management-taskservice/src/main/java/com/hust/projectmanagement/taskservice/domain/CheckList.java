@@ -21,9 +21,7 @@ public class CheckList {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String description;
-	@Enumerated(EnumType.STRING)
-	@Column(length = 60)
-	private Status status;
+	private Boolean status;
 	@ManyToOne
 	private Task task;
 
@@ -43,11 +41,11 @@ public class CheckList {
 		this.description = description;
 	}
 
-	public Status getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
 
@@ -75,7 +73,7 @@ public class CheckList {
 		CheckList checkList = new CheckList();
 		checkList.setDescription(c.getDescription());
 		if (c.getStatus() == null) {
-			checkList.setStatus(Status.NOT_START);
+			checkList.setStatus(null);
 		} else
 			checkList.setStatus(c.getStatus());
 		return checkList;

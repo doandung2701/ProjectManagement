@@ -16,3 +16,18 @@
         padding-left: 22px !important;
     }
 }
+.checklist-item{
+    padding: 12px 8px 12px 6px;
+    background: #eee;
+    font-size: 18px;
+    transition: 0.2s;
+    margin-bottom: 6px;
+}
+.checklist-item:hover {
+    background: #ddd;
+  }
+  .checklist-item.checked {
+    background: #888;
+    color: #fff;
+    text-decoration: line-through;
+  }

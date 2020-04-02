@@ -1,4 +1,7 @@
 FROM openjdk:8
-ADD target/auth-service.jar auth-service.jar
-EXPOSE 8000
-ENTRYPOINT [ "java", "-jar","auth-service.jar" ]
+VOLUME /tmp
+COPY target/auth-service.jar /app/auth-service.jar
+COPY src/main/resources/application.properties /config/application.properties
+EXPOSE 8010
+CMD java -jar -Dspring.config.location=file:/config/application.properties app/auth-service.jar
+# ENTRYPOINT [ "java", "-jar","","auth-service.jar" ]

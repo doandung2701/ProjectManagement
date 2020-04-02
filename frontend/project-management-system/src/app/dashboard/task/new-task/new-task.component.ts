@@ -118,7 +118,8 @@ export class TaskCreatorComponent implements OnInit {
     return this.createForm.controls;
   }
   createTask(){
-    this.openConfirmationDialog();
+    if(this.createForm.valid)
+      this.openConfirmationDialog();
   }
   openConfirmationDialog(){
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -153,6 +154,7 @@ export class TaskCreatorComponent implements OnInit {
     this.createTaskRequest.users=this.assignedUser.map(x=>x.id);
     this.createTaskRequest.startTime=this.datePipe.transform(this.createTaskRequest.startTimeView,'yyyy-MM-dd HH:mm');
     this.createTaskRequest.deadline=this.datePipe.transform(this.createTaskRequest.deadlineView,'yyyy-MM-dd HH:mm');
+    this.createTaskRequest.createdTime=this.datePipe.transform(new Date(),'yyyy-MM-dd HH:mm');
     this.createTaskRequest.checklists=[];
     console.debug(this.createTaskRequest);
        // this.newTaskModel.user = [];

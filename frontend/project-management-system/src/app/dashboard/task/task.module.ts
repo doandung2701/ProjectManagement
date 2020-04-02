@@ -10,6 +10,9 @@ import { TaskComponent } from './task.component';
 import { FormsModule } from '@angular/forms';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
 import { CommentboxComponent } from './comment-box/commentbox.component';
+import { CheckListFormComponent } from './check-list-form/checklist-form.component';
+import { MatFormFieldModule, MatInputModule } from '@angular/material';
+import { CheckListUpdateComponent } from './checklist-update/checklist-update.component';
 @NgModule({
     declarations: [
         // TaskCalendarComponent,
@@ -19,13 +22,18 @@ import { CommentboxComponent } from './comment-box/commentbox.component';
         TaskComponent,
         TaskCalendarComponent,
         TaskDetailComponent,
-        CommentboxComponent
+        CommentboxComponent,
+        CheckListFormComponent,
+        CheckListUpdateComponent
     ],
     imports: [ CommonModule,CommonComponentModule,
         TaskRoutingModule,
-        FormsModule
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule
      ],
     exports: [],
     providers: [],
+    entryComponents:[CheckListFormComponent,CheckListUpdateComponent]
 })
 export class TaskModule {}

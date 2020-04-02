@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 
 import com.hust.projectmanagement.taskservice.domain.Comment;
 import com.hust.projectmanagement.taskservice.domain.Task;
+import com.hust.projectmanagement.taskservice.dto.CheckListDto;
+import com.hust.projectmanagement.taskservice.dto.DashboardDto;
 import com.hust.projectmanagement.taskservice.dto.UpdateTaskDto;
 import com.hust.projectmanagement.taskservice.request.CommentRequest;
 import com.hust.projectmanagement.taskservice.request.CreateTaskRequest;
@@ -23,4 +25,8 @@ public interface TaskService {
 	Task getDetailById(Long taskId);
 	List<Comment> getCommentByTaskId(Long taskId);
 	Comment createComment(Long taskId, CommentRequest request);
+	DashboardDto getCountTask(Long userId);
+	Task addCheckList(Long taskId, @Valid CheckListDto dto);
+	Task updateCheckList(Long taskId, @Valid CheckListDto dto);
+	Task removeChecklist(Long taskId, Long checkListId);
 }

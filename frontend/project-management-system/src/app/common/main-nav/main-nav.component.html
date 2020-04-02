@@ -1,7 +1,7 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="navigation"
-      [mode]="side">
+  attr.role="navigation"
+  mode="slide">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a (click)="drawer.close()" mat-list-item [routerLink]="['summary']" routerLinkActive="mat-raised-button mat-button-base">Dashboard</a>

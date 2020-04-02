@@ -63,7 +63,7 @@ export class ProjectListComponent implements OnInit, AfterViewInit {
     this.contextMenu.openMenu();
   }
   goToProject(item:Project){
-    console.log(item);
+    // console.log(item);
     this.globalService.setCurrentprojectId(item.id);
     this.router.navigate(['/dashboard/task']);
   }

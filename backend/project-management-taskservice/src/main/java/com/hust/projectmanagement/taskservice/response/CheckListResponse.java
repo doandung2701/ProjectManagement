@@ -7,7 +7,7 @@ import com.hust.projectmanagement.taskservice.domain.Status;
 public class CheckListResponse implements Serializable{
 	private long id;
 	private String description;
-	private Status status;
+	private Boolean status;
 	public long getId() {
 		return id;
 	}
@@ -20,10 +20,10 @@ public class CheckListResponse implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Status getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
-	public void setStatus(Status status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
 	

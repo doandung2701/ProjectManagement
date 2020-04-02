@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.hust.projectmanagement.taskservice.domain.User;
 import com.hust.projectmanagement.taskservice.repository.ProjectRepository;
+import com.hust.projectmanagement.taskservice.repository.UserRepository;
 
 import common.domain.Project;
 import common.event.ProjectCreatedEvent;
@@ -22,6 +23,8 @@ public class TaskEventConsumer {
 	private Logger logger = LoggerFactory.getLogger(TaskEventConsumer.class);
 	@Autowired
 	private ProjectRepository projectRepository;
+	@Autowired
+	private UserRepository userRepository;
 	public DomainEventHandlers domainEventHandlers() {
 		return DomainEventHandlersBuilder
 				.forAggregateType("common.domain.Project")
@@ -43,7 +46,13 @@ public class TaskEventConsumer {
 			project.setName(projectCreatedEvent.getProject().getName());
 			List<User> users=new ArrayList<>();
 			for (common.domain.User user : projectCreatedEvent.getProject().getUsers()) {
-				users.add(new User(user.getName(), user.getUsername(), user.getEmail(), user.getPassword()));
+				Optional<User> userInDb=this.userRepository.findById(user.getId());
+				if(userInDb.isPresent()) {
+					users.add(userInDb.get());
+				}else {
+					users.add(this.userRepository.save(new User(user.getId(),user.getName(), user.getUsername(), user.getEmail(), user.getPassword())));
+				}
+
 			}
 			project.setUsers(users);
 			this.projectRepository.save(project);
@@ -61,11 +70,18 @@ public class TaskEventConsumer {
 			updatedProject.setAdmin(project.getAdmin());
 			updatedProject.setDescription(project.getDescription());
 			updatedProject.setName(project.getName());
+			List<User> users2=new ArrayList<>();
+			updatedProject.setUsers(users2);
 			List<User> users=new ArrayList<>();
 			for (common.domain.User user : project.getUsers()) {
-				users.add(new User(user.getName(), user.getUsername(), user.getEmail(), user.getPassword()));
+				Optional<User> userInDb=this.userRepository.findById(user.getId());
+				if(userInDb.isPresent()) {
+					updatedProject.getUsers().add(userInDb.get());
+				}else {
+					updatedProject.getUsers().add(this.userRepository.save(new User(user.getId(),user.getName(), user.getUsername(), user.getEmail(), user.getPassword())));
+				}
 			}
-			updatedProject.setUsers(users);
+//			updatedProject.setUsers(users);
 			this.projectRepository.save(updatedProject);
 		}
 		

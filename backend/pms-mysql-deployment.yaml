@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pms-mysql
+  labels:
+    name: pms-mysql
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  clusterIP: None
+  selector:
+    role: pms-mysql
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: pms-mysql
+spec:
+  serviceName: "mysql"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: pms-mysql
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: pms-mysql
+          image: msapatterns/mysql:latest
+          imagePullPolicy: Always
+          args:
+              - "--ignore-db-dir=lost+found"
+          ports:
+              - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-pass
+                  key: password
+            - name: MYSQL_USER
+              value: buidoandung
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-pass
+                  key: password
+          volumeMounts:
+            - name: pms-mysql-persistent-storage
+              mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: pms-mysql-persistent-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+---

@@ -5,8 +5,10 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.hust.projectmanagement.projectservice.domain.Passcode;
@@ -16,8 +18,7 @@ import com.hust.projectmanagement.projectservice.utils.GenCodeUtils;
 @Service
 public class MailService {
 	@Autowired
-	  JavaMailSender mailSender;
-	  
+	  JavaMailSender mailSender; 
 	  @Autowired
 	  PasscodeRepository passcodeRepository;
 	  
@@ -29,7 +30,7 @@ public class MailService {
 	    passcodeRepository.save(passcode);
 	    return code;
 	  }
-	  
+
 	  public String sendPasscode(String email, String passcode, Project prgm) {
 	    String text = "You are invited to join program:\n"+prgm.getName()+"\n\nUse passcode given below:\n"+ passcode;
 	    String subject = "Invitation to Join Program";
@@ -40,7 +41,7 @@ public class MailService {
 	    }
 	    return passcode;
 	  }
-	  
+	
 	  public boolean sendMail(String to, String text, String subject, String res) throws MessagingException  {
 	    MimeMessage message = mailSender.createMimeMessage();
 	    MimeMessageHelper helper = new MimeMessageHelper(message,true);

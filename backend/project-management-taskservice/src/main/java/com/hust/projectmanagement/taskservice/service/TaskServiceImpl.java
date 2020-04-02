@@ -6,7 +6,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,7 +25,10 @@ import com.hust.projectmanagement.taskservice.domain.Project;
 import com.hust.projectmanagement.taskservice.domain.Status;
 import com.hust.projectmanagement.taskservice.domain.Task;
 import com.hust.projectmanagement.taskservice.domain.User;
+import com.hust.projectmanagement.taskservice.dto.CheckListDto;
+import com.hust.projectmanagement.taskservice.dto.DashboardDto;
 import com.hust.projectmanagement.taskservice.exception.ResourceFoundException;
+import com.hust.projectmanagement.taskservice.repository.CheckListRepository;
 import com.hust.projectmanagement.taskservice.repository.CommentRepository;
 import com.hust.projectmanagement.taskservice.repository.ProjectRepository;
 import com.hust.projectmanagement.taskservice.repository.TaskRepository;
@@ -43,6 +49,8 @@ public class TaskServiceImpl implements TaskService {
 	private UserRepository userRepository;
 	@Autowired
 	private CommentRepository commentRepository;
+	@Autowired
+	private CheckListRepository checkListRepository;
 	@Override
 	public TaskResponse createTask(CreateTaskRequest newTaskDto) {
 		// TODO Auto-generated method stub
@@ -57,7 +65,7 @@ public class TaskServiceImpl implements TaskService {
 
 		Task newTask = new Task();
 		newTask.setCreatedBy(newTaskDto.getCreatedBy());
-		newTask.setCreatedTime(LocalDateTime.now());
+		newTask.setCreatedTime(newTaskDto.getCreatedTime());
 		newTask.setDeadline(newTaskDto.getDeadline());
 		newTask.setDescription(newTaskDto.getDescription());
 		newTask.setModifiedTime(null);
@@ -200,6 +208,46 @@ public class TaskServiceImpl implements TaskService {
 		comment.setUsername(request.getUsername());
 		comment=this.commentRepository.save(comment);
 		return comment;
+	}
+
+	@Override
+	public DashboardDto getCountTask(Long userId) {
+		// TODO Auto-generated method stub
+		DashboardDto dto=new DashboardDto();
+		dto.setTaskByCategory(taskRepository.coutTaskByCategory(userId));
+		dto.setTaskByStatus(taskRepository.coutTaskByStatus(userId));
+		return dto;
+	}
+
+	@Override
+	public Task addCheckList(Long taskId, @Valid CheckListDto dto) {
+		// TODO Auto-generated method stub
+		CheckList checkList=new CheckList();
+		checkList.setDescription(dto.getDescription());
+		checkList.setStatus(dto.getStatus());
+		Task task=this.taskRepository.getOne(taskId);
+		checkList.setTask(task);
+		this.checkListRepository.save(checkList);
+//		task.getChecklists().add(checkList);
+		return this.taskRepository.save(task);
+	}
+
+	@Override
+	public Task updateCheckList(Long taskId, @Valid CheckListDto dto) {
+		// TODO Auto-generated method stub
+		CheckList c=this.checkListRepository.findById(dto.getId()).get();
+		c.setDescription(dto.getDescription());
+		c.setStatus(dto.getStatus());
+		this.checkListRepository.save(c);
+		return this.taskRepository.getOne(taskId);
+	}
+
+	@Override
+	public Task removeChecklist(Long taskId, Long checkListId) {
+		// TODO Auto-generated method stub
+		this.checkListRepository.deleteById(checkListId);
+		
+		return this.taskRepository.getOne(taskId);
 	}
 
 }

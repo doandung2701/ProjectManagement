@@ -24,6 +24,7 @@ import { ProjectService } from './services/project.service';
 import { UserService } from './services/user.service';
 import { GlobalService } from './services/global.service';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
+import { CorsHeaderInterceptor } from './helpers/cors.interceptor';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,8 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
     provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true
   },{
     provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true
+  },{
+    provide:HTTP_INTERCEPTORS,useClass:CorsHeaderInterceptor,multi:true
   }, LoaderService, AuthenticationService,ProjectService,UserService,GlobalService],
   bootstrap: [AppComponent]
 })

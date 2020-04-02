@@ -11,5 +11,5 @@ export default class UpdateCommonTaskRequest{
     public status:Status;
     public priority:Priority;
     public category:Category;
-	public  users:number[];
+    public  users:number[];
 }

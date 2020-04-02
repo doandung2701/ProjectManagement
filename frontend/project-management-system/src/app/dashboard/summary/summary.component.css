@@ -1,0 +1,11 @@
+.card-box{
+    background-color: #fff;
+    padding: 1.5rem;
+    -webkit-box-shadow: 0 0.75rem 6rem rgba(56,65,74,.03);
+    box-shadow: 0 0.75rem 6rem rgba(56,65,74,.03);
+    margin-bottom: 24px;
+    border-radius: .25rem;
+}
+.header-title{
+    font-size: 10pt;
+}

@@ -1,0 +1,88 @@
+---
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "registry-service-config"
+  namespace: "default"
+  labels:
+    application: "pm"
+data:
+  SERVER_PORT: "8761"
+  EUREKA_CLIENT_REGISTER_WITH_EUREKA: "false"
+  EUREKA_CLIENT_FETCHREGISTRY: "false"
+  EUREKA_CLIENT_SERVER_WAITTIMEINMSWHENSYNCEMPTY: "0"
+  EUREKA_SERVER_EVICTION_INTERVAL_TIMER_IN_MS: "1000"
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "registry-service"
+  namespace: "default"
+  labels:
+    application: "pm"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: "pm"
+  template:
+    metadata:
+      labels:
+        application: "pm"
+    spec:
+      containers:
+      - name: "service-registry"
+        image: "gcr.io/spartan-thunder-272123/service-registry:v2"
+        ports:
+        - containerPort: 8761
+        env:
+        - name: _JAVA_OPTIONS
+          value: -Dsun.net.inetaddr.ttl=30 -Deureka.instance.preferIpAddress=true
+
+        - name: "SERVER_PORT"
+          valueFrom:
+            configMapKeyRef:
+              key: "SERVER_PORT"
+              name: "registry-service-config"
+        - name: "EUREKA_CLIENT_REGISTER_WITH_EUREKA"
+          valueFrom:
+            configMapKeyRef:
+              key: "EUREKA_CLIENT_REGISTER_WITH_EUREKA"
+              name: "registry-service-config"
+        - name: "EUREKA_CLIENT_FETCHREGISTRY"
+          valueFrom:
+            configMapKeyRef:
+              key: "EUREKA_CLIENT_FETCHREGISTRY"
+              name: "registry-service-config"
+        - name: "EUREKA_CLIENT_SERVER_WAITTIMEINMSWHENSYNCEMPTY"
+          valueFrom:
+            configMapKeyRef:
+              key: "EUREKA_CLIENT_SERVER_WAITTIMEINMSWHENSYNCEMPTY"
+              name: "registry-service-config"
+        - name: "EUREKA_SERVER_EVICTION_INTERVAL_TIMER_IN_MS"
+          valueFrom:
+            configMapKeyRef:
+              key: "EUREKA_SERVER_EVICTION_INTERVAL_TIMER_IN_MS"
+              name: "registry-service-config"
+        - name: "EUREKA_INSTANCE_PREFERIPADDRESS"
+          value: "true"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "registry-service-hpa-ehff"
+  namespace: "default"
+  labels:
+    application: "pm"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "registry-service"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80

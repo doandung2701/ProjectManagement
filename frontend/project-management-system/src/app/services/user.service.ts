@@ -11,7 +11,8 @@ import { UserDto } from '../model/userDto.model';
 })
 export class UserService {
     // url=environment.apiUrl;
-    url="http://localhost:7010";
+    // url="http://localhost:7010";
+    private url=environment.apiUrl;;
     constructor(private http:HttpClient){}
     findEmail(email:string,pageNumber:number,pageSize:number):Observable<APIPaginationResponse<UserDto>>{
       return  this.http.get<APIPaginationResponse<UserDto>>(this.url+`/user/findByEmail/${email}?page=${pageNumber}&&size=${pageSize}`);

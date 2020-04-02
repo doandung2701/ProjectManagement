@@ -1,0 +1,42 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: zuul-server
+spec:
+  selector:
+    app: zuul-server
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: 8000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zuul-server
+  labels:
+    app: zuul-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zuul-server
+  template:
+    metadata:
+      labels:
+        app: zuul-server
+    spec:
+      containers:
+        - name: zuul-server
+          image: gcr.io/spartan-thunder-272123/gateway-servcie:v9
+          ports:
+            - containerPort: 8000
+          env:
+            - name: SPRING_APPLICATION_NAME
+              value: GATEWAY_SERVICE
+            - name: EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE
+              value: http://registry-service-service:8761/eureka/
+            - name: _JAVA_OPTIONS
+              value: -Deureka.instance.preferIpAddress=false -Deureka.client.serviceUrl.defaultZone=http://registry-service-service:8761/eureka/ -Dribbon.ReadTimeout=60000
+  

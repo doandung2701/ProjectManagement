@@ -23,6 +23,8 @@ import com.hust.projectmanagement.taskservice.domain.Comment;
 import com.hust.projectmanagement.taskservice.domain.Task;
 import com.hust.projectmanagement.taskservice.dto.APIResponse;
 import com.hust.projectmanagement.taskservice.dto.APIStatus;
+import com.hust.projectmanagement.taskservice.dto.CheckListDto;
+import com.hust.projectmanagement.taskservice.dto.DashboardDto;
 import com.hust.projectmanagement.taskservice.dto.UpdateTaskDto;
 import com.hust.projectmanagement.taskservice.exception.ResourceFoundException;
 import com.hust.projectmanagement.taskservice.request.CommentRequest;
@@ -113,5 +115,32 @@ public class TaskController {
 	public ResponseEntity<?> addComment(@PathVariable(name ="taskId",required = true) Long taskId,@RequestBody @Valid CommentRequest request){
 		Comment comment=this.taskService.createComment(taskId,request);
 		return new ResponseEntity(comment, HttpStatus.OK);
+	}
+	@GetMapping("/countTaskByUser/{userId}")
+	public ResponseEntity<?> countTaskByUser(@PathVariable(name = "userId",required = true) Long userId){
+		DashboardDto dto=new DashboardDto();
+		dto=this.taskService.getCountTask(userId);
+		return new ResponseEntity(dto,HttpStatus.OK);
+	}	
+	@PostMapping("/{taskId}/addCheckList")
+	public ResponseEntity<?> addCheckList(@PathVariable(name = "taskId",required = true) Long taskId, @RequestBody @Valid CheckListDto dto){
+		Task task= this.taskService.addCheckList(taskId,dto);
+		if(task==null)
+			throw new ResourceFoundException("Task not found");
+		return new ResponseEntity(Task.createTaskResponseFromTask(task),HttpStatus.OK);
+	}
+	@PostMapping("/{taskId}/updateCheckList")
+	public ResponseEntity<?> updateChecklist(@PathVariable(name = "taskId",required = true) Long taskId, @RequestBody @Valid CheckListDto dto){
+		Task task= this.taskService.updateCheckList(taskId,dto);
+		if(task==null)
+			throw new ResourceFoundException("Task not found");
+		return new ResponseEntity(Task.createTaskResponseFromTask(task),HttpStatus.OK);
+	}
+	@GetMapping("/{taskId}/removeCheckList/{checkListId}")
+	public ResponseEntity<?> removeCheckList(@PathVariable(name = "taskId",required = true) Long taskId,@PathVariable(name = "checkListId",required = true) Long checkListId){
+		Task task= this.taskService.removeChecklist(taskId,checkListId);
+		if(task==null)
+			throw new ResourceFoundException("Task not found");
+		return new ResponseEntity(Task.createTaskResponseFromTask(task),HttpStatus.OK);
 	}
 }

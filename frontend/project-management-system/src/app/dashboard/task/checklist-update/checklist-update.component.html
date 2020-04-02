@@ -1,0 +1,8 @@
+<form [formGroup]="checklistForm">
+    <mat-form-field style="width: 100%;" appearance="outline" id="tname">
+        <input formControlName="description" matInput type="text" placeholder="Checklist description"/>
+    </mat-form-field><br>
+        <mat-checkbox style="display: block;" formControlName="statusTask">Status</mat-checkbox>
+    <button mat-stroked-button color="primary" mat-button (click)="handleSave()">Save</button>
+    <button style="float: right;" mat-stroked-button color="primary" mat-button (click)="close()">Cancel</button>
+</form>

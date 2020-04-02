@@ -46,8 +46,8 @@ public class ProjectController {
 	}
 	@PostMapping("/joinProjectByCode")
 	public ResponseEntity<Boolean> enterProject(@RequestBody CodeDTO code) {
-		projectService.addUser(code.getUid(), code.getCode());
-		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		Boolean result=projectService.addUser(code.getUid(), code.getCode());
+		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
 	}
 	@PostMapping("/inviteUserToProject/{projectId}")
 	public ResponseEntity<Boolean> inviteUserToProject(@PathVariable(name = "projectId",required = true) Long projectId,@RequestBody InviteUserDto inviteUserDto){

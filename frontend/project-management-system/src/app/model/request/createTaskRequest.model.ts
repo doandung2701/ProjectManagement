@@ -16,4 +16,5 @@ export class CreateTaskRequest{
     public users?:number[];
     public startTime?:string;
     public deadline?:string;
+    public createdTime?:string;
 }

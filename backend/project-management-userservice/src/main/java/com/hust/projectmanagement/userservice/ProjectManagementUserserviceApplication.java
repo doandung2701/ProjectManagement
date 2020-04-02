@@ -10,7 +10,6 @@ import com.hust.projectmanagement.userservice.event.UserEventConsumer;
 
 import io.eventuate.tram.consumer.common.TramNoopDuplicateMessageDetectorConfiguration;
 import io.eventuate.tram.consumer.kafka.EventuateTramKafkaMessageConsumerConfiguration;
-import io.eventuate.tram.events.publisher.TramEventsPublisherConfiguration;
 import io.eventuate.tram.events.subscriber.DomainEventDispatcher;
 import io.eventuate.tram.events.subscriber.DomainEventDispatcherFactory;
 import io.eventuate.tram.events.subscriber.TramEventSubscriberConfiguration;
