@@ -222,8 +222,10 @@ export class TaskDetailComponent implements OnInit {
             disableClose: true
         }
         );
-        dialogRef.afterClosed().subscribe(result => {;
-            this.addCheckList(result);
+        dialogRef.afterClosed().subscribe(result => {
+            debugger;
+            if(result!=null)
+                this.addCheckList(result);
         });
     }
     editCheckList(checkList: CheckListDto) {
