@@ -1,0 +1,10 @@
+E:\DATN\TestMicroservice\TestMicroservice\bin\Debug\TestMicroservice.dll
+E:\DATN\TestMicroservice\TestMicroservice\bin\Debug\TestMicroservice.pdb
+E:\DATN\TestMicroservice\TestMicroservice\bin\Debug\Microsoft.VisualStudio.QualityTools.WebTestFramework.dll
+E:\DATN\TestMicroservice\TestMicroservice\obj\Debug\TestMicroservice.csprojAssemblyReference.cache
+E:\DATN\TestMicroservice\TestMicroservice\obj\Debug\TestMicroservice.csproj.CoreCompileInputs.cache
+E:\DATN\TestMicroservice\TestMicroservice\obj\Debug\TestMicroservice.csproj.CopyComplete
+E:\DATN\TestMicroservice\TestMicroservice\obj\Debug\TestMicroservice.dll
+E:\DATN\TestMicroservice\TestMicroservice\obj\Debug\TestMicroservice.pdb
+E:\DATN\TestMicroservice\TestMicroservice\bin\Debug\LoadTest1.loadtest
+E:\DATN\TestMicroservice\TestMicroservice\bin\Debug\CreateTask.webtest

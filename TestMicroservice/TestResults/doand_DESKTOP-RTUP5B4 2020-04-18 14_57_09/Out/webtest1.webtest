@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebTest Name="WebTest1" Id="448e2e2a-656d-4e06-a61c-1b6b3135c153" Owner="" Priority="2147483647" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="WebTest1.000dd63e-54da-47ef-afa4-7de61c71c354.rec.webtestresult" ResultsLocale="">
+  <Items>
+    <Request Method="GET" Guid="e10b6f70-8e72-4cdc-8c23-7710effe8b92" Version="1.1" Url="http://go.microsoft.com/fwlink/" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="https://www.microsoft.com/en-us/edge/?form=MA13DL&amp;OCID=MA13DL" ReportingName="" IgnoreHttpStatusCode="False">
+      <DependentRequests>
+        <Request Method="GET" Guid="22ba3c9d-e7d1-4c31-9f6c-5a021ce760e0" Version="1.1" Url="https://www.microsoft.com/en-us/edge/Assets/css" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="https://www.microsoft.com/en-us/edge/?form=MA13DL&amp;OCID=MA13DL" />
+          </Headers>
+          <QueryStringParameters>
+            <QueryStringParameter Name="v" Value="25.2" RecordedValue="25.2" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+          </QueryStringParameters>
+        </Request>
+        <Request Method="GET" Guid="abdf504d-2997-40ef-94de-666af71c1c92" Version="1.1" Url="https://www.microsoft.com/en-us/edge/Assets/js" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="https://www.microsoft.com/en-us/edge/?form=MA13DL&amp;OCID=MA13DL" />
+          </Headers>
+          <QueryStringParameters>
+            <QueryStringParameter Name="v" Value="25.2" RecordedValue="25.2" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+          </QueryStringParameters>
+        </Request>
+        <Request Method="GET" Guid="6f8c0f43-c42f-4106-9655-6823999d3e89" Version="1.1" Url="https://www.microsoft.com/mwf/_h/v3.54/mwf.app/fonts/mwfmdl2-v3.54.woff" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="https://www.microsoft.com/en-us/edge/?form=MA13DL&amp;OCID=MA13DL" />
+          </Headers>
+        </Request>
+        <Request Method="GET" Guid="e13e24bd-6b0a-43fa-a1b1-ae9c048bab17" Version="1.1" Url="https://www.microsoft.com/mwf/_h/v3.07/mwf.app/fonts/mwfmdl2-v3.07.woff" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Referer" Value="https://www.microsoft.com/en-us/edge/?form=MA13DL&amp;OCID=MA13DL" />
+          </Headers>
+        </Request>
+        <Request Method="GET" Guid="bd4e0142-2761-4190-a113-383c5afe1076" Version="1.1" Url="https://dpm.demdex.net/id" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+          <Headers>
+            <Header Name="Content-Type" Value="application/x-www-form-urlencoded" />
+            <Header Name="Referer" Value="https://www.microsoft.com/en-us/edge/?form=MA13DL&amp;OCID=MA13DL" />
+          </Headers>
+          <QueryStringParameters>
+            <QueryStringParameter Name="d_visid_ver" Value="3.3.0" RecordedValue="3.3.0" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+            <QueryStringParameter Name="d_fieldgroup" Value="AAM" RecordedValue="AAM" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+            <QueryStringParameter Name="d_rtbd" Value="json" RecordedValue="json" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+            <QueryStringParameter Name="d_ver" Value="2" RecordedValue="2" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+            <QueryStringParameter Name="d_orgid" Value="EA76ADE95776D2EC7F000101%40AdobeOrg" RecordedValue="EA76ADE95776D2EC7F000101%40AdobeOrg" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+            <QueryStringParameter Name="d_nsid" Value="0" RecordedValue="0" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+            <QueryStringParameter Name="d_mid" Value="78288508663715380860476429119084065792" RecordedValue="78288508663715380860476429119084065792" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+            <QueryStringParameter Name="d_blob" Value="6G1ynYcLPuiQxYZrsz_pkqfLG9yMXBpb2zX5dvJdYQJzPXImdj0y" RecordedValue="6G1ynYcLPuiQxYZrsz_pkqfLG9yMXBpb2zX5dvJdYQJzPXImdj0y" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+            <QueryStringParameter Name="d_cid_ic" Value="MSFPC%0154f932603f174ceb842d3c5b3b3c0e67%012" RecordedValue="MSFPC%0154f932603f174ceb842d3c5b3b3c0e67%012" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+            <QueryStringParameter Name="d_cid_ic" Value="MC1%0154f932603f174ceb842d3c5b3b3c0e67%012" RecordedValue="MC1%0154f932603f174ceb842d3c5b3b3c0e67%012" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+            <QueryStringParameter Name="ts" Value="1587196606208" RecordedValue="1587196606208" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+          </QueryStringParameters>
+          <FormPostHttpBody />
+        </Request>
+      </DependentRequests>
+      <QueryStringParameters>
+        <QueryStringParameter Name="LinkId" Value="838604" RecordedValue="838604" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+      </QueryStringParameters>
+    </Request>
+    <Request Method="GET" Guid="3eea213c-0378-41b5-91ec-96fa8d020677" Version="1.1" Url="https://mscom.demdex.net/dest5.html" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="https://www.microsoft.com/en-us/edge/?form=MA13DL&amp;OCID=MA13DL" />
+      </Headers>
+      <QueryStringParameters>
+        <QueryStringParameter Name="d_nsid" Value="0" RecordedValue="0" CorrelationBinding="" UrlEncode="False" UseToGroupResults="False" />
+      </QueryStringParameters>
+    </Request>
+    <Request Method="GET" Guid="1ccd7540-36f2-4a52-b8e1-6524188e5d23" Version="1.1" Url="http://35.238.70.52/" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="https://www.microsoft.com/en-us/edge/?form=MA13DL&amp;OCID=MA13DL" ReportingName="" IgnoreHttpStatusCode="False">
+      <DependentRequests>
+        <Request Method="OPTIONS" Guid="aa18c045-ebfa-48ba-9ef2-f5ff6cd34253" Version="1.1" Url="https://dc.services.visualstudio.com/v2/track" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False" />
+        <Request Method="OPTIONS" Guid="07b855cf-7cd1-4d97-a68f-2724c3119708" Version="1.1" Url="https://dc.services.visualstudio.com/v2/track" ThinkTime="1" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False" />
+      </DependentRequests>
+    </Request>
+    <Request Method="GET" Guid="36f91a42-b77a-474e-aebd-9c3ed1cb5ccd" Version="1.1" Url="https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5fBBc-.woff" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://35.238.70.52/" />
+      </Headers>
+    </Request>
+    <Request Method="GET" Guid="32d6a8d6-f12a-4c00-9e67-c0fc0057b537" Version="1.1" Url="https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxM.woff" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://35.238.70.52/" />
+      </Headers>
+    </Request>
+    <Request Method="GET" Guid="9510eec1-dec2-4859-ad44-270ee1253885" Version="1.1" Url="https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9fBBc-.woff" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://35.238.70.52/" />
+      </Headers>
+    </Request>
+  </Items>
+  <ValidationRules>
+    <ValidationRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ValidateResponseUrl, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" DisplayName="Response URL" Description="Validates that the response URL after redirects are followed is the same as the recorded response URL.  QueryString parameters are ignored." Level="Low" ExectuionOrder="BeforeDependents" />
+    <ValidationRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ValidationRuleResponseTimeGoal, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" DisplayName="Response Time Goal" Description="Validates that the response time for the request is less than or equal to the response time goal as specified on the request.  Response time goals of zero will be ignored." Level="Low" ExectuionOrder="AfterDependents">
+      <RuleParameters>
+        <RuleParameter Name="Tolerance" Value="0" />
+      </RuleParameters>
+    </ValidationRule>
+  </ValidationRules>
+</WebTest>

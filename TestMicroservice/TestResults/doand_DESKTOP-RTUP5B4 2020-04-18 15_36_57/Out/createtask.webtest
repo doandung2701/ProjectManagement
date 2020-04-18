@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebTest Name="CreateTask" Id="2c8a737e-f9d3-428f-b0eb-21469efe4958" Owner="" Priority="0" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
+  <Items>
+    <Request Method="POST" Guid="23c60941-b11d-4531-912f-6a3bf34e8975" Version="1.1" Url="http://104.154.67.184:8000/task/createTask" ThinkTime="0" Timeout="60" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Access-Control-Allow-Origin" Value="*" />
+        <Header Name="Content-Type" Value="application/json" />
+        <Header Name="Origin" Value="http://35.238.70.52" />
+        <Header Name="Authorization" Value="Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkb2FuZHVuZzI3MDEiLCJleHAiOjE1ODcyODM3NjgxNzMsImlhdCI6MTU4NzE5NzM2ODE3MywiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl19.dawDKGKTaUTqrES1B2gs-BJYatQmuwpFdmz9P9GWW04_qA0Gs_DWwKuQrDGcWeIo6Qg3kYwBD_-0ap61kqUFnA" />
+      </Headers>
+      <StringHttpBody ContentType="application/json" InsertByteOrderMark="False">ewAiAHMAdABhAHIAdABUAGkAbQBlAFYAaQBlAHcAIgA6ACIAMgAwADIAMAAtADAANAAtADEAOABUADAAOAA6ADAAOQA6ADUANgAuADAANQAzAFoAIgAsACIAZABlAGEAZABsAGkAbgBlAFYAaQBlAHcAIgA6ACIAMgAwADIAMAAtADAANAAtADIAMQBUADAAMQA6ADAAOQA6ADAAMAAuADAAMAAwAFoAIgAsACIAcAByAGkAbwByAGkAdAB5ACIAOgAiAEwATwBXACIALAAiAGMAYQB0AGUAZwBvAHIAeQAiADoAIgBGAEUAQQBUAFUAUgBFACIALAAiAG4AYQBtAGUAIgA6ACIAdABlAHMAdAAtADAAIgAsACIAZABlAHMAYwByAGkAcAB0AGkAbwBuACIAOgAiAHQAZQBzAHQALQAwACIALAAiAGMAcgBlAGEAdABlAGQAQgB5ACIAOgAzADMALAAiAHAAcgBvAGoAZQBjAHQASQBkACIAOgA3ACwAIgB1AHMAZQByAHMAIgA6AFsAMwAzACwAMwA0AF0ALAAiAHMAdABhAHIAdABUAGkAbQBlACIAOgAiADIAMAAyADAALQAwADQALQAxADgAIAAxADUAOgAwADkAIgAsACIAZABlAGEAZABsAGkAbgBlACIAOgAiADIAMAAyADAALQAwADQALQAyADEAIAAwADgAOgAwADkAIgAsACIAYwByAGUAYQB0AGUAZABUAGkAbQBlACIAOgAiADIAMAAyADAALQAwADQALQAxADgAIAAxADUAOgAxADAAIgAsACIAYwBoAGUAYwBrAGwAaQBzAHQAcwAiADoAWwBdAH0A</StringHttpBody>
+    </Request>
+    <Request Method="GET" Guid="c85eb816-c1ed-4a40-92fe-de9d578528b8" Version="1.1" Url="http://104.154.67.184:8000/task/getUserTasks/33" ThinkTime="0" Timeout="60" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Access-Control-Allow-Origin" Value="*" />
+        <Header Name="Origin" Value="http://35.238.70.52" />
+        <Header Name="Authorization" Value="Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkb2FuZHVuZzI3MDEiLCJleHAiOjE1ODcyODM3NjgxNzMsImlhdCI6MTU4NzE5NzM2ODE3MywiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl19.dawDKGKTaUTqrES1B2gs-BJYatQmuwpFdmz9P9GWW04_qA0Gs_DWwKuQrDGcWeIo6Qg3kYwBD_-0ap61kqUFnA" />
+      </Headers>
+      <QueryStringParameters>
+        <QueryStringParameter Name="page" Value="0" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
+        <QueryStringParameter Name="size" Value="5" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
+        <QueryStringParameter Name="filter" Value="" RecordedValue="" CorrelationBinding="" UrlEncode="True" UseToGroupResults="False" />
+      </QueryStringParameters>
+    </Request>
+  </Items>
+</WebTest>
