@@ -68,4 +68,8 @@ public class ProjectController {
 		List<UserResponse> response=this.projectService.getUserJoinProject(projectId);
 		return new ResponseEntity(response, HttpStatus.OK);
 	}
+	@GetMapping("/detail/{projectId}")
+	public ResponseEntity<?> getProjectDetai(@PathVariable(name="projectId",required = true) Long projectId){
+		return new ResponseEntity(this.projectService.getProjectDetailById(projectId),HttpStatus.OK);
+	}
 }

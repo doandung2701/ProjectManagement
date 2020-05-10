@@ -9,15 +9,20 @@ import { MessageType } from 'src/app/model/typeMessage';
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.css']
 })
-export class TaskComponent implements OnInit {
+export class TaskComponent {
 
-  constructor(private globalService:GlobalService,private router:Router,private notificationService:NotificationService) { }
-
-  ngOnInit() {
-    if(!this.globalService.getCurrentprojectId()){
-      this.notificationService.showNotification(MessageType.ERROR,"You need select project before go to task dashboard");
-      this.router.navigate(['/dashboard/project/joinedProject']);
-    }
+  constructor(private globalService:GlobalService,private router:Router,private notificationService:NotificationService) { 
+    // if(!this.globalService.getCurrentprojectId()){
+    //   this.notificationService.showNotification(MessageType.ERROR,"You need select project before go to task dashboard");
+    //   this.router.navigate(['/dashboard/project/joinedProject']);
+    // }
   }
+
+  // ngOnInit() {
+  //   if(!this.globalService.getCurrentprojectId()){
+  //     this.notificationService.showNotification(MessageType.ERROR,"You need select project before go to task dashboard");
+  //     this.router.navigate(['/dashboard/project/joinedProject']);
+  //   }
+  // }
 
 }

@@ -1,10 +1,11 @@
 package com.hust.projectmanagement.projectservice.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.hust.projectmanagement.projectservice.domain.User;
 
-public class ProjectDto {
+public class ProjectDto implements Serializable{
 	  private long id;
 	  private String name;
 	  private String description;

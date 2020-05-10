@@ -1,3 +1,4 @@
+import { SearchTaskListModel } from './../../../model/request/searchTaskListModel';
 import { CollectionViewer, DataSource } from "@angular/cdk/collections";
 import { Observable, BehaviorSubject } from 'rxjs';
 import {  finalize } from 'rxjs/operators';
@@ -21,7 +22,7 @@ export class TaskDataSource implements DataSource<TaskResponse> {
         this.loadingSubject.complete();
     }
 
-    loadTasks(filter: string,
+    loadTasks(filter: SearchTaskListModel,
         pageIndex: number, pageSize: number) {
         this.loadingSubject.next(true);
         this.taskService.getTaskOfUser(pageIndex, pageSize, filter).pipe(

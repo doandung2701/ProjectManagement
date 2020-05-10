@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +21,7 @@ import com.hust.projectmanagement.projectservice.domain.Project;
 import com.hust.projectmanagement.projectservice.domain.User;
 import com.hust.projectmanagement.projectservice.dto.InviteUserDto;
 import com.hust.projectmanagement.projectservice.dto.NewProjectDto;
+import com.hust.projectmanagement.projectservice.dto.ProjectDto;
 import com.hust.projectmanagement.projectservice.exception.ProjectNotFoundException;
 import com.hust.projectmanagement.projectservice.exception.UserNotFoundException;
 import com.hust.projectmanagement.projectservice.repository.InviteRepository;
@@ -212,6 +211,28 @@ public class ProjectServiceImpl implements ProjectService {
 			return result;
 		}
 		result=project.get().getUsers().stream().map(u->UserResponse.createFromUser(u)).collect(Collectors.toList());
+		return result;
+	}
+
+	@Override
+	public ProjectDto getProjectDetailById(Long projectId) {
+		// TODO Auto-generated method stub
+		ProjectDto result=new ProjectDto();
+		Project findedProjed=this.projectRepository.getOne(projectId);
+		result.setAdmin(findedProjed.getAdmin());
+		result.setDescription(findedProjed.getDescription());
+		result.setId(findedProjed.getId());
+		result.setName(findedProjed.getName());
+		List<User> users=new ArrayList<>();
+		for (User user : findedProjed.getUsers()) {
+			User u=new User();
+			u.setId(user.getId());
+			u.setEmail(user.getEmail());
+			u.setName(user.getName());
+			u.setUsername(user.getUsername());
+			users.add(u);
+		}
+		result.setUsers(users);
 		return result;
 	}
 

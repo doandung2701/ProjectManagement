@@ -32,4 +32,6 @@ hystrix:
       execution:
         timeout:
           enabled: false
+ribbon:
+  read-timeout: 60000          
 spring:  jackson:    date-format: yyyy-MM-dd HH:mm:ss          

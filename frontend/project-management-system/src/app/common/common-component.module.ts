@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FullCalendarModule } from 'primeng/fullcalendar'; // for FullCalendar!
+import {ChartModule} from 'primeng/chart';
+
 import {
    MatButtonModule,
    MatToolbarModule,
@@ -78,7 +80,8 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
       MatProgressSpinnerModule,
       MatCheckboxModule ,
       FullCalendarModule,
-      PickListModule
+      PickListModule,
+      ChartModule
    ],
    exports: [
      
@@ -117,8 +120,8 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
       MatProgressSpinnerModule,
       MatCheckboxModule,
       PickListModule,
-      KeysPipe
-      
+      KeysPipe,
+      ChartModule
    ],
    providers: [
       MatDatepickerModule,

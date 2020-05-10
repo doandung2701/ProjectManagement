@@ -27,6 +27,7 @@ import com.hust.projectmanagement.taskservice.domain.Task;
 import com.hust.projectmanagement.taskservice.domain.User;
 import com.hust.projectmanagement.taskservice.dto.CheckListDto;
 import com.hust.projectmanagement.taskservice.dto.DashboardDto;
+import com.hust.projectmanagement.taskservice.dto.SearchTaskListModel;
 import com.hust.projectmanagement.taskservice.exception.ResourceFoundException;
 import com.hust.projectmanagement.taskservice.repository.CheckListRepository;
 import com.hust.projectmanagement.taskservice.repository.CommentRepository;
@@ -143,36 +144,22 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public Page<TaskResponse> getUserTasks(Long id, String filterText, int page, int size) {
+	public Page<TaskResponse> getProjectTasks(Long id, SearchTaskListModel model, int page, int size) {
 		// TODO Auto-generated method stub
-		Optional<User> user = this.userRepository.findById(id);
-		if (!user.isPresent()) {
-			throw new ResourceFoundException("User not found with id " + id);
-		}
+		
 		PageRequest pageData = PageRequest.of(page, size);
 		int pageSize = pageData.getPageSize();
 		int currentPage = pageData.getPageNumber();
 		int startItem = currentPage * pageSize;
-		List<TaskResponse> result;
-		if (filterText == null || filterText.equals("")) {
-			result = user.get().getTask().stream().map(p -> Task.createTaskResponseFromTask(p))
-					.collect(Collectors.toList());
+		Page<Task> result;
+		if(model.getStatus()==null) {
+			result=this.taskRepository.searchCustomTaskByNameAndAssignee(model.getName(),model.getUser(),PageRequest.of(page,size));
 
-		} else {
-			result = user.get().getTask().stream()
-					.filter(p -> p.getName().toLowerCase().contains(filterText.toLowerCase())
-							|| p.getDescription().toLowerCase().contains(filterText.toLowerCase()))
-					.map(p -> Task.createTaskResponseFromTask(p)).collect(Collectors.toList());
-
+		}else {
+			result=this.taskRepository.searchCustomTaskByNameAndAssigneeAndStatus(model.getName(),model.getUser(),model.getStatus(),PageRequest.of(page,size));
 		}
-		List<TaskResponse> list;
-		if (result.size() < startItem) {
-			list = Collections.emptyList();
-		} else {
-			int toIndex = Math.min(startItem + pageSize, result.size());
-			list = result.subList(startItem, toIndex);
-		}
-		return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), result.size());
+		return new PageImpl<>(result.getContent().stream().map(t->Task.createTaskResponseFromTask(t)).collect(Collectors.toList()),
+				result.getPageable(), result.getSize());
 
 	}
 
@@ -248,6 +235,12 @@ public class TaskServiceImpl implements TaskService {
 		this.checkListRepository.deleteById(checkListId);
 		
 		return this.taskRepository.getOne(taskId);
+	}
+
+	@Override
+	public List<Task> getAllTaskOfUser(Long uid) {
+		// TODO Auto-generated method stub
+		return this.taskRepository.findByUser(uid);
 	}
 
 }

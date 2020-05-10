@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 
 import com.hust.projectmanagement.projectservice.dto.InviteUserDto;
 import com.hust.projectmanagement.projectservice.dto.NewProjectDto;
+import com.hust.projectmanagement.projectservice.dto.ProjectDto;
 import com.hust.projectmanagement.projectservice.resources.ProjectListResource;
 import com.hust.projectmanagement.projectservice.resources.ProjectResource;
 import com.hust.projectmanagement.projectservice.response.UserResponse;
@@ -19,4 +20,5 @@ public interface ProjectService {
 	void inviteUserToProjectByEmail(Long projectId, InviteUserDto inviteUserDto);
 	Page<ProjectResource> getAllProjectUserJoined(Long id,int page,int size,String filterText);
 	List<UserResponse> getUserJoinProject(Long projectId);
+	ProjectDto getProjectDetailById(Long projectId);
 }

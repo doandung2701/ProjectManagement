@@ -11,6 +11,7 @@ import { Project } from '../model/project.model';
 import { UserDto } from '../model/userDto.model';
 import { GlobalService } from './global.service';
 import { UserResponse } from '../model/response/userResponse.model';
+import { ProjectDto } from '../model/response/ProjectDto';
 @Injectable({
     providedIn:'root'
 })
@@ -39,7 +40,9 @@ export class ProjectService {
 
     }
     getUserJoinedProject(){
-            return this.http.get<UserResponse[]>(this.url+`/project/${this.globalServcie.getCurrentprojectId()}/getUser`);
-            
+            return this.http.get<UserResponse[]>(this.url+`/project/${this.globalServcie.getCurrentprojectId()}/getUser`);   
     }
+    GetDetailProjectById(id: number) {
+        return this.http.get<ProjectDto>(this.url+`/project/detail/${id}`);
+      }
 }

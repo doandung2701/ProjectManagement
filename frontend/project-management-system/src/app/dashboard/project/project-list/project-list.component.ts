@@ -21,7 +21,7 @@ export class ProjectListComponent implements OnInit, AfterViewInit {
   @ViewChild('input', { static: false }) input: ElementRef;
   @ViewChild(MatMenuTrigger,{static:false}) contextMenu: MatMenuTrigger;
   contextMenuPosition = { x: '0px', y: '0px' };
-  displayedColumns: string[] = ['name', 'description','admin'];
+  displayedColumns: string[] = ['name', 'description','admin','actions'];
   dataSource: ProjectDataSource;
   userId:number;
   constructor(private projectService: ProjectService, private autService: AuthenticationService, private notificationService: NotificationService,
@@ -54,17 +54,12 @@ export class ProjectListComponent implements OnInit, AfterViewInit {
   changPage(event: PageEvent) {
     this.loadProjects();
   }
-  onContextMenu(event: MouseEvent, item: Project) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.contextMenu.menuData = { 'item': item };
-    this.contextMenu.menu.focusFirstItem('mouse');
-    this.contextMenu.openMenu();
-  }
   goToProject(item:Project){
-    // console.log(item);
     this.globalService.setCurrentprojectId(item.id);
-    this.router.navigate(['/dashboard/task']);
+    this.projectService.GetDetailProjectById(item.id).subscribe(response=>{
+      console.log(response);
+       this.globalService.setCurrentProjectDetail(response );
+      this.router.navigate(['/dashboard/task']);
+    });
   }
 }

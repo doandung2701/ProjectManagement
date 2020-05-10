@@ -1,3 +1,4 @@
+import { CommonComponentModule } from './common/common-component.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -30,7 +31,7 @@ import { CorsHeaderInterceptor } from './helpers/cors.interceptor';
   declarations: [
     AppComponent,
     LoaderComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +48,8 @@ import { CorsHeaderInterceptor } from './helpers/cors.interceptor';
     MatSidenavModule,
     MatListModule,
     HttpClientModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    CommonComponentModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true

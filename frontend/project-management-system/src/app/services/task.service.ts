@@ -1,3 +1,4 @@
+import { SearchTaskListModel } from './../model/request/searchTaskListModel';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { APIPaginationResponse } from '../model/APIPaginationResponse.model';
@@ -41,8 +42,8 @@ export class TaskService {
     private url=environment.apiUrl;
     // private url="http://localhost:8020";
     constructor(private http:HttpClient,private globalService:GlobalService){}
-    getTaskOfUser(pageNumber:number,pageSize:number,filter:string):Observable<APIPaginationResponse<Task>>{
-       return this.http.get<APIPaginationResponse<Task>>(this.url+'/task/getUserTasks/'+JSON.parse(localStorage.getItem('currentUser'))["uid"]+`?page=${pageNumber}&&size=${pageSize}&&filter=${filter}`);
+    getTaskOfUser(pageNumber:number,pageSize:number,filter:SearchTaskListModel):Observable<APIPaginationResponse<Task>>{
+       return this.http.post<APIPaginationResponse<Task>>(this.url+'/task/getProjectTasks/'+this.globalService.getCurrentprojectId()+`?page=${pageNumber}&&size=${pageSize}`,filter);
     }
     createTask(creatTaskRequest:CreateTaskRequest){
         return this.http.post(this.url+'/task/createTask',creatTaskRequest);
@@ -52,5 +53,8 @@ export class TaskService {
     }
     getCountTaskByUserid(userId:number){
         return this.http.get<DashboardDto>(this.url+`/task/countTaskByUser/${userId}`);
+    }
+    getAllTaskOfUser(){
+        return this.http.get<TaskCalendarList>(this.url+`/task/getAllTaskByUserId/${JSON.parse(localStorage.getItem('currentUser'))["uid"]}`);
     }
 }

@@ -4,6 +4,7 @@ import { TaskComponent } from './task/task.component';
 import { DashboardComponent } from './dashboard.component';
 import { SummaryComponent } from './summary/summary.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { TaskListActiveGuard } from '../task-list-active.guard';
 
 const routes: Routes = [
     {

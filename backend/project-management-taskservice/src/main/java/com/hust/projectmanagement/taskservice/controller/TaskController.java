@@ -25,6 +25,7 @@ import com.hust.projectmanagement.taskservice.dto.APIResponse;
 import com.hust.projectmanagement.taskservice.dto.APIStatus;
 import com.hust.projectmanagement.taskservice.dto.CheckListDto;
 import com.hust.projectmanagement.taskservice.dto.DashboardDto;
+import com.hust.projectmanagement.taskservice.dto.SearchTaskListModel;
 import com.hust.projectmanagement.taskservice.dto.UpdateTaskDto;
 import com.hust.projectmanagement.taskservice.exception.ResourceFoundException;
 import com.hust.projectmanagement.taskservice.request.CommentRequest;
@@ -55,12 +56,11 @@ public class TaskController {
 				throw new ResourceFoundException("Task not found");
 			return new ResponseEntity(Task.createTaskResponseFromTask(task),HttpStatus.OK);
 	}
-	@GetMapping("/getUserTasks/{userId}")
-	public ResponseEntity<?> getUserTask(@PathVariable(name="userId",required = true) Long id,
-			@RequestParam(value = "filter") String filterText,
+	@PostMapping("/getProjectTasks/{projectId}")
+	public ResponseEntity<?> getUserTask(@PathVariable(name="projectId",required = true) Long id,
 			@RequestParam(value = "page",defaultValue = "0") int page, 
-			  @RequestParam(value = "size",defaultValue = "5") int size) {
-		Page<TaskResponse> taskLists=this.taskService.getUserTasks(id,filterText,page,size);
+			  @RequestParam(value = "size",defaultValue = "5") int size,@RequestBody SearchTaskListModel model) {
+		Page<TaskResponse> taskLists=this.taskService.getProjectTasks(id,model,page,size);
 //		Page<ProjectResource> dto = projectService.getAllProjectUserJoined(id,page,size,filterText);
 		APIPaginationResponse<TaskResponse> response=new APIPaginationResponse<>(taskLists);
 		return new ResponseEntity(response, HttpStatus.OK);
@@ -143,4 +143,21 @@ public class TaskController {
 			throw new ResourceFoundException("Task not found");
 		return new ResponseEntity(Task.createTaskResponseFromTask(task),HttpStatus.OK);
 	}
+	@GetMapping("/getAllTaskByUserId/{uid}")
+	  public ResponseEntity<CalendarListResource> getAllTaskByUserId(@PathVariable("uid") Long uid) {
+	    // service call
+	    List<Task> tl =  this.taskService.getAllTaskOfUser(uid);
+	    List<CalendarResource> cl = new ArrayList<CalendarResource>();
+	    for(Task t: tl) {
+	      CalendarResource cr = new CalendarResource();
+	      cr.setTitle(t.getName());
+	      cr.setStart(t.getStartTime());
+	      cr.setEnd(t.getDeadline());
+	      cl.add(cr);
+	    }
+	    CalendarListResource clr = new CalendarListResource();
+	    clr.setEvents(cl);
+	    
+	    return new ResponseEntity<CalendarListResource>(clr, HttpStatus.OK);
+	  }
 }
