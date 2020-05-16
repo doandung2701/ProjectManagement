@@ -1,1 +1,2 @@
-<p-chart type="line" [data]="data"  [options]="options"></p-chart>
+<p-chart *ngIf="lstData?.length>0" type="bar" [data]="data"  [options]="options"></p-chart>
+<div class="alert alert-primary" role="alert" *ngIf="lstData?.length==0">You do not have any task in any project</div>

@@ -1,0 +1,11 @@
+<div class="alert alert-warning" role="alert" *ngIf="data?.length==0">
+    You do not have any task near deadline
+  </div>
+  <div *ngIf="data?.length>0">
+      <div>Top task has deadline soon</div>
+    <ul class="list-group">
+        <div (click)="goToDetail(item)" *ngFor="let item of data; index as i; " [ngClass]="{'alert-danger' : i==0,'alert-success':i!=0}" class="alert" role="alert">
+            {{item.name}}  <span style="float: right;">{{convertArrayToDate(item.deadline)|date:'dd/MM/yyyy hh:mm:ss'}}</span>
+          </div>
+      </ul>
+  </div>

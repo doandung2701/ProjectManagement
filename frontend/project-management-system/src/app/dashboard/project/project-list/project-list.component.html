@@ -42,20 +42,12 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Actions </th>
             <td *matCellDef="let element" class="mat-cell cdk-column-name mat-column-name ng-star-inserted">
-                 <button mat-button (click)="goToProject(element)">Go to detail</button>
+                 <button mat-button (click)="goToProject(element)" style="padding-left: 0;">Go to detail</button>
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        <!-- <div style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x"
-          [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenu">
-        </div>
-        <mat-menu #contextMenu="matMenu" #contextMenu2="matMenu">
-          <ng-template matMenuContent let-item="item">
-            <button mat-menu-item (click)="goToProject(item)">Go to project</button>
-          </ng-template>
-        </mat-menu> -->
         <mat-paginator (page)="changPage($event)" [length]="dataSource.paginiation.totalElements"
           [pageSize]="dataSource.paginiation.size" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
       </div>

@@ -12,11 +12,24 @@ import { Comment } from '../model/comment.model';
 import UpdateCommonTaskRequest from '../model/request/updateCommonTask.request';
 import { environment } from 'src/environments/environment';
 import { DashboardDto } from '../model/response/DashboardDto.model';
+import { CountTaskByProjectViewModel } from '../model/response/CountTaskByProjectViewModel';
+import { APIResponse } from '../model/APIResponse';
 
 @Injectable({
     providedIn:'root'
 })
 export class TaskService {
+    removeTask(id: number) {
+        return this.http.delete<APIResponse>(this.url+`/task/deleteTask/${id}/${JSON.parse(localStorage.getItem('currentUser'))["uid"]}`);
+    }
+    getTop5TaskOrderByDeadline() {
+        return this.http.get<TaskResponse[]>(this.url+`/task/getTop5TaskOrderByDeadline/${JSON.parse(localStorage.getItem('currentUser'))["uid"]}`);
+
+    }
+    countTaskByProjectIdOfUser() {
+        return this.http.get<CountTaskByProjectViewModel[]>(this.url+`/task/countTaskByProject/${JSON.parse(localStorage.getItem('currentUser'))["uid"]}`);
+
+    }
     updateCheckList(id: number, result: import("../model/checklistDto.model").CheckListDto) {
         return this.http.post(this.url+`/task/${id}/updateCheckList`,result);   
     }
