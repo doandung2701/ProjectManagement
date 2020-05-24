@@ -14,6 +14,7 @@ import com.hust.projectmanagement.taskservice.repository.UserRepository;
 
 import common.domain.Project;
 import common.event.ProjectCreatedEvent;
+import common.event.ProjectDeletedEvent;
 import common.event.ProjectUpdatedEvent;
 import io.eventuate.tram.events.subscriber.DomainEventEnvelope;
 import io.eventuate.tram.events.subscriber.DomainEventHandlers;
@@ -30,6 +31,7 @@ public class TaskEventConsumer {
 				.forAggregateType("common.domain.Project")
 				.onEvent(ProjectCreatedEvent.class, this::handleProjectCreatedEventHandler)
 				.onEvent(ProjectUpdatedEvent.class, this::handleProjectUpdatedEventHanlder)
+				.onEvent(ProjectDeletedEvent.class, this::handleProjectDeletedEventHanlder)
 				.build();
 	}
 
@@ -66,8 +68,6 @@ public class TaskEventConsumer {
 		Optional<com.hust.projectmanagement.taskservice.domain.Project> projectInDB=this.projectRepository.findById(projectId);
 		if(projectInDB.isPresent()) {
 			com.hust.projectmanagement.taskservice.domain.Project updatedProject=projectInDB.get();
-			updatedProject.setId(project.getId());
-			updatedProject.setAdmin(project.getAdmin());
 			updatedProject.setDescription(project.getDescription());
 			updatedProject.setName(project.getName());
 			List<User> users2=new ArrayList<>();
@@ -86,6 +86,14 @@ public class TaskEventConsumer {
 		}
 		
 		
+	}
+	public void handleProjectDeletedEventHanlder(DomainEventEnvelope<ProjectDeletedEvent> domainEventEnvelope) {
+		logger.debug("Handler project deleted event");
+		Long projectId=Long.parseLong(domainEventEnvelope.getAggregateId());
+		Optional<com.hust.projectmanagement.taskservice.domain.Project> projectInDB=this.projectRepository.findById(projectId);
+		if(projectInDB.isPresent()) {
+			this.projectRepository.deleteById(projectId);
+		}
 	}
 	
 }

@@ -4,11 +4,19 @@
 .leader{
   font-weight: bold;
 }
-.mat-list-item-content{
+.list-member .mat-list-item-content{
   display: flex;
   justify-content: space-between !important;
+  padding-left: 0px !important;
 }
 .haft-width{
   display: block;
     width: 50%;
+}
+.card{
+  height: 100%;
+}
+
+.action-button.mat-button.mat-button-base{
+  border: 1px solid gray;
 }

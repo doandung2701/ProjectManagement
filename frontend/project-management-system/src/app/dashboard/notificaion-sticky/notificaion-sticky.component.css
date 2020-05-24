@@ -1,0 +1,10 @@
+:host{
+    position: fixed;
+    z-index: 1;
+    top: 2%;
+    right: 2%;
+    cursor: pointer;
+}
+.notification-content{
+    position: relative;
+}

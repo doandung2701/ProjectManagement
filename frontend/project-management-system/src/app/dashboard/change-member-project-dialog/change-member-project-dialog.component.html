@@ -1,0 +1,30 @@
+<div mat-dialog-content>
+    <form [formGroup]="seachUserForm">
+        <mat-form-field class="full-width">
+            <input formControlName="userEmail" matInput placeholder="Search">
+        </mat-form-field>
+    </form>
+
+    <mat-selection-list #userListSearched>
+        <mat-list-option *ngFor="let user of sourceUser" [value]="user">
+            {{user.email}}
+        </mat-list-option>
+    </mat-selection-list>
+    <mat-paginator *ngIf="sourceUser?.length>0" (page)="changPage($event)" [length]="pageSoureUser.totalElements" [pageSize]="pageSoureUser.size" [pageSizeOptions]="[5, 10]">
+    </mat-paginator>
+    <button style="float: right;" mat-button mat-icon-button matSuffix (click)="addPeople()"
+        *ngIf="userListSearched.selectedOptions.selected?.length>0">
+        Add
+    </button>
+
+    <mat-chip-list #selectedUserList>
+        <mat-chip *ngFor="let user of selectedUser" (removed)="remove(user)">
+            {{user.email}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+    </mat-chip-list>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="onYesClick()" cdkFocusInitial>Update</button>
+</div>

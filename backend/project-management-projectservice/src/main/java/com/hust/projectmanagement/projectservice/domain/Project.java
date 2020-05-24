@@ -1,7 +1,10 @@
 package com.hust.projectmanagement.projectservice.domain;
 
-import java.util.ArrayList;
+import static java.util.Collections.singletonList;
+
+import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,11 +18,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import common.domain.User;
 import common.event.ProjectCreatedEvent;
+import common.event.ProjectDeletedEvent;
 import common.event.ProjectUpdatedEvent;
 import io.eventuate.tram.events.publisher.ResultWithEvents;
-import static java.util.Collections.singletonList;
-
-import java.io.Serializable;
 
 @Entity
 @Table(name = "projects")
@@ -33,7 +34,7 @@ public class Project implements Serializable{
 	private long admin;
 	@ManyToMany
 	@JsonManagedReference
-	private List<com.hust.projectmanagement.projectservice.domain.User> users=new ArrayList<>();;
+	private Set<com.hust.projectmanagement.projectservice.domain.User> users;
 
 	public long getId() {
 		return id;
@@ -67,11 +68,11 @@ public class Project implements Serializable{
 		this.admin = admin;
 	}
 
-	public List<com.hust.projectmanagement.projectservice.domain.User> getUsers() {
+	public Set<com.hust.projectmanagement.projectservice.domain.User> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<com.hust.projectmanagement.projectservice.domain.User> users) {
+	public void setUsers(Set<com.hust.projectmanagement.projectservice.domain.User> users) {
 		this.users = users;
 	}
 
@@ -115,6 +116,13 @@ public class Project implements Serializable{
 		ProjectUpdatedEvent projectUpdatedEvent=new ProjectUpdatedEvent();
 		projectUpdatedEvent.setProject(commonProject);
 		return new ResultWithEvents<Project>(project, singletonList(projectUpdatedEvent));
+	}
+
+	public static ResultWithEvents<Project> deleteProject(Project project) {
+		// TODO Auto-generated method stub
+		ProjectDeletedEvent projectDeletedEvent=new ProjectDeletedEvent();
+		projectDeletedEvent.setProjectId(project.getId());
+		return new ResultWithEvents<Project>(project, singletonList(projectDeletedEvent));
 	}
 	
 

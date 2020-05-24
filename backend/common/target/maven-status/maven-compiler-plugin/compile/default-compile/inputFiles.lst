@@ -1,9 +1,13 @@
-D:\project\ProjectManagement\backend\common\src\main\java\common\domain\User.java
 D:\project\ProjectManagement\backend\common\src\main\java\common\event\ProjectEvent.java
 D:\project\ProjectManagement\backend\common\src\main\java\common\event\UserCreatedEvent.java
+D:\project\ProjectManagement\backend\common\src\main\java\common\domain\ProjectUser.java
+D:\project\ProjectManagement\backend\common\src\main\java\common\domain\Notification.java
+D:\project\ProjectManagement\backend\common\src\main\java\common\domain\Project.java
+D:\project\ProjectManagement\backend\common\src\main\java\common\event\NotificationCreatedEvent.java
+D:\project\ProjectManagement\backend\common\src\main\java\common\domain\User.java
+D:\project\ProjectManagement\backend\common\src\main\java\common\event\ProjectDeletedEvent.java
 D:\project\ProjectManagement\backend\common\src\main\java\common\event\UserAddedToProjectEvent.java
 D:\project\ProjectManagement\backend\common\src\main\java\common\event\UserEvent.java
-D:\project\ProjectManagement\backend\common\src\main\java\common\domain\ProjectUser.java
 D:\project\ProjectManagement\backend\common\src\main\java\common\event\ProjectCreatedEvent.java
+D:\project\ProjectManagement\backend\common\src\main\java\common\event\NotificationEvent.java
 D:\project\ProjectManagement\backend\common\src\main\java\common\event\ProjectUpdatedEvent.java
-D:\project\ProjectManagement\backend\common\src\main\java\common\domain\Project.java

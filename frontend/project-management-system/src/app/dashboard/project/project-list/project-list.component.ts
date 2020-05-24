@@ -57,7 +57,6 @@ export class ProjectListComponent implements OnInit, AfterViewInit {
   goToProject(item:Project){
     this.globalService.setCurrentprojectId(item.id);
     this.projectService.GetDetailProjectById(item.id).subscribe(response=>{
-      console.log(response);
        this.globalService.setCurrentProjectDetail(response );
       this.router.navigate(['/dashboard/task']);
     });

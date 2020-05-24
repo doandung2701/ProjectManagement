@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import com.hust.projectmanagement.projectservice.dto.InviteUserDto;
 import com.hust.projectmanagement.projectservice.dto.NewProjectDto;
 import com.hust.projectmanagement.projectservice.dto.ProjectDto;
+import com.hust.projectmanagement.projectservice.dto.UpdateProjectDto;
 import com.hust.projectmanagement.projectservice.resources.ProjectListResource;
 import com.hust.projectmanagement.projectservice.resources.ProjectResource;
 import com.hust.projectmanagement.projectservice.response.UserResponse;
@@ -21,4 +22,6 @@ public interface ProjectService {
 	Page<ProjectResource> getAllProjectUserJoined(Long id,int page,int size,String filterText);
 	List<UserResponse> getUserJoinProject(Long projectId);
 	ProjectDto getProjectDetailById(Long projectId);
+	ProjectDto updateProject(Long projectId, UpdateProjectDto updateProjectDto);
+	boolean removeProject(Long projectId, Long userId);
 }

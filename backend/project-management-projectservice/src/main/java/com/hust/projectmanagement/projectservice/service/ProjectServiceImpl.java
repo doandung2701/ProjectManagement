@@ -1,10 +1,15 @@
 package com.hust.projectmanagement.projectservice.service;
 
+import static java.util.Collections.singletonList;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,8 @@ import com.hust.projectmanagement.projectservice.domain.User;
 import com.hust.projectmanagement.projectservice.dto.InviteUserDto;
 import com.hust.projectmanagement.projectservice.dto.NewProjectDto;
 import com.hust.projectmanagement.projectservice.dto.ProjectDto;
+import com.hust.projectmanagement.projectservice.dto.UpdateProjectDto;
+import com.hust.projectmanagement.projectservice.exception.NotAuthorizeActionException;
 import com.hust.projectmanagement.projectservice.exception.ProjectNotFoundException;
 import com.hust.projectmanagement.projectservice.exception.UserNotFoundException;
 import com.hust.projectmanagement.projectservice.repository.InviteRepository;
@@ -33,6 +40,8 @@ import com.hust.projectmanagement.projectservice.resources.ProjectResource;
 import com.hust.projectmanagement.projectservice.response.UserResponse;
 import com.hust.projectmanagement.projectservice.utils.GenCodeUtils;
 
+import common.domain.Notification;
+import common.event.NotificationCreatedEvent;
 import io.eventuate.tram.events.publisher.DomainEventPublisher;
 import io.eventuate.tram.events.publisher.ResultWithEvents;
 
@@ -68,7 +77,7 @@ public class ProjectServiceImpl implements ProjectService {
 		if (IsInvited) {
 			isInvited = true;
 			Project project = projectRepository.findById(pid).get();
-			List<User> users = project.getUsers();
+			Set<User> users = project.getUsers();
 			users.add(user.get());
 			project.setUsers(users);
 			projectRepository.save(project);
@@ -91,7 +100,7 @@ public class ProjectServiceImpl implements ProjectService {
 			return -1;
 		project.setAdmin(projectDto.getAdmin());
 		// TODO Auto-generated method stub
-		List<User> userList = new ArrayList<User>();
+		Set<User> userList = new HashSet();
 		userList.add(user.get());
 		project.setUsers(userList);
 		Project savedProject = projectRepository.save(project);
@@ -123,9 +132,20 @@ public class ProjectServiceImpl implements ProjectService {
 			invites.setUserId(uid);
 			inviteRepository.save(invites);
 			mailService.sendPasscode(email, code, projectRepository.findById(pid).get());
+			common.domain.Notification noti=new Notification();
+			noti.setContent("You have a invitation to project with passcode. Please go to email to get passcode");
+			noti.setTitle("Project invitation");
+			noti.setURL("joinProject");
+			noti.setType("project");
+			noti.setUserId(uid);
+			noti.setProjectId(pid);
+			noti.setTaskId(null);
+			NotificationCreatedEvent notificationCreatedEvent=new NotificationCreatedEvent();
+			notificationCreatedEvent.setNotificaiton(noti);
+			domainEventPublisher.publish(common.domain.Notification.class, UUID.randomUUID().toString(), singletonList(notificationCreatedEvent));
 		}
 	}
-
+	
 	@Override
 	public ProjectListResource getAll() {
 		// TODO Auto-generated method stub
@@ -234,6 +254,72 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		result.setUsers(users);
 		return result;
+	}
+	@Transactional
+	@Override
+	public ProjectDto updateProject(Long projectId, UpdateProjectDto updateProjectDto) {
+		// TODO Auto-generated method stub
+		Optional<Project> project=this.projectRepository.findById(projectId);
+		if(!project.isPresent())
+			throw new ProjectNotFoundException("Project not found with id "+projectId);
+		Project updateProject=project.get();
+		Set<User> usersWasJoined=updateProject.getUsers();
+		updateProject.setName(updateProjectDto.getName());
+		updateProject.setDescription(updateProjectDto.getDescription());
+		Set<User> usersJoinProject=new HashSet<>();
+		List<Long> userNeedInvite=new ArrayList<>();
+		for (Long userId : updateProjectDto.getUsers()) {
+			User foundedUser=this.userRepository.getOne(userId);
+			if (foundedUser!=null) {
+				if(usersWasJoined.contains(foundedUser)) {
+					usersJoinProject.add(foundedUser);
+				}else {
+					userNeedInvite.add(userId);
+				}
+				
+			}
+		}
+		usersJoinProject.add(this.userRepository.getOne(updateProject.getAdmin()));
+		updateProject.setUsers(usersJoinProject);
+		Project savedProject=this.projectRepository.save(updateProject);
+		ProjectDto result=new ProjectDto();
+		result.setAdmin(savedProject.getAdmin());
+		result.setDescription(savedProject.getDescription());
+		result.setId(savedProject.getId());
+		result.setName(savedProject.getName());
+		List<User> users=new ArrayList<>();
+		for (User user : savedProject.getUsers()) {
+			User u=new User();
+			u.setId(user.getId());
+			u.setEmail(user.getEmail());
+			u.setName(user.getName());
+			u.setUsername(user.getUsername());
+			users.add(u);
+		}
+		result.setUsers(users);
+		Passcode passcode=passcodeRepository.findByProjectId(updateProject.getId());
+		inviteUsers(users.stream().mapToLong(u->u.getId()).toArray(), passcode.getCode(), updateProject.getId());
+		//Publish event
+		ResultWithEvents<Project> projectWithEvents = Project.updateProject(savedProject);
+		domainEventPublisher.publish(common.domain.Project.class, savedProject.getId(), projectWithEvents.events);
+	
+		return result;
+	}
+
+	@Override
+	public boolean removeProject(Long projectId, Long userId) {
+		// TODO Auto-generated method stub
+		Optional<Project> project=this.projectRepository.findById(projectId);
+		if (!project.isPresent()) {
+			throw new ProjectNotFoundException("Project not found with id "+projectId);
+		}
+		if(project.get().getAdmin()!=userId) {
+			throw new NotAuthorizeActionException("You do not have permission to delete this project");
+		}
+		this.projectRepository.deleteById(projectId);
+		ResultWithEvents<Project> projectWithEvents = Project.deleteProject(project.get());
+		domainEventPublisher.publish(common.domain.Project.class, projectId, projectWithEvents.events);
+		return true;
 	}
 
 }

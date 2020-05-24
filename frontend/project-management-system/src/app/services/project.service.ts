@@ -16,6 +16,9 @@ import { ProjectDto } from '../model/response/ProjectDto';
     providedIn:'root'
 })
 export class ProjectService {
+    updateProject(updateProjectDto: import("../model/request/UpdateProjectDto").UpdateProjectDto,projectId:number) {
+        return this.http.post<ProjectDto>(this.url+`/project/updateProject/${projectId}`,updateProjectDto);
+    }
     // url=environment.apiUrl;
     private url=environment.apiUrl;
     // private url="http://localhost:8090";

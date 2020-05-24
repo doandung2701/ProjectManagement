@@ -1,5 +1,7 @@
 package com.hust.projectmanagement.taskservice.service;
 
+import static java.util.Collections.singletonList;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +30,7 @@ import com.hust.projectmanagement.taskservice.domain.Status;
 import com.hust.projectmanagement.taskservice.domain.Task;
 import com.hust.projectmanagement.taskservice.domain.User;
 import com.hust.projectmanagement.taskservice.dto.CheckListDto;
+import com.hust.projectmanagement.taskservice.dto.CountTaskByProjectViewModel;
 import com.hust.projectmanagement.taskservice.dto.DashboardDto;
 import com.hust.projectmanagement.taskservice.dto.SearchTaskListModel;
 import com.hust.projectmanagement.taskservice.exception.ResourceFoundException;
@@ -38,6 +43,10 @@ import com.hust.projectmanagement.taskservice.request.CommentRequest;
 import com.hust.projectmanagement.taskservice.request.CreateTaskRequest;
 import com.hust.projectmanagement.taskservice.request.UpdateCommonTaskRequest;
 import com.hust.projectmanagement.taskservice.response.TaskResponse;
+
+import common.domain.Notification;
+import common.event.NotificationCreatedEvent;
+import io.eventuate.tram.events.publisher.DomainEventPublisher;
 
 @Service
 @Transactional
@@ -52,6 +61,8 @@ public class TaskServiceImpl implements TaskService {
 	private CommentRepository commentRepository;
 	@Autowired
 	private CheckListRepository checkListRepository;
+	@Autowired
+	private DomainEventPublisher domainEventPublisher;
 	@Override
 	public TaskResponse createTask(CreateTaskRequest newTaskDto) {
 		// TODO Auto-generated method stub
@@ -101,9 +112,26 @@ public class TaskServiceImpl implements TaskService {
 
 		newTask = this.taskRepository.save(newTask);
 		TaskResponse response = Task.createTaskResponseFromTask(newTask);
+		sendNotification(newTask);
 		return response;
 	}
-
+	@Async
+	public void sendNotification(Task task) {
+		for (User user : task.getUsers()) {
+			common.domain.Notification noti=new Notification();
+			noti.setContent("You have a new task into project "+task.getProject().getName());
+			noti.setTitle("Task assign");
+			noti.setURL("detail/"+task.getId());
+			noti.setType("task");
+			noti.setUserId(user.getId());
+			noti.setProjectId(task.getProject().getId());
+			noti.setTaskId(task.getId());
+			NotificationCreatedEvent notificationCreatedEvent=new NotificationCreatedEvent();
+			notificationCreatedEvent.setNotificaiton(noti);
+			domainEventPublisher.publish(common.domain.Notification.class, UUID.randomUUID().toString(), singletonList(notificationCreatedEvent));
+		}
+		
+	}
 	@Override
 	public Task updateTask(UpdateCommonTaskRequest updateTaskDto) {
 		// TODO Auto-generated method stub
@@ -134,13 +162,23 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public Boolean removeTask(Long taskId) {
+	public Boolean removeTask(Long taskId,Long userId) {
 		// TODO Auto-generated method stub
+		User user=this.userRepository.getOne(userId);
+		if (user==null) {
+			throw new ResourceFoundException("User not found with id "+userId);
+		}
 		Task task = this.taskRepository.getOne(taskId);
-		if (task == null)
-			return false;
-		this.taskRepository.delete(task);
-		return true;
+		if (task==null) {
+			throw new ResourceFoundException("Task not found with id "+taskId);
+		}
+		Long adminProject=task.getProject().getAdmin();
+		Long userCreatedTask=task.getCreatedBy();
+		if(userId==adminProject||userId==userCreatedTask) {
+			this.taskRepository.delete(task);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -153,10 +191,10 @@ public class TaskServiceImpl implements TaskService {
 		int startItem = currentPage * pageSize;
 		Page<Task> result;
 		if(model.getStatus()==null) {
-			result=this.taskRepository.searchCustomTaskByNameAndAssignee(model.getName(),model.getUser(),PageRequest.of(page,size));
+			result=this.taskRepository.searchCustomTaskByNameAndAssignee(id,model.getName(),model.getUser(),PageRequest.of(page,size));
 
 		}else {
-			result=this.taskRepository.searchCustomTaskByNameAndAssigneeAndStatus(model.getName(),model.getUser(),model.getStatus(),PageRequest.of(page,size));
+			result=this.taskRepository.searchCustomTaskByNameAndAssigneeAndStatus(id,model.getName(),model.getUser(),model.getStatus(),PageRequest.of(page,size));
 		}
 		return new PageImpl<>(result.getContent().stream().map(t->Task.createTaskResponseFromTask(t)).collect(Collectors.toList()),
 				result.getPageable(), result.getSize());
@@ -194,9 +232,27 @@ public class TaskServiceImpl implements TaskService {
 		comment.setUserId(request.getUserId());
 		comment.setUsername(request.getUsername());
 		comment=this.commentRepository.save(comment);
+		Task task=this.taskRepository.getOne(taskId);
+		sendNotificationComment(task,comment);
 		return comment;
 	}
+	@Async
+	public void sendNotificationComment(Task task,Comment comment) {
+		for (User user : task.getUsers()) {
+			common.domain.Notification noti=new Notification();
+			noti.setContent("Have new comment in task "+task.getName());
+			noti.setTitle("Task comment");
+			noti.setURL("detail/"+task.getId());
+			noti.setType("comment");
+			noti.setUserId(user.getId());
+			noti.setProjectId(task.getProject().getId());
+			noti.setTaskId(task.getId());
+			NotificationCreatedEvent notificationCreatedEvent=new NotificationCreatedEvent();
+			notificationCreatedEvent.setNotificaiton(noti);
+			domainEventPublisher.publish(common.domain.Notification.class, UUID.randomUUID().toString(), singletonList(notificationCreatedEvent));
+		}
 
+	}
 	@Override
 	public DashboardDto getCountTask(Long userId) {
 		// TODO Auto-generated method stub
@@ -241,6 +297,22 @@ public class TaskServiceImpl implements TaskService {
 	public List<Task> getAllTaskOfUser(Long uid) {
 		// TODO Auto-generated method stub
 		return this.taskRepository.findByUser(uid);
+	}
+
+	@Override
+	public List<CountTaskByProjectViewModel> countTaskByProjectIdOfUser(Long uid) {
+		// TODO Auto-generated method stub
+		return this.taskRepository.countTaskByProjectIdOfUser(uid);
+	}
+
+	@Override
+	public List<TaskResponse> getTop5TaskOrderByDeadlineByUserId(Long userId) {
+		// TODO Auto-generated method stub
+		User user=this.userRepository.getOne(userId);
+		List<Task> tasks=this.taskRepository.findTop5ByUsersContainingOrderByDeadlineDesc(user);
+
+//		List<Task> tasks=this.taskRepository.findTop5
+		return tasks.stream().map(task -> Task.createTaskResponseFromTask(task)).collect(Collectors.toList());
 	}
 
 }

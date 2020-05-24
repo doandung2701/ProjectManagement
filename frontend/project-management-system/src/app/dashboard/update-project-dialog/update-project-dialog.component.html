@@ -1,0 +1,22 @@
+<div mat-dialog-content>
+    <form [formGroup]="updateFormGroup">
+        <mat-form-field class="full-width">
+            <input [(ngModel)]="projectName" matInput placeholder="Project Name" formControlName="name">
+            <mat-error *ngIf="updateProjectFormControl.name.touched&&updateProjectFormControl.name.errors?.required">
+                Project name is required</mat-error>
+
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <input [(ngModel)]="projectDescription" matInput placeholder="Project Description"
+                formControlName="description">
+            <mat-error
+                *ngIf="updateProjectFormControl.description.touched&&updateProjectFormControl.description.errors?.required">
+                Project name is required</mat-error>
+
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="onYesClick()" cdkFocusInitial>Update</button>
+</div>

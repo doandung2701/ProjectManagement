@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import com.hust.projectmanagement.taskservice.domain.Comment;
 import com.hust.projectmanagement.taskservice.domain.Task;
 import com.hust.projectmanagement.taskservice.dto.CheckListDto;
+import com.hust.projectmanagement.taskservice.dto.CountTaskByProjectViewModel;
 import com.hust.projectmanagement.taskservice.dto.DashboardDto;
 import com.hust.projectmanagement.taskservice.dto.SearchTaskListModel;
 import com.hust.projectmanagement.taskservice.request.CommentRequest;
@@ -19,7 +20,7 @@ import com.hust.projectmanagement.taskservice.response.TaskResponse;
 public interface TaskService {
 	TaskResponse createTask(CreateTaskRequest newTask);
 	Task updateTask(UpdateCommonTaskRequest updateTaskDto);
-	Boolean removeTask(Long taskId);
+	Boolean removeTask(Long taskId,Long userId);
 	Page<TaskResponse> getProjectTasks(Long id, SearchTaskListModel model, int page, int size);
 	List<Task> getAllTaskOfUserAndProject(Long uid, Long pid);
 	Task getDetailById(Long taskId);
@@ -30,4 +31,6 @@ public interface TaskService {
 	Task updateCheckList(Long taskId, @Valid CheckListDto dto);
 	Task removeChecklist(Long taskId, Long checkListId);
 	List<Task> getAllTaskOfUser(Long uid);
+	List<CountTaskByProjectViewModel> countTaskByProjectIdOfUser(Long uid);
+	List<TaskResponse> getTop5TaskOrderByDeadlineByUserId(Long userId);
 }

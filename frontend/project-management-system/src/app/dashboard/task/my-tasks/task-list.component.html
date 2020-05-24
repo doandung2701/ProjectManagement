@@ -2,15 +2,17 @@
   <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
       <div class="card">
-        <mat-card-header>
-          <mat-card-title>Project name: {{projectDetail?.name}}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p style="margin-bottom: 0; font-weight: bold;font-size: 18px;margin-top: 1rem;">Project detail</p>
-          <p style="font-size: 19px;">
-            {{projectDetail?.description}}
-          </p>
-        </mat-card-content>
+        <div class="card-body">
+          <h5 class="card-title">Project name: {{projectDetail?.name}}</h5>
+          <div class="card-text">
+            <p style="margin-bottom: 0; font-weight: bold;font-size: 18px;margin-top: 1rem;">Project detail</p>
+            <p style="font-size: 19px;">Description: 
+              {{projectDetail?.description}}
+            </p>
+            <p>Rule of project: Before you commit code, you need to create review checklist common</p>
+          </div>
+          <button class="action-button" mat-button *ngIf="CanChangeUser()" (click)="showUpdateForm()">Update</button>
+        </div>
       </div>
     </div>
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
@@ -105,17 +107,18 @@
     </div>
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
       <div class="card">
-        <mat-card-header>
-          <mat-card-title>List member</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <mat-list>
-            <mat-list-item *ngFor="let member of projectDetail?.users" class="list-member"
-              [ngClass]="{'leader':isAdmin(member)}">{{member.name}}
-              <mat-icon *ngIf="isAdmin(member)">star</mat-icon>
-            </mat-list-item>
-          </mat-list>
-        </mat-card-content>
+          <div class="card-body">
+            <h5 class="card-title">List member</h5>
+            <div class="card-text">
+              <mat-list>
+                <mat-list-item *ngFor="let member of projectDetail?.users" class="list-member"
+                  [ngClass]="{'leader':isAdmin(member)}">{{member.name}}
+                  <mat-icon *ngIf="isAdmin(member)">star</mat-icon>
+                </mat-list-item>
+              </mat-list>
+            </div>
+            <button class="action-button" mat-button *ngIf="CanChangeUser()" (click)="ShowChangeMemberDialog()">Change</button>
+          </div>
       </div>
     </div>
   </div>

@@ -1,8 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { UserDto } from 'src/app/model/userDto.model';
-import { Task } from 'src/app/model/task.model';
-import { NewTask } from 'src/app/model/newTask.model';
 import { NotificationService } from 'src/app/common/service/notification.sevice';
 import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
@@ -157,24 +154,7 @@ export class TaskCreatorComponent implements OnInit {
     this.createTaskRequest.createdTime=this.datePipe.transform(new Date(),'yyyy-MM-dd HH:mm');
     this.createTaskRequest.checklists=[];
     console.debug(this.createTaskRequest);
-       // this.newTaskModel.user = [];
-    // this.assignedUser.forEach(t => { this.newTaskModel.user.push(t.id); });
-    // this.taskModel.createdBy = this.global.getUid();  // The same user
-    // this.taskModel.program = this.global.getCurrentProgramId();  // The program of this dashboard
-    // this.taskModel.modifiedBy = this.global.getUid(); // The same user who created
-    // this.taskModel.status = 'created';
 
-    // this.taskModel.modifiedTime = this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm');
-    // this.taskModel.createdTime = this.datePipe.transform(Date.now(), 'yyyy-MM-dd HH:mm');
-    // try {
-    //   this.taskModel.startTime = this.taskModel.startTime.replace('T', ' ');
-    //   this.taskModel.deadline = this.taskModel.deadline.replace('T', ' ') ;
-    //   this.taskModel.createdTime = this.taskModel.createdTime.replace('T', ' ') ;
-    //   this.taskModel.modifiedTime = this.taskModel.modifiedTime.replace('T', ' ');
-    // } catch (error) {
-    //   console.log('Wrong format datetime-local');
-    // }
-    // this.newTaskModel.task = this.taskModel;
   }
 
   initialize() {

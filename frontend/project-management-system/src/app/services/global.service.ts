@@ -4,6 +4,10 @@ import { ProjectDto } from '../model/response/ProjectDto';
   providedIn: 'root'
 })
 export class GlobalService {
+  empty() {
+      this.currentProjectId=null;
+      this.projectDetail=null;
+  }
   constructor() { }
   private currentProjectId: number;
   private projectDetail:ProjectDto;

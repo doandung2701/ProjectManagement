@@ -1,3 +1,4 @@
+import { GlobalService } from './global.service';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../model/user';
@@ -16,7 +17,7 @@ export class AuthenticationService {
     // url="http://localhost:8010";
     private currentUserSubject:BehaviorSubject<User>;
     public currentUser:Observable<User>;
-    constructor(private http:HttpClient){
+    constructor(private http:HttpClient,private globalService:GlobalService){
         this.currentUserSubject=new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser=this.currentUserSubject.asObservable();
     }
@@ -35,6 +36,8 @@ export class AuthenticationService {
     logout(){
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
+        this.globalService.empty();
+        
     }
     signup(signupModel:SignupModel):Observable<APIResponse>{
         return this.http.post<APIResponse>(`${this.url}/authentication/signup`,signupModel);

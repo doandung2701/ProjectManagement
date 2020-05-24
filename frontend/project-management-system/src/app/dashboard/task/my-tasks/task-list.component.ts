@@ -1,3 +1,5 @@
+import { ProjectService } from './../../../services/project.service';
+import { UpdateProjectDialogComponent } from './../../update-project-dialog/update-project-dialog.component';
 import { APIResponse, APIStatus } from './../../../model/APIResponse';
 import { ConfirmationDialogComponent } from 'src/app/common/confirmation-dialog/confirmation-dialog.component';
 import { Status } from './../../../model/status.enum';
@@ -15,6 +17,8 @@ import { ProjectDto } from 'src/app/model/response/ProjectDto';
 import { User } from 'src/app/model/user';
 import { SearchTaskListModel } from 'src/app/model/request/searchTaskListModel';
 import { MessageType } from 'src/app/model/typeMessage';
+import { UpdateProjectDto } from 'src/app/model/request/UpdateProjectDto';
+import { ChangeMemberProjectDialogComponent } from '../../change-member-project-dialog/change-member-project-dialog.component';
 
 
 @Component({
@@ -37,7 +41,8 @@ export class TaskListComponent implements OnInit {
   statuses = Status;
   constructor(private taskService: TaskService, private autService: AuthenticationService, private notificationService: NotificationService,
     private globalService: GlobalService, private router: Router,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    private projectService:ProjectService) {
     this.projectDetail = globalService.getCurrentProjectDetail();
   }
   formatDateFromString(dateString: string) {
@@ -118,5 +123,61 @@ export class TaskListComponent implements OnInit {
         this.notificationService.showNotification(MessageType.ERROR, response.data);
       }
     });
+  }
+  showUpdateForm(){
+    const dialogRef = this.dialog.open(UpdateProjectDialogComponent, {
+      width: '350px',
+      disableClose: true,
+      data: {
+        name:this.projectDetail.name,
+        description:this.projectDetail.description
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        console.log(result);
+        var updateProjectDto={
+          name:result['name'],
+          description:result['description'],
+          users:this.globalService.getCurrentProjectDetail().users.map(u=>u.id),
+        };
+        this.projectService.updateProject(updateProjectDto,this.globalService.getCurrentprojectId()).subscribe(response=>{
+          this.notificationService.showNotification(MessageType.SUCCESS, "Update success");
+          this.globalService.setCurrentProjectDetail(response );
+          this.projectDetail = response;
+        });
+      }else{
+      }
+    });
+  }
+  ShowChangeMemberDialog(){
+    const dialogRef = this.dialog.open(ChangeMemberProjectDialogComponent, {
+      width: '700px',
+      height:'500px',
+      disableClose: true,
+      data: {
+        users:this.projectDetail.users
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        console.log(result);
+        var updateProjectDto={
+          name:this.projectDetail.name,
+          description:this.projectDetail.description,
+          users:result.map(x=>x.id),
+        };
+        debugger;
+        this.projectService.updateProject(updateProjectDto,this.globalService.getCurrentprojectId()).subscribe(response=>{
+          this.notificationService.showNotification(MessageType.SUCCESS, "Update success");
+          this.globalService.setCurrentProjectDetail(response );
+          this.projectDetail = response;
+        });
+      }else{
+      }
+    });
+  }
+  CanChangeUser(){
+    return (this.globalService.getCurrentProjectDetail().admin==JSON.parse(localStorage.getItem('currentUser'))["uid"]);
   }
 }

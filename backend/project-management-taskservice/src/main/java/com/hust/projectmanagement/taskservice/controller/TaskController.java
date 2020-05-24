@@ -26,7 +26,6 @@ import com.hust.projectmanagement.taskservice.dto.APIStatus;
 import com.hust.projectmanagement.taskservice.dto.CheckListDto;
 import com.hust.projectmanagement.taskservice.dto.DashboardDto;
 import com.hust.projectmanagement.taskservice.dto.SearchTaskListModel;
-import com.hust.projectmanagement.taskservice.dto.UpdateTaskDto;
 import com.hust.projectmanagement.taskservice.exception.ResourceFoundException;
 import com.hust.projectmanagement.taskservice.request.CommentRequest;
 import com.hust.projectmanagement.taskservice.request.CreateTaskRequest;
@@ -50,7 +49,7 @@ public class TaskController {
 		
 	}
 	@GetMapping("getDetail/{taskId}")
-	public ResponseEntity<?> getDetail(@PathVariable(name = "taskId",required = true) Long taskId){
+	public ResponseEntity<?> getDetail(@PathVariable(name = "taskId") Long taskId){
 			Task task= this.taskService.getDetailById(taskId);
 			if(task==null)
 				throw new ResourceFoundException("Task not found");
@@ -75,9 +74,9 @@ public class TaskController {
 		}
 		
 	}
-	@DeleteMapping("deleteTask/{taskId}")
-	public ResponseEntity<APIResponse>removeTask(@PathVariable(name = "taskId",required = true)Long taskId){
-		boolean isRemoved=this.taskService.removeTask(taskId);
+	@DeleteMapping("deleteTask/{taskId}/{userId}")
+	public ResponseEntity<APIResponse>removeTask(@PathVariable(name = "taskId",required = true)Long taskId,@PathVariable(name = "userId",required = true)Long userId){
+		boolean isRemoved=this.taskService.removeTask(taskId,userId);
 		if(isRemoved) {
 			return new ResponseEntity<APIResponse>(new APIResponse<Object>(APIStatus.OK, "Delete task success"),HttpStatus.OK);
 		}else {
@@ -88,19 +87,24 @@ public class TaskController {
 	  public ResponseEntity<CalendarListResource> getTaskCalendar(@PathVariable("pid") Long pid, @PathVariable("uid") Long uid) {
 	    // service call
 	    List<Task> tl =  this.taskService.getAllTaskOfUserAndProject(uid, pid);
-	    List<CalendarResource> cl = new ArrayList<CalendarResource>();
-	    for(Task t: tl) {
-	      CalendarResource cr = new CalendarResource();
-	      cr.setTitle(t.getName());
-	      cr.setStart(t.getStartTime());
-	      cr.setEnd(t.getDeadline());
-	      cl.add(cr);
-	    }
-	    CalendarListResource clr = new CalendarListResource();
-	    clr.setEvents(cl);
-	    
-	    return new ResponseEntity<CalendarListResource>(clr, HttpStatus.OK);
-	  }
+		return getCalendarListResourceResponseEntity(tl);
+	}
+
+	private ResponseEntity<CalendarListResource> getCalendarListResourceResponseEntity(List<Task> tl) {
+		List<CalendarResource> cl = new ArrayList<CalendarResource>();
+		for(Task t: tl) {
+		  CalendarResource cr = new CalendarResource();
+		  cr.setTitle(t.getName());
+		  cr.setStart(t.getStartTime());
+		  cr.setEnd(t.getDeadline());
+		  cl.add(cr);
+		}
+		CalendarListResource clr = new CalendarListResource();
+		clr.setEvents(cl);
+
+		return new ResponseEntity<CalendarListResource>(clr, HttpStatus.OK);
+	}
+
 	@GetMapping("/getComment/{taskId}")
 	public ResponseEntity<?> getComment(@PathVariable(name ="taskId",required = true) Long taskId){
 		List<Comment> commentList=new ArrayList();
@@ -147,17 +151,14 @@ public class TaskController {
 	  public ResponseEntity<CalendarListResource> getAllTaskByUserId(@PathVariable("uid") Long uid) {
 	    // service call
 	    List<Task> tl =  this.taskService.getAllTaskOfUser(uid);
-	    List<CalendarResource> cl = new ArrayList<CalendarResource>();
-	    for(Task t: tl) {
-	      CalendarResource cr = new CalendarResource();
-	      cr.setTitle(t.getName());
-	      cr.setStart(t.getStartTime());
-	      cr.setEnd(t.getDeadline());
-	      cl.add(cr);
-	    }
-	    CalendarListResource clr = new CalendarListResource();
-	    clr.setEvents(cl);
-	    
-	    return new ResponseEntity<CalendarListResource>(clr, HttpStatus.OK);
-	  }
+		return getCalendarListResourceResponseEntity(tl);
+	}
+	@GetMapping("/countTaskByProject/{uid}")
+	public ResponseEntity<?> countTaskByProject(@PathVariable(name = "uid",required = true) Long userId){
+		return new ResponseEntity(this.taskService.countTaskByProjectIdOfUser(userId),HttpStatus.OK);
+	}
+	@GetMapping("/getTop5TaskOrderByDeadline/{uid}")
+	public ResponseEntity<?> top5TaskOrderByDeadline(@PathVariable(name = "uid",required = true) Long userId){
+		return new ResponseEntity<>(this.taskService.getTop5TaskOrderByDeadlineByUserId(userId),HttpStatus.OK);
+	}
 }

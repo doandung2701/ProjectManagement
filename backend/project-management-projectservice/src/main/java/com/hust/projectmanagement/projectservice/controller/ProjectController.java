@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hust.projectmanagement.projectservice.domain.Project;
 import com.hust.projectmanagement.projectservice.dto.APIPaginationResponse;
 import com.hust.projectmanagement.projectservice.dto.CodeDTO;
 import com.hust.projectmanagement.projectservice.dto.InviteUserDto;
 import com.hust.projectmanagement.projectservice.dto.NewProjectDto;
+import com.hust.projectmanagement.projectservice.dto.ProjectDto;
+import com.hust.projectmanagement.projectservice.dto.UpdateProjectDto;
 import com.hust.projectmanagement.projectservice.resources.ProjectListResource;
 import com.hust.projectmanagement.projectservice.resources.ProjectResource;
 import com.hust.projectmanagement.projectservice.response.UserResponse;
@@ -72,4 +74,19 @@ public class ProjectController {
 	public ResponseEntity<?> getProjectDetai(@PathVariable(name="projectId",required = true) Long projectId){
 		return new ResponseEntity(this.projectService.getProjectDetailById(projectId),HttpStatus.OK);
 	}
+	@PostMapping("/updateProject/{projectId}")
+	public ResponseEntity<?> updateProject(@PathVariable(name = "projectId",required = true)Long projectId,@RequestBody UpdateProjectDto updateProjectDto){
+		ProjectDto projectUpdated=this.projectService.updateProject(projectId,updateProjectDto);
+		return new ResponseEntity(projectUpdated,HttpStatus.OK);
+	}
+	@DeleteMapping("/removeProject/{projectId}/{userId}")
+	public ResponseEntity<?> deleteProject(@PathVariable(name = "projectId",required = true)Long projectId,@PathVariable(name ="userId" ,required = true)Long userId){
+		boolean  isRemoved=this.projectService.removeProject(projectId,userId);
+		if(isRemoved) {
+			return new ResponseEntity<>("Delete project success",HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>("Error when delete project",HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 }

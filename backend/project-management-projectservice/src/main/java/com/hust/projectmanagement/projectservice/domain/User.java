@@ -1,7 +1,10 @@
 package com.hust.projectmanagement.projectservice.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,7 +46,7 @@ public class User{
 
     @ManyToMany(mappedBy = "users")
     @JsonManagedReference
-    private List<Project> project = new ArrayList<>();
+    private Set<Project> project;
 
     public User() {}
 
@@ -94,12 +97,34 @@ public class User{
         this.password = password;
     }
 
-	public List<Project> getProject() {
+	public Set<Project> getProject() {
 		return project;
 	}
 
-	public void setProject(List<Project> project) {
+	public void setProject(Set<Project> project) {
 		this.project = project;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 
 

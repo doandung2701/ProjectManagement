@@ -17,7 +17,11 @@ zuul:
     user:
       path: /user/**
       service-id: USER_SERVICE
-      strip-prefix: false  
+      strip-prefix: false
+    notification:
+      path: /notificaiton/**
+      service-id: NOTIFICATION_SERVICE 
+      strip-prefix: false         
   ignored-services: '*'
 endpoints:
   trace:
@@ -25,10 +29,16 @@ endpoints:
 eureka:
   client:
     service-url:
-      default-zone: http://registry-service-service:8761/eureka/
+      default-zone: http://registry-service-service:8761/eureka
+#       default-zone: http://localhost:8761/eureka/
 hystrix:
   command:
     default:
       execution:
         timeout:
           enabled: false     
+ribbon:
+  read-timeout: 60000          
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss 

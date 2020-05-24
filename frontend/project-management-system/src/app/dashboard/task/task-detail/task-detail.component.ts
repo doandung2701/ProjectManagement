@@ -1,3 +1,4 @@
+import { GlobalService } from './../../../services/global.service';
 import { Component, OnInit, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TaskResponse } from 'src/app/model/response/taskResponse.model';
@@ -41,7 +42,7 @@ export class TaskDetailComponent implements OnInit {
     constructor(private route: ActivatedRoute, private taskService: TaskService,
         public dialog: MatDialog,
         private notificationService: NotificationService, private projectService: ProjectService,
-        private datePipe: DatePipe) { }
+        private datePipe: DatePipe,private globalService:GlobalService) { }
     onSelection(e, v) {
         this.isChanged = true;
     }
@@ -238,6 +239,9 @@ export class TaskDetailComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             this.saveCheckList(result);
         });
+    }
+    canChangeAssignee(){
+        return this.taskDetail.createdBy==JSON.parse(localStorage.getItem('currentUser'))["uid"]||this.globalService.getCurrentProjectDetail().admin==JSON.parse(localStorage.getItem('currentUser'))["uid"];
     }
 
 }

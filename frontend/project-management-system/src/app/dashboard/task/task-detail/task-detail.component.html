@@ -59,7 +59,7 @@
       </mat-form-field>
       <br/>
       <mat-label>Users</mat-label>
-      <mat-selection-list #userListSearched (selectionChange)="onSelection($event, userListSearched.selectedOptions)">
+      <mat-selection-list [disabled]="!canChangeAssignee()" #userListSearched (selectionChange)="onSelection($event, userListSearched.selectedOptions)">
         <mat-list-option [selected]="isUserIntask(user)" *ngFor="let user of sourceUser" [value]="user">
             {{user.email}}
         </mat-list-option>
