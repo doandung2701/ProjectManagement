@@ -22,7 +22,7 @@ export class Top5taskdeadlineComponent implements OnInit {
   }
   goToDetail(item:TaskResponse){
     this.globalService.setCurrentprojectId(item.project.id);
-    this.projectService.GetDetailProjectById(item.id).subscribe(response=>{
+    this.projectService.GetDetailProjectById(item.project.id).subscribe(response=>{
        this.globalService.setCurrentProjectDetail(response);
       this.router.navigate([`/dashboard/task/detail/${item.id}`]);
     });

@@ -67,6 +67,7 @@ export class TaskListComponent implements OnInit {
     return member.id == this.projectDetail.admin;
   }
   search($event) {
+    $event.preventDefault();
     console.log(this.input.nativeElement);
     console.log(this.inputUser.nativeElement);
     console.log(this.statusSelected);

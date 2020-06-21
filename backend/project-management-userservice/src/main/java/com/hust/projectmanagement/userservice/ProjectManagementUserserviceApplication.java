@@ -2,10 +2,13 @@ package com.hust.projectmanagement.userservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
+import com.hust.projectmanagement.userservice.configuration.RibbonConfiguration;
 import com.hust.projectmanagement.userservice.event.UserEventConsumer;
 
 import io.eventuate.tram.consumer.common.TramNoopDuplicateMessageDetectorConfiguration;
@@ -23,6 +26,8 @@ import io.eventuate.tram.jdbckafka.TramJdbcKafkaConfiguration;
     TramJdbcKafkaConfiguration.class,
     TramEventSubscriberConfiguration.class
 })
+@RibbonClients(defaultConfiguration = RibbonConfiguration.class)
+@EnableDiscoveryClient
 public class ProjectManagementUserserviceApplication {
 
 	public static void main(String[] args) {

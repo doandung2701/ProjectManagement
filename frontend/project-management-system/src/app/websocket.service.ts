@@ -1,36 +1,29 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observer, Observable } from 'rxjs';
-@Injectable({
-  providedIn: 'root'
-})
-export class WebsocketService {
+import { NotiService } from './services/noti.service';
+declare var SockJS;
+declare var Stomp;
+// @Injectable({
+//   providedIn: 'root'
+// })
+// export class WebsocketService {
 
-  private subject: Subject<MessageEvent>;
-
-  public connect(url): Subject<MessageEvent> {
-    if (!this.subject) {
-      this.subject = this.create(url);
-      console.log("Successfully connected: " + url);
-    }
-    return this.subject;
-  }
-
-  private create(url): Subject<MessageEvent> {
-    let ws = new WebSocket(url);
-
-    let observable = Observable.create((obs: Observer<MessageEvent>) => {
-      ws.onmessage = obs.next.bind(obs);
-      ws.onerror = obs.error.bind(obs);
-      ws.onclose = obs.complete.bind(obs);
-      return ws.close.bind(ws);
-    });
-    let observer = {
-      next: (data: Object) => {
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify(data));
-        }
-      }
-    };
-    return Subject.create(observer, observable);
-  }
-}
+//   constructor(private notiService:NotiService) {
+//     this.initializeWebSocketConnection();
+//   }
+//   public stompClient;
+//   public msg = [];
+//   initializeWebSocketConnection() {
+//     const serverUrl = 'http://notification-service:9090/ws';
+//     const ws = new SockJS(serverUrl);
+//     this.stompClient = Stomp.over(ws);
+//     const that = this;
+//     // tslint:disable-next-line:only-arrow-functions
+//     this.stompClient.connect({}, function(frame) {
+//       that.stompClient.subscribe('/topic/notification', (message) => {
+//         if (message.body) {
+//           this.notiService.updateDataSource(message.body);
+//         }
+//       });
+//     });
+//   }
+// }

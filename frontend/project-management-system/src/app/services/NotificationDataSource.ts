@@ -45,5 +45,7 @@ export class NotificationDataSource implements DataSource<Notification>{
     public get values(){
         return this.notificationsSubject.getValue();
     }
-
+    public addNewNotification(message:Notification){
+        this.notificationsSubject.next([message,...this.notificationsSubject.getValue()]);
+    }
 }

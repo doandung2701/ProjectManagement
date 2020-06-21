@@ -197,7 +197,7 @@ public class TaskServiceImpl implements TaskService {
 			result=this.taskRepository.searchCustomTaskByNameAndAssigneeAndStatus(id,model.getName(),model.getUser(),model.getStatus(),PageRequest.of(page,size));
 		}
 		return new PageImpl<>(result.getContent().stream().map(t->Task.createTaskResponseFromTask(t)).collect(Collectors.toList()),
-				result.getPageable(), result.getSize());
+				result.getPageable(), result.getTotalElements());
 
 	}
 

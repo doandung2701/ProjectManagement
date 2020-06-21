@@ -24,11 +24,11 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 	List<SummaryTaskAndCategory> coutTaskByCategory(@Param("userId") Long userId);
 	@Query("select t from Task t join t.project p where p.id=:projectId")
 	List<Task> findByProjectId(@Param("projectId") Long projectId);
-	@Query("select t from Task t join t.project p join t.users u where p.id=:projectId and t.name LIKE CONCAT('%',:name,'%') and (u.name LIKE CONCAT('%',:user,'%') or u.username LIKE CONCAT('%',:user,'%') or u.email LIKE CONCAT('%',:user,'%')) and t.status=:status")
+	@Query("select distinct t from Task t join t.project p join t.users u where p.id=:projectId and t.name LIKE CONCAT('%',:name,'%') and (u.name LIKE CONCAT('%',:user,'%') or u.username LIKE CONCAT('%',:user,'%') or u.email LIKE CONCAT('%',:user,'%')) and t.status=:status")
 	Page<Task> searchCustomTaskByNameAndAssigneeAndStatus(@Param("projectId") Long projectId,@Param("name")String name, @Param("user")String user,@Param("status") Status status, Pageable pageable);
-	@Query("select t from Task t join t.project p join t.users u where  p.id=:projectId and t.name LIKE CONCAT('%',:name,'%') and (u.name LIKE CONCAT('%',:user,'%') or u.username LIKE CONCAT('%',:user,'%') or u.email LIKE CONCAT('%',:user,'%'))")
+	@Query("select distinct t from Task t join t.project p join t.users u where  p.id=:projectId and t.name LIKE CONCAT('%',:name,'%') and (u.name LIKE CONCAT('%',:user,'%') or u.username LIKE CONCAT('%',:user,'%') or u.email LIKE CONCAT('%',:user,'%'))")
 	Page<Task> searchCustomTaskByNameAndAssignee(@Param("projectId") Long projectId,@Param("name")String name, @Param("user")String user, Pageable pageable);
-	@Query("select t from Task t join t.users u where u.id=:userId")
+	@Query("select  t from Task t join t.users u where u.id=:userId")
 	List<Task> findByUser(@Param("userId")Long uid);
 	
 	@Query("select new com.hust.projectmanagement.taskservice.dto.CountTaskByProjectViewModel(p.id,p.name,count(t.id)) from Task t join t.users u join t.project p where u.id=:userId group by p.id")

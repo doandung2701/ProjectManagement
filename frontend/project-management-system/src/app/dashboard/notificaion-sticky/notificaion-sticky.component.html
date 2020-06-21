@@ -1,8 +1,8 @@
 <div class="notification-container" (focusout)="onFocusout()">
     <div class="notification-content">
-    <app-notification-list (itemClick)="hideList()" [hidden]="!isShow"></app-notification-list>
+    <app-notification-list appBluronfocusout (itemClick)="hideList()" [hidden]="!isShow"></app-notification-list>
     <p (click)="toggleNotificationList()">
-        <mat-icon matBadgeColor="warn">notification_important</mat-icon>
+        <mat-icon [style.color]="notify.isHasNewMessage.value?'red':'black'" matBadgeColor="warn">notification_important</mat-icon>
     </p>
 </div>
 </div>

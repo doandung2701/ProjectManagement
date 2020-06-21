@@ -9,6 +9,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
+//	@Autowired
+//    private HttpHandshakeInterceptor handshakeInterceptor;
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
 		// TODO Auto-generated method stub
@@ -18,6 +20,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		// TODO Auto-generated method stub
-		registry.addEndpoint("/rgs-noti").withSockJS();
+		registry.addEndpoint("/notification/ws").setAllowedOrigins("*").withSockJS();
 	}
 }

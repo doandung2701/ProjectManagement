@@ -26,12 +26,14 @@ import { UserService } from './services/user.service';
 import { GlobalService } from './services/global.service';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { CorsHeaderInterceptor } from './helpers/cors.interceptor';
+import { BluronfocusoutDirective } from './bluronfocusout.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoaderComponent,
     PageNotFoundComponent,
+    BluronfocusoutDirective,
   ],
   imports: [
     BrowserModule,

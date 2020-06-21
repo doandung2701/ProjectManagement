@@ -1,3 +1,4 @@
+import { AuthenticationService } from './../../../services/authentication.service';
 import { GlobalService } from './../../../services/global.service';
 import { Component, OnInit, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -42,6 +43,7 @@ export class TaskDetailComponent implements OnInit {
     constructor(private route: ActivatedRoute, private taskService: TaskService,
         public dialog: MatDialog,
         private notificationService: NotificationService, private projectService: ProjectService,
+        private authenticationService:AuthenticationService,
         private datePipe: DatePipe,private globalService:GlobalService) { }
     onSelection(e, v) {
         this.isChanged = true;
@@ -71,6 +73,19 @@ export class TaskDetailComponent implements OnInit {
     isUserIntask(user: UserResponse) {
         if (this.taskDetail && this.taskDetail.users) {
             var indexSelectedUser = this.taskDetail.users.findIndex(x => x.id == user.id);
+            if (indexSelectedUser != -1) {
+                return true;
+            }
+        }
+        return false;
+    }
+    isAdmin(){
+        return (this.globalService.getCurrentProjectDetail().admin==JSON.parse(localStorage.getItem('currentUser'))["uid"]);
+    }
+    isUserLoginInTask(){
+        var currentUserLogin=this.authenticationService.currentUserValue;
+        if (this.taskDetail && this.taskDetail.users) {
+            var indexSelectedUser = this.taskDetail.users.findIndex(x => x.id == currentUserLogin.uid);
             if (indexSelectedUser != -1) {
                 return true;
             }
@@ -241,7 +256,7 @@ export class TaskDetailComponent implements OnInit {
         });
     }
     canChangeAssignee(){
-        return this.taskDetail.createdBy==JSON.parse(localStorage.getItem('currentUser'))["uid"]||this.globalService.getCurrentProjectDetail().admin==JSON.parse(localStorage.getItem('currentUser'))["uid"];
+        return this.globalService.getCurrentProjectDetail().admin==JSON.parse(localStorage.getItem('currentUser'))["uid"];
     }
 
 }

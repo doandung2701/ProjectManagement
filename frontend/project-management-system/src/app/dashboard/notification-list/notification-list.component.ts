@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { NotiService } from './../../services/noti.service';
 import { NotificationDataSource } from './../../services/NotificationDataSource';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-notification-list',
@@ -15,7 +15,6 @@ export class NotificationListComponent implements OnInit {
   @Output()
   itemClick = new EventEmitter();
   constructor(private notifyService: NotiService, private router: Router) { }
-
   ngOnInit() {
     this.dataSource = this.notifyService.dataSource;
     this.loadData();

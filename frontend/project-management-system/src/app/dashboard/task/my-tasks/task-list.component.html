@@ -91,7 +91,7 @@
                 <ng-container matColumnDef="remove">
                   <th mat-header-cell *matHeaderCellDef> Remove </th>
                   <td *matCellDef="let element" class="mat-cell cdk-column-name mat-column-name ng-star-inserted">
-                    <button mat-button (click)="showDialogDeleteTask(element)"  style="padding-left: 0;">Remove</button>
+                    <button *ngIf="CanChangeUser()" mat-button (click)="showDialogDeleteTask(element)"  style="padding-left: 0;">Remove</button>
                   </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

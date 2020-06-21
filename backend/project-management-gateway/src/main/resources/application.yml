@@ -22,21 +22,26 @@ zuul:
       path: /notification/**
       service-id: NOTIFICATION_SERVICE 
       strip-prefix: false 
-  ignored-services: '*'
+  ignored-services: '*'  ignored-headers:  - Access-Control-Allow-Credentials
+  - Access-Control-Allow-Origin
 endpoints:
   trace:
     sensitive: false
 eureka:
   client:
     service-url:
-      default-zone: http://registry-service-service:8761/eureka/
-#       default-zone: http://localhost:8761/eureka/
+#      default-zone: http://registry-service-service:8761/eureka/
+       default-zone: http://localhost:8761/eureka/
 hystrix:
   command:
     default:
       execution:
+        isolation:
+          thread:
+            timeout-in-milliseconds: 50000
         timeout:
           enabled: false
 ribbon:
-  read-timeout: 60000          
-spring:  jackson:    date-format: yyyy-MM-dd HH:mm:ss          
+  read-timeout: 60000  
+  connect-timeout: 3000        
+spring:  jackson:    date-format: yyyy-MM-dd HH:mm:ss       

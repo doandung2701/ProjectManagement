@@ -1,18 +1,13 @@
 package com.hust.projectmanagement.authservice;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.stream.Collectors;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.context.annotation.Bean;
+import org.springframework.cloud.netflix.ribbon.RibbonClients;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpMethod;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+
+import com.hust.projectmanagement.authservice.configuration.RibbonConfiguration;
 
 import io.eventuate.tram.events.publisher.TramEventsPublisherConfiguration;
 import io.eventuate.tram.events.subscriber.TramEventSubscriberConfiguration;
@@ -22,6 +17,8 @@ import io.eventuate.tram.jdbckafka.TramJdbcKafkaConfiguration;
 @EnableEurekaClient
 @Import({ TramJdbcKafkaConfiguration.class, TramEventsPublisherConfiguration.class,
 		TramEventSubscriberConfiguration.class })
+@RibbonClients(defaultConfiguration = RibbonConfiguration.class)
+@EnableDiscoveryClient
 public class ProjectManagementAuthserviceApplication {
 
 	public static void main(String[] args) {
