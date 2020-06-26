@@ -45,7 +45,7 @@
         <mat-step>
             <ng-template matStepLabel>Schedule Task</ng-template>
               <span class="label-span">Task Start Date and Time</span>
-              <mat-form-field class="date-time" appearance="outline">
+              <mat-form-field class="date-time" appearance="outline" style="width: 30%;">
                 <mat-label>Task Start Date and Time</mat-label>
                 <input matInput [(ngModel)]="startTime" matInput type="datetime-local" name="startTime" id="start">
               </mat-form-field>
@@ -57,7 +57,7 @@
               </mat-form-field>
               <br>
               <span class="label-span">Task End Date and Time</span>
-              <mat-form-field class="date-time" appearance="outline">
+              <mat-form-field class="date-time" appearance="outline" style="width: 30%;">
                   <mat-label>Task End Date and Time</mat-label>
                 <input  matInput [(ngModel)]="deadLine" matInput type="datetime-local" name="deadline" id="deadline">
               </mat-form-field>

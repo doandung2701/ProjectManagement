@@ -32,7 +32,7 @@ spec:
         app: task-service
     spec:
       containers:
-        - image: gcr.io/spartan-thunder-272123/task-service:v6
+        - image: gcr.io/spartan-thunder-272123/task-service:v15
           imagePullPolicy: Always
           name: task-service
           ports:

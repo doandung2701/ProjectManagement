@@ -120,6 +120,13 @@ public class ProjectServiceImpl implements ProjectService {
 		passcodeRepository.save(passcode);
 		return code;
 	}
+	private String updatePasscode(long passcodeId) {
+		String code=GenCodeUtils.OTP(8);
+		Passcode passcode=this.passcodeRepository.getOne(passcodeId);
+		passcode.setCode(code);
+		passcodeRepository.save(passcode);
+		return code;
+	}
 	
 	@Override
 	@Async
@@ -298,7 +305,8 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		result.setUsers(users);
 		Passcode passcode=passcodeRepository.findByProjectId(updateProject.getId());
-		inviteUsers(users.stream().mapToLong(u->u.getId()).toArray(), passcode.getCode(), updateProject.getId());
+		String newPasscode=this.updatePasscode(passcode.getId());
+		inviteUsers(userNeedInvite.stream().mapToLong(u->u).toArray(), newPasscode, updateProject.getId());
 		//Publish event
 		ResultWithEvents<Project> projectWithEvents = Project.updateProject(savedProject);
 		domainEventPublisher.publish(common.domain.Project.class, savedProject.getId(), projectWithEvents.events);

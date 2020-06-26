@@ -309,7 +309,7 @@ public class TaskServiceImpl implements TaskService {
 	public List<TaskResponse> getTop5TaskOrderByDeadlineByUserId(Long userId) {
 		// TODO Auto-generated method stub
 		User user=this.userRepository.getOne(userId);
-		List<Task> tasks=this.taskRepository.findTop5ByUsersContainingOrderByDeadlineDesc(user);
+		List<Task> tasks=this.taskRepository.findTop5ByUsersContainingOrderByDeadlineDesc(user.getId());
 
 //		List<Task> tasks=this.taskRepository.findTop5
 		return tasks.stream().map(task -> Task.createTaskResponseFromTask(task)).collect(Collectors.toList());

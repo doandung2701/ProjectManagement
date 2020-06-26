@@ -10,12 +10,12 @@
       </div>
       <mat-form-field class="full-width">
         <mat-label>Task name</mat-label>
-        <input [readonly]="!(isUserLoginInTask()&&isAdmin())" [ngModel]="taskDetail?.name" (ngModelChange)="taskDetail&&taskDetail.name = $event" matInput
+        <input [readonly]="!(isUserLoginInTask())" [ngModel]="taskDetail?.name" (ngModelChange)="taskDetail&&taskDetail.name = $event" matInput
           placeholder="Task name" type="text">
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>Task description</mat-label>
-        <input [readonly]="!(isUserLoginInTask()&&isAdmin())" [ngModel]="taskDetail?.description" (ngModelChange)="taskDetail&&taskDetail.description = $event" matInput
+        <input [readonly]="!(isUserLoginInTask())" [ngModel]="taskDetail?.description" (ngModelChange)="taskDetail&&taskDetail.description = $event" matInput
           placeholder="Task description" type="text">
       </mat-form-field>
       <mat-form-field class="haft-width">
@@ -25,7 +25,7 @@
       </mat-form-field>
       <mat-form-field class="haft-width">
         <mat-label>Task start time</mat-label>
-        <input [readonly]="!(isUserLoginInTask()&&isAdmin())" matInput [matDatepicker]="picker5" [value]="taskDetail?.startTime"
+        <input [readonly]="!(isUserLoginInTask())" matInput [matDatepicker]="picker5" [value]="taskDetail?.startTime"
         (dateInput)="taskDetail&&taskDetail.startTime = $event.value" (dateChange)="taskDetail&&taskDetail.startTime = $event.value"
         >
         <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
@@ -33,7 +33,7 @@
       </mat-form-field>
       <mat-form-field class="haft-width">
         <mat-label>Task deadline time</mat-label>
-        <input [readonly]="!(isUserLoginInTask()&&isAdmin())" matInput [matDatepicker]="picker4" [value]="taskDetail?.deadline"
+        <input [readonly]="!(isUserLoginInTask())" matInput [matDatepicker]="picker4" [value]="taskDetail?.deadline"
         (dateInput)="taskDetail&&taskDetail.deadline = $event.value" (dateChange)="taskDetail&&taskDetail.deadline = $event.value"
         >
         <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
@@ -41,19 +41,19 @@
       </mat-form-field>
       <mat-form-field class="haft-width">
         <mat-label>Priority</mat-label>
-        <mat-select [disabled]="!(isUserLoginInTask()&&isAdmin())" [value]="taskDetail?.priority" (selectionChange)="taskDetail&&taskDetail.priority = $event.value">
+        <mat-select [disabled]="!(isUserLoginInTask())" [value]="taskDetail?.priority" (selectionChange)="taskDetail&&taskDetail.priority = $event.value">
           <mat-option *ngFor="let key of prioritesOptions" [value]="key">{{priorities[key]}}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field class="haft-width">
         <mat-label>Category</mat-label>
-        <mat-select [disabled]="!(isUserLoginInTask()&&isAdmin())" [value]="taskDetail?.category" (selectionChange)="taskDetail&&taskDetail.category = $event.value">
+        <mat-select [disabled]="!(isUserLoginInTask())" [value]="taskDetail?.category" (selectionChange)="taskDetail&&taskDetail.category = $event.value">
           <mat-option *ngFor="let key of categoriesOptions" [value]="key">{{categories[key]}}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field class="haft-width">
         <mat-label>Status</mat-label>
-        <mat-select [disabled]="!(isUserLoginInTask()&&isAdmin())" [value]="taskDetail?.status" (selectionChange)="taskDetail&&taskDetail.status=$event.value">
+        <mat-select [disabled]="!(isUserLoginInTask())" [value]="taskDetail?.status" (selectionChange)="taskDetail&&taskDetail.status=$event.value">
           <mat-option *ngFor="let key of statusesOptions" [value]="key">{{statuses[key]}}</mat-option>
         </mat-select>
       </mat-form-field>

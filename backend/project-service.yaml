@@ -32,7 +32,7 @@ spec:
         app: project-service
     spec:
       containers:
-        - image: gcr.io/spartan-thunder-272123/project-service:v3
+        - image: gcr.io/spartan-thunder-272123/project-service:v9
           imagePullPolicy: Always
           name: project-service
           ports:

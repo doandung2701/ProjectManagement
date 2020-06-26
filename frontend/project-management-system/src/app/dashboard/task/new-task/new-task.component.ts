@@ -121,16 +121,40 @@ export class TaskCreatorComponent implements OnInit {
   openConfirmationDialog(){
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
-      data: "Do you confirm the creatation of this data?"
+      data: "Do you confirm the create of this data?"
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+      if(result&&this.dataValid()) {
         this.prepareData();
         this.create();
       }else{
         this.stepperController.reset();
       }
     });
+  }
+  dataValid(){
+    if(this.datePipe.transform(this.createTaskRequest.startTimeView,'yyyy-MM-dd')< this.datePipe.transform(new Date(),'yyyy-MM-dd')){
+      debugger;
+      this.notificationService.showNotification(MessageType.ERROR,"Create time cannot less than today");
+      return false;
+    }
+    if(this.createTaskRequest.startTimeView>this.createTaskRequest.deadlineView){
+      this.notificationService.showNotification(MessageType.ERROR,"Create time cannot greater than deadline");
+      return false;
+    }
+    if(this.assignedUser.length==0){
+      this.notificationService.showNotification(MessageType.ERROR,"Task need assign members");
+      return false;
+    }
+    if(!this.createTaskRequest.priority){
+      this.notificationService.showNotification(MessageType.ERROR,"Task need have priority");
+      return false;
+    }
+    if(!this.createTaskRequest.category){
+      this.notificationService.showNotification(MessageType.ERROR,"Task need have category");
+      return false;
+    }
+    return true;
   }
   create(){
     this.service.createTask(this.createTaskRequest).subscribe(response=>{
