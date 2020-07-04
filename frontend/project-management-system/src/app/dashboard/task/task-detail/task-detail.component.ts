@@ -1,7 +1,7 @@
 import { AuthenticationService } from './../../../services/authentication.service';
 import { GlobalService } from './../../../services/global.service';
 import { Component, OnInit, ViewChildren } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TaskResponse } from 'src/app/model/response/taskResponse.model';
 import { TaskService } from 'src/app/services/task.service';
 import { Category } from '../../../model/category.model';
@@ -20,6 +20,7 @@ import { CheckListFormComponent } from '../check-list-form/checklist-form.compon
 import { CheckListUpdateComponent } from '../checklist-update/checklist-update.component';
 import { CheckListDto } from 'src/app/model/checklistDto.model';
 import { pipe } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'task-task-detail',
@@ -44,6 +45,7 @@ export class TaskDetailComponent implements OnInit {
         public dialog: MatDialog,
         private notificationService: NotificationService, private projectService: ProjectService,
         private authenticationService:AuthenticationService,
+        private router:Router,
         private datePipe: DatePipe,private globalService:GlobalService) { }
     onSelection(e, v) {
         this.isChanged = true;
@@ -65,6 +67,9 @@ export class TaskDetailComponent implements OnInit {
             that.projectService.getUserJoinedProject().subscribe(response => {
                 that.sourceUser = response;
             });
+        },(err:HttpErrorResponse)=>{
+            this.notificationService.showNotification(MessageType.ERROR,err.error.message);
+            this.router.navigate(['/dashboard/task/']);
         });
         this.taskService.getCommentById(Number.parseInt(this.route.snapshot.paramMap.get("taskId"))).subscribe(data => {
             this.listComment = data;
