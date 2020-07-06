@@ -97,6 +97,7 @@ public class TaskController {
 		  cr.setTitle(t.getName());
 		  cr.setStart(t.getStartTime());
 		  cr.setEnd(t.getDeadline());
+		  cr.setTaskId(t.getId());
 		  cl.add(cr);
 		}
 		CalendarListResource clr = new CalendarListResource();

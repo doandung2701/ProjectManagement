@@ -12,8 +12,18 @@ public class CalendarResource {
 
 	  @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	  private LocalDateTime end;
+	  
+	  private long taskId;
+	  
+	  public long getTaskId() {
+		return taskId;
+	}
 
-	  public String getTitle() {
+	public void setTaskId(long taskId) {
+		this.taskId = taskId;
+	}
+
+	public String getTitle() {
 	    return title;
 	  }
 

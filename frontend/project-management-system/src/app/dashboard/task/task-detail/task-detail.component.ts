@@ -21,6 +21,8 @@ import { CheckListUpdateComponent } from '../checklist-update/checklist-update.c
 import { CheckListDto } from 'src/app/model/checklistDto.model';
 import { pipe } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Location } from '@angular/common';
+
 
 @Component({
     selector: 'task-task-detail',
@@ -43,13 +45,22 @@ export class TaskDetailComponent implements OnInit {
     @ViewChildren(MatSelectionList) userListSearched;
     constructor(private route: ActivatedRoute, private taskService: TaskService,
         public dialog: MatDialog,
-        private notificationService: NotificationService, private projectService: ProjectService,
+        private notificationService: NotificationService, private projectService: ProjectService,private _location: Location,
         private authenticationService:AuthenticationService,
         private router:Router,
-        private datePipe: DatePipe,private globalService:GlobalService) { }
+        private datePipe: DatePipe,private globalService:GlobalService) { 
+
+            var memberOfProjects=this.globalService.getCurrentProjectDetail().users;
+            var currentUserLogin=this.authenticationService.currentUserValue;
+            var isFounded=memberOfProjects.findIndex(member=>member.id==currentUserLogin.uid);
+            if(isFounded==-1){
+                this._location.back();
+            }
+        }
     onSelection(e, v) {
         this.isChanged = true;
     }
+    
     ngOnInit(): void {
         var that = this;
         this.categoriesOptions = Object.keys(this.categories);
@@ -59,8 +70,10 @@ export class TaskDetailComponent implements OnInit {
             this.taskDetail = data;
             let dateInstring=data.createdTime[0]+"-"+data.createdTime[1]+"-"+data.createdTime[2]+" "+data.createdTime[3]+":"+data.createdTime[4];
             this.taskDetail.createdTime=new Date(dateInstring);
+
              dateInstring=data.deadline[0]+"-"+data.deadline[1]+"-"+data.deadline[2]+" "+data.deadline[3]+":"+data.deadline[4];
             this.taskDetail.deadline=new Date(dateInstring);
+
              dateInstring=data.startTime[0]+"-"+data.startTime[1]+"-"+data.startTime[2]+" "+data.startTime[3]+":"+data.startTime[4];
             this.taskDetail.startTime=new Date(dateInstring);
 
@@ -119,20 +132,33 @@ export class TaskDetailComponent implements OnInit {
     }
     updateCommon() {
         console.log(this.taskDetail);
-        if (this.taskDetail.name && this.taskDetail.name.trim() == '') {
+        if (this.taskDetail.name!=null && this.taskDetail.name.trim() == '') {
             this.notificationService.showNotification(MessageType.ERROR, "Task name can not be null");
             return;
         }
-        if (this.taskDetail.description && this.taskDetail.description.trim() == '') {
+        if (this.taskDetail.description!=null && this.taskDetail.description.trim() == '') {
             this.notificationService.showNotification(MessageType.ERROR, "Task description can not be null");
             return;
         }
-        if (this.taskDetail.startTime && this.taskDetail.startTime == null) {
+        if (this.taskDetail.startTime!=null && this.taskDetail.startTime == null) {
             this.notificationService.showNotification(MessageType.ERROR, "Task startTime can not be null");
             return;
         }
-        if (this.taskDetail.deadline && this.taskDetail.deadline == null) {
+        if (this.taskDetail.deadline!=null && this.taskDetail.deadline == null) {
             this.notificationService.showNotification(MessageType.ERROR, "Task name can not be null");
+            return;
+        }
+        if (new Date(this.taskDetail.startTime.getFullYear(),this.taskDetail.startTime.getMonth(),this.taskDetail.startTime.getDay()) <
+        new Date(this.taskDetail.createdTime.getFullYear(),this.taskDetail.createdTime.getMonth(),this.taskDetail.createdTime.getDay())
+        ) {
+            this.notificationService.showNotification(MessageType.ERROR, "Task start Time can not less than created time");
+            return;
+        }
+        if (new Date(this.taskDetail.deadline.getFullYear(),this.taskDetail.deadline.getMonth(),this.taskDetail.deadline.getDay()) <
+        new Date(this.taskDetail.createdTime.getFullYear(),this.taskDetail.createdTime.getMonth(),this.taskDetail.createdTime.getDay())
+        )
+         {
+            this.notificationService.showNotification(MessageType.ERROR, "Task deadline can not less than created time");
             return;
         }
         if (this.taskDetail.deadline < this.taskDetail.startTime) {

@@ -34,5 +34,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 	@Query("select new com.hust.projectmanagement.taskservice.dto.CountTaskByProjectViewModel(p.id,p.name,count(t.id)) from Task t join t.users u join t.project p where u.id=:userId and u in (select a from p.users a) group by p.id")
 	List<CountTaskByProjectViewModel> countTaskByProjectIdOfUser(@Param("userId")Long uid);
 	@Query("select t from Task t join t.users u join t.project p where u.id=:userId and u in (select a from p.users a) order by t.deadline DESC")
-	List<Task> findTop5ByUsersContainingOrderByDeadlineDesc(@Param("userId")Long uid);
+	List<Task> findTop5ByUsersContainingOrderByDeadlineDesc(@Param("userId")Long uid,Pageable pageable);
 }
