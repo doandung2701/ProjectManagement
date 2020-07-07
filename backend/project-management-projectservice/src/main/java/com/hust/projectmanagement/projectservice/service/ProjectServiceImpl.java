@@ -202,29 +202,37 @@ public class ProjectServiceImpl implements ProjectService {
 			throw new UserNotFoundException("User not found with id " + id);
 		}
 		PageRequest pageData = PageRequest.of(page, size);
-		int pageSize = pageData.getPageSize();
-		int currentPage = pageData.getPageNumber();
-		int startItem = currentPage * pageSize;
-		List<ProjectResource> result;
-		if(filterText==null||filterText.equals("")) {
-			result = user.get().getProject().stream().map(p->new ProjectResource(p)).collect(Collectors.toList());
-
+//		int pageSize = pageData.getPageSize();
+//		int currentPage = pageData.getPageNumber();
+//		int startItem = currentPage * pageSize;
+//		List<ProjectResource> result;
+//		if(filterText==null||filterText.equals("")) {
+//			result = user.get().getProject().stream().map(p->new ProjectResource(p)).collect(Collectors.toList());
+//
+//		}else {
+//			result = user.get().getProject().stream().filter(p->p.getName().toLowerCase().contains(filterText.toLowerCase())||p.getDescription().toLowerCase().contains(filterText.toLowerCase())).map(p->new ProjectResource(p)).collect(Collectors.toList());
+//
+//		}
+//		List<ProjectResource> list;
+//		if (result.size() < startItem) {
+//			list = Collections.emptyList();
+//		} else {
+//			 int toIndex = Math.min(startItem + pageSize, result.size());
+//	            list = result.subList(startItem, toIndex);
+//		}
+		Page<Project> result;
+		if (filterText==null) {
+			result=this.projectRepository.findByUserId(id,pageData);
 		}else {
-			result = user.get().getProject().stream().filter(p->p.getName().toLowerCase().contains(filterText.toLowerCase())||p.getDescription().toLowerCase().contains(filterText.toLowerCase())).map(p->new ProjectResource(p)).collect(Collectors.toList());
-
+			result=this.projectRepository.findByUserAndNameOrDescription(id, filterText, filterText,pageData);
 		}
-		List<ProjectResource> list;
-		if (result.size() < startItem) {
-			list = Collections.emptyList();
-		} else {
-			 int toIndex = Math.min(startItem + pageSize, result.size());
-	            list = result.subList(startItem, toIndex);
-		}
+	
+		
 		// ProjectListResource projectListResource=new ProjectListResource();
 		// List<Project> projectUserJoined=user.get().getProject();
 //		projectListResource.setprojectList((List<ProjectResource>) projectUserJoined.stream()
 //				.map(p -> new ProjectResource(p)).collect(Collectors.toList()));
-        return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), result.size());
+        return new PageImpl<>(result.getContent().stream().map(p->new ProjectResource(p)).collect(Collectors.toList()), result.getPageable(), result.getTotalElements());
 
 	}
 
