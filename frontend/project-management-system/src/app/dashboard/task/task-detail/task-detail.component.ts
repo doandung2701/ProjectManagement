@@ -148,14 +148,14 @@ export class TaskDetailComponent implements OnInit {
             this.notificationService.showNotification(MessageType.ERROR, "Task name can not be null");
             return;
         }
-        if (new Date(this.taskDetail.startTime.getFullYear(),this.taskDetail.startTime.getMonth()-1,this.taskDetail.startTime.getDay()) <
-        new Date(this.taskDetail.createdTime.getFullYear(),this.taskDetail.createdTime.getMonth()-1,this.taskDetail.createdTime.getDay())
+        if (new Date(this.taskDetail.startTime.getFullYear(),this.taskDetail.startTime.getMonth(),this.taskDetail.startTime.getDay()) <
+        new Date(this.taskDetail.createdTime.getFullYear(),this.taskDetail.createdTime.getMonth(),this.taskDetail.createdTime.getDay())
         ) {
             this.notificationService.showNotification(MessageType.ERROR, "Task start Time can not less than created time");
             return;
         }
-        if (new Date(this.taskDetail.deadline.getFullYear(),this.taskDetail.deadline.getMonth()-1,this.taskDetail.deadline.getDay()) <
-        new Date(this.taskDetail.createdTime.getFullYear(),this.taskDetail.createdTime.getMonth()-1,this.taskDetail.createdTime.getDay())
+        if (new Date(this.taskDetail.deadline.getFullYear(),this.taskDetail.deadline.getMonth(),this.taskDetail.deadline.getDay()) <
+        new Date(this.taskDetail.createdTime.getFullYear(),this.taskDetail.createdTime.getMonth(),this.taskDetail.createdTime.getDay())
         )
          {
             this.notificationService.showNotification(MessageType.ERROR, "Task deadline can not less than created time");
